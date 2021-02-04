@@ -1,6 +1,10 @@
-.feed-container {
-  margin: auto;
-  padding-top: 6rem;
+.feed {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; }
+
+.show-post {
+  margin-top: 6rem;
   width: 500px;
   height: 100%; }
 
@@ -78,5 +82,16 @@
   .comment__content {
     margin-left: 1rem;
     margin-right: 1rem; }
+
+.create-post {
+  margin-top: 6rem;
+  padding-top: 1rem;
+  width: 500px;
+  height: 100%; }
+  .create-post i {
+    margin-right: 2rem; }
+
+h2 {
+  margin-left: 2rem; }
 
 /*# sourceMappingURL=style.css.map */
