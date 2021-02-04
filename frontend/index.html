@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <title>Groupomania - feed</title>
 
     <meta charset="UTF-8" />
@@ -8,34 +8,76 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <link rel="icon" href="./assets/img/logo_groupomania_icon_black.svg" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"/>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    />
+    <link href="./assets/style/old-style.css" rel="stylesheet" />
     <link href="./assets/style/style.css" rel="stylesheet" />
-</head>
+  </head>
 
-<body>
-
-    <nav>
+  <body>
+    <div id="app">
+      <nav>
         <div class="nav-container">
-        <div id="logo">
-            <img src="./assets/img/logo_groupomania.svg" alt="logo" />
-        </div>
+          <div id="logo">
+            <router-link to="/">
+              <img src="./assets/img/logo_groupomania.svg" alt="logo" />
+            </router-link>
+          </div>
 
-        <ul id="icons">
+          <ul id="icons">
             <li>
-            <i class="fas fa-user"></i>
+              <router-link to="/user-settings">
+                <i class="fas fa-user"></i>
+              </router-link>
             </li>
             <li>
-            <i class="fas fa-heart"></i>
-            <span id="nav-notif"></span>
+              <router-link to="/user-favorites">
+                <i class="fas fa-heart"></i>
+              </router-link>
+              <span id="nav-notif"></span>
             </li>
             <li>
-            <i class="fas fa-inbox"></i>
+              <router-link to="/user-inbox">
+                <i class="fas fa-inbox"></i>
+              </router-link>
             </li>
-        </ul>
+          </ul>
         </div>
-    </nav>
+      </nav>
 
+      <router-view></router-view>
+    </div>
+
+    <script type="text/x-template" id="feed">
+      <div class="feed-container">
+        <div v-for="postglobal in postglobals" class="post-global">
+          <div class="post">
+            <div class="post__header">
+              <div class="user-picture"><img v-bind:src="postglobal.post.userpicture"></div>
+              <div class="user-name">{{ postglobal.post.username }}</div>
+            </div>
+            <div class="post__content"><img v-bind:src="postglobal.post.img"></div>
+            <div class="post__reactions">
+              <div class="fas-count-bind"><i class="fas fa-thumbs-up"></i><div>{{ postglobal.post.like }}</div></div>
+              <div class="fas-count-bind"><i class="fas fa-thumbs-down"></i><div>{{ postglobal.post.dislike }}</div></div>
+              <div class="fas-count-bind"><i class="fas fa-comment"></i><div>{{ postglobal.post.comment }}</div></div>
+              <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ postglobal.post.fav }}</div></div>
+            </div>
+          </div>
+          <div v-for="comment in postglobals.comments" class="comments">
+            <div class="user-picture user-picture__comment"><img v-bind:src="postglobal.comments.userpicture"></div>
+            <div class="user-name user-name__comment">{{ comment.username }}</div>
+            <div class="user-comment">{{ comment.comment }}</div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.5.1/dist/vue-router.js"></script>
+    <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/script.js"></script>
-
-</body>
+  </body>
 </html>
