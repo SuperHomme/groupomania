@@ -36,6 +36,7 @@ const feed = {
     data: () => {
         return {
         postglobals,
+        showComment: false
         }
     }
 }

@@ -64,10 +64,10 @@
               <div class="post__reactions">
                 <div class="fas-count-bind"><i class="fas fa-thumbs-up"></i><div>{{ postglobal.post.like }}</div></div>
                 <div class="fas-count-bind"><i class="fas fa-thumbs-down"></i><div>{{ postglobal.post.dislike }}</div></div>
-                <div class="fas-count-bind"><i class="fas fa-comment"></i><div>{{ postglobal.comments.length }}</div></div>
+                <div class="fas-count-bind" @click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ postglobal.comments.length }}</div></div>
                 <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ postglobal.post.fav }}</div></div>
               </div>
-              <form action="" method="get" class="post__comment-area">
+              <form action="" method="get" class="post__comment-area" v-show="showComment">
                 <div class="comment-area">
                   <label for="comment"></label>
                   <input type="text" name="comment" id="comment" required>
@@ -75,7 +75,7 @@
                 <i class="fas fa-paper-plane"></i>
               </form>
             </div>
-            <div v-for="comment in postglobal.comments" class="comment">
+            <div v-for="comment in postglobal.comments" class="comment" v-show="showComment">
               <div class="user-picture comment__user-picture"><img v-bind:src="comment.userpicture"></div>
               <div class="comment__body">
                 <div class="comment__infos">
