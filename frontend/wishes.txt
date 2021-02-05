@@ -1,0 +1,14 @@
+auth / login :
+- longueurs du mot de passe
+- "force" du mot de passe choisi
+- envoi de mail à la création du compte
+
+commentaires :
+- motion : les commentaires se déroulent à partir de derrière le post au clic sur le picto commentaires / remontent se "cacher" derrière le post au second clic
+- mettre like et dislikes sur les commentaires
+- limiter le nombre de commentaires affichés, mettre un "afficher plus de commentaires"
+- limiter la taille des commentaires affcihes, mettre un "afficher plus" si le commentaire est trop long
+
+responsive :
+- passer le create post au dessus du feed
+- sous 300px, passer le header global en bas
