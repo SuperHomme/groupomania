@@ -72,7 +72,7 @@ export default {
     z-index: 98
     width: 150px
 
-// triangle sous la bulle
+// triangle sous la bulle quitte pointe sur le compteur
 .tooltip:hover:before
     border: solid
     border-color: #333 transparent

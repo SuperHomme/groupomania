@@ -3,6 +3,9 @@ auth / login :
 - "force" du mot de passe choisi
 - envoi de mail à la création du compte
 
+reactions : 
+- limiter le nb d'utilisateurs affiché ayant liké/disliké dans la bulle ()
+
 commentaires :
 - motion : les commentaires se déroulent à partir de derrière le post au clic sur le picto commentaires / remontent se "cacher" derrière le post au second clic
 - mettre like et dislikes sur les commentaires
