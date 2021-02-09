@@ -19,3 +19,17 @@ export default {
     name: 'createPost'
 }
 </script>
+
+<style lang="sass">
+.create-post
+    margin-top: 6rem
+    padding-top: 2rem
+    padding-bottom: 1rem
+    width: 500px
+    height: auto
+    i
+        margin-right: 2rem
+
+h2
+    margin-left: 2rem
+</style>

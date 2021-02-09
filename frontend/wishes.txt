@@ -12,3 +12,6 @@ commentaires :
 responsive :
 - passer le create post au dessus du feed
 - sous 300px, passer le header global en bas
+
+bonus :
+- lié le titre de la page à un v-model (https://stackoverflow.com/questions/36612847/how-can-i-bind-the-html-title-content-in-vuejs)

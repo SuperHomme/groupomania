@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .feed
     display: flex
     flex-direction: row
