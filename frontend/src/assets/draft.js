@@ -1,17 +1,19 @@
 // data test
-export const posts = [
-    {   
-        userId: "28394",
-        userpicture: 'Hector_Castor.jpg',
-        username: "Hector Castor",
-        date: "1 juil. 2020, 8h32",
-        img: 'homer_simpson_bush.gif',
-        nbLike: 24,
-        nbDislike: 3,
-        usersLiked: ["Edmond Faon", "Amélie Perdrix", "Chantal Chacal", "Quentin Chien"],
-        usersDisliked: ["Edgar Renard", "Pablo Corbeau", "Félicie Pie", "Roger Le Très Grand Epervier"],
-        nbComment: 8,
-        nbFav: 3,
+export const postglobals = [
+    {   id: 1,
+        post: {
+            userId: "28394",
+            userpicture: 'Hector_Castor.jpg',
+            username: "Hector Castor",
+            date: "1 juil. 2020, 8h32",
+            img: 'homer_simpson_bush.gif',
+            nbLike: 24,
+            nbDislike: 3,
+            usersLiked: ["Edmond Faon", "Amélie Perdrix", "Chantal Chacal", "Quentin Chien"],
+            usersDisliked: ["Edgar Renard", "Pablo Corbeau", "Félicie Pie", "Roger Le Très Grand Epervier"],
+            nbComment: 8,
+            nbFav: 3
+        },
         comments:[
             {
                 id: 1,

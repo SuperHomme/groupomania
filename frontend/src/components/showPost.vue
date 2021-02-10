@@ -1,19 +1,19 @@
 <template>
     <div id="showpost">
         <div class="show-post">
-            <div v-for="postglobal in postglobals" :key="postglobal.id" class="post-global">
+            <div v-for="post in posts" :key="post.id" class="post-global">
                 <div class="post">
                     <div class="post__header">
-                        <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${postglobal.post.userpicture}`)"></div>
-                        <div class="user-name">{{ postglobal.post.username }}</div>
-                        <div class="date">{{ postglobal.post.date }}</div>
+                        <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
+                        <div class="user-name">{{ post.username }}</div>
+                        <div class="date">{{ post.date }}</div>
                     </div>
-                    <div class="post__content"><img v-bind:src="require(`@/assets/img/tests/${postglobal.post.img}`)"></div>
+                    <div class="post__content"><img v-bind:src="require(`@/assets/img/tests/${post.img}`)"></div>
                     <div class="post__reactions">
-                        <div v-bind:title="postglobal.post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ postglobal.post.nbLike }}</div></div>
-                        <div v-bind:title="postglobal.post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ postglobal.post.nbDislike }}</div></div>
-                        <div class="fas-count-bind" @click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ postglobal.comments.length }}</div></div>
-                        <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ postglobal.post.nbFav }}</div></div>
+                        <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ post.nbLike }}</div></div>
+                        <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ post.nbDislike }}</div></div>
+                        <div class="fas-count-bind" @click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ post.comments.length }}</div></div>
+                        <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ post.nbFav }}</div></div>
                     </div>
                     <form action="" method="get" class="post__comment-area" v-show="showComment">
                         <div class="comment-area">
@@ -23,7 +23,7 @@
                         <i class="fas fa-paper-plane"></i>
                     </form>
                 </div>
-                <div v-for="comment in postglobal.comments" :key="comment.id" class="comment" v-show="showComment">
+                <div v-for="comment in post.comments" :key="comment.id" class="comment" v-show="showComment">
                     <div class="user-picture comment__user-picture"><img v-bind:src="require(`@/assets/img/tests/${comment.userpicture}`)"></div>
                     <div class="comment__body">
                         <div class="comment__infos">
@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import {postglobals} from '../assets/data.js';
+import {posts} from '../assets/data.js';
 
 export default {
     name: 'showPost',
     data: () => {
         return {
-            postglobals,
+            posts,
             showComment: false
         }
     }
