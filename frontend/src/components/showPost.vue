@@ -10,10 +10,10 @@
                     </div>
                     <div class="post__content"><img v-bind:src="require(`@/assets/img/tests/${postglobal.post.img}`)"></div>
                     <div class="post__reactions">
-                        <div v-bind:title="postglobal.post.usersLike.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ postglobal.post.like }}</div></div>
-                        <div v-bind:title="postglobal.post.usersDislike.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ postglobal.post.dislike }}</div></div>
+                        <div v-bind:title="postglobal.post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ postglobal.post.nbLike }}</div></div>
+                        <div v-bind:title="postglobal.post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ postglobal.post.nbDislike }}</div></div>
                         <div class="fas-count-bind" @click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ postglobal.comments.length }}</div></div>
-                        <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ postglobal.post.fav }}</div></div>
+                        <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ postglobal.post.nbFav }}</div></div>
                     </div>
                     <form action="" method="get" class="post__comment-area" v-show="showComment">
                         <div class="comment-area">

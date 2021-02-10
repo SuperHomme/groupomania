@@ -7,16 +7,17 @@ export const postglobals = [
             username: "Hector Castor",
             date: "1 juil. 2020, 8h32",
             img: 'homer_simpson_bush.gif',
-            like: 24,
-            usersLike: ["Edmond Faon", "Amélie Perdrix", "Chantal Chacal", "Quentin Chien"],
-            dislike: 3,
-            usersDislike: ["Edgar Renard", "Pablo Corbeau", "Félicie Pie", "Roger Le Très Grand Epervier"],
-            comment: 8,
-            fav: 3
+            nbLike: 24,
+            nbDislike: 3,
+            usersLiked: ["Edmond Faon", "Amélie Perdrix", "Chantal Chacal", "Quentin Chien"],
+            usersDisliked: ["Edgar Renard", "Pablo Corbeau", "Félicie Pie", "Roger Le Très Grand Epervier"],
+            nbComment: 8,
+            nbFav: 3
         },
         comments:[
             {
                 id: 1,
+                userId: "283954",
                 username: "Edouard Canard",
                 userpicture : 'Edouard_Canard.jpeg',
                 date: "2 juil. 2020, 10h43",
@@ -24,6 +25,7 @@ export const postglobals = [
             },
             {
                 id: 2,
+                userId: "283694",
                 username: "Charlotte Marmotte",
                 userpicture : 'Charlotte_Marmotte.jpg',
                 date: "2 juil. 2020, 10h51",
