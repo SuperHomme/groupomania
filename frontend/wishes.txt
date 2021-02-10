@@ -18,3 +18,4 @@ responsive :
 
 bonus :
 - lié le titre de la page à un v-model (https://stackoverflow.com/questions/36612847/how-can-i-bind-the-html-title-content-in-vuejs)
+- mettre un champs de recherche pour trouver des utilisateurs (https://youtu.be/siy9ETx68NU?t=2370)

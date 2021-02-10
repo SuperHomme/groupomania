@@ -13,8 +13,8 @@
                     <div class="post__reactions">
                         <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ post.nbLike }}</div></div>
                         <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ post.nbDislike }}</div></div>
-                        <div class="fas-count-bind" @click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ post.comments.length }}</div></div>
-                        <div class="fas-count-bind"><i class="fas fa-heart"></i><div>{{ post.nbFav }}</div></div>
+                        <div class="fas-count-bind" v-on:click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ post.comments.length }}</div></div>
+                        <div class="fas-count-bind heart"><input type="checkbox" name="checkbox" v-bind:id="post._id"/><label v-bind:for="post._id"><i class="fas fa-heart"></i></label><div>{{ post.nbFav }}</div></div>
                     </div>
                     <form action="" method="get" class="post__comment-area" v-show="showComment">
                         <div class="comment-area">
@@ -50,7 +50,15 @@ export default {
             showComment: false
         }
     },
-    methods: {
+    computed: { // 
+    // showPost(){
+    //             axios
+    //             .get('http://localhost:3000/api/posts')
+    //                 .then(reponse => this.posts = reponse.data)
+    //                 .catch((error) => console.log(error));
+    //         }
+    },
+    methods: { // partie utilisé aux clic sur les boutons
         showPost(){
             axios
             .get('http://localhost:3000/api/posts')
@@ -92,4 +100,38 @@ export default {
     left: 70%
     position: absolute
     z-index: 99
+
+.post-global
+    margin-bottom: 2rem
+
+// logique reactions icon coeur
+.heart input
+    display: none
+
+.heart input:checked + label i
+    color: #fb2626
+    animation: heart 0.9s forwards ease
+
+@keyframes heart 
+    0%
+        filter: hue-rotate(0deg)
+        transform: scale(1)
+    50%
+        filter: hue-rotate(-270deg)
+        transform: scale(1.2)
+    100%
+        filter: hue-rotate(0deg)
+        transform: scale(1)
+
+.fa-heart:hover
+    color: rgba(251, 38, 38, 0.5)
+
+i:hover
+    animation: echelle 0.8s infinite linear
+
+@keyframes echelle
+    50%
+        transform: scale(1.1)
+    100%
+        transform: scale(1)
 </style>

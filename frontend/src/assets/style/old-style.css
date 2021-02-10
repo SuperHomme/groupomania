@@ -184,39 +184,12 @@ nav .nav-container #icons i:hover {
   transition: 0.2s;
   cursor: pointer;
 }
-.home-container .card-cart-container .card-container .card .card-icons i:hover {
-  animation: scaler 0.8s infinite linear;
-}
-.home-container .card-cart-container .card-container .card .card-icons .fa-heart:hover {
-  color: rgba(251, 38, 38, 0.5);
-}
 .home-container .card-cart-container .card-container .card .card-icons .fa-shopping-cart {
   font-size: 16px;
   color: #2eb7eb;
 }
 .home-container .card-cart-container .card-container .card .card-icons .fa-shopping-cart:hover {
   filter: brightness(125%);
-}
-.home-container .card-cart-container .card-container .card .card-icons .like-container input {
-  display: none;
-}
-.home-container .card-cart-container .card-container .card .card-icons .like-container input:checked + label i {
-  color: #fb2626;
-  animation: heart 1.3s forwards ease;
-}
-@keyframes heart {
-  0% {
-    filter: hue-rotate(0deg);
-    transform: scale(1);
-  }
-  50% {
-    filter: hue-rotate(-270deg);
-    transform: scale(1.3);
-  }
-  100% {
-    filter: hue-rotate(0deg);
-    transform: scale(1);
-  }
 }
 .home-container .card-cart-container .card-container .no-result {
   margin: 0 4rem 0 0.4rem;
