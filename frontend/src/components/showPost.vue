@@ -1,7 +1,8 @@
 <template>
-    <div id="showpost">
+    <div id="showPost">
         <div class="show-post">
-            <div v-for="post in posts" :key="post.id" class="post-global">
+            <button v-on:click="showPost()">Mettre à jour</button>
+            <div v-for="post in posts" :key="post._id" class="post-global">
                 <div class="post">
                     <div class="post__header">
                         <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
@@ -39,17 +40,26 @@
 </template>
 
 <script>
-import {posts} from '../assets/data.js';
+const axios = require('axios');
 
 export default {
     name: 'showPost',
     data: () => {
         return {
-            posts,
+            posts: [],
             showComment: false
+        }
+    },
+    methods: {
+        showPost(){
+            axios
+            .get('http://localhost:3000/api/posts')
+                .then(reponse => this.posts = reponse.data)
+                .catch((error) => console.log(error));
         }
     }
 }
+
 </script>
 
 <style lang="sass" scoped>
