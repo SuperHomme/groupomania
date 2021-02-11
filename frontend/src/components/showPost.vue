@@ -1,7 +1,7 @@
 <template>
     <div id="showPost">
         <div class="show-post">
-            <button v-on:click="showPost()">Mettre à jour</button>
+            <button v-if="posts.length <= 1" v-on:click="showPost()">Mettre à jour : pour le moment, aucun post à afficher !</button>
             <div v-for="post in posts" :key="post._id" class="post-global">
                 <div class="post">
                     <div class="post__header">
@@ -9,17 +9,26 @@
                         <div class="user-name">{{ post.username }}</div>
                         <div class="date">{{ post.date }}</div>
                     </div>
-                    <div class="post__content"><img v-bind:src="require(`@/assets/img/tests/${post.img}`)"></div>
+                    <div class="post__content">
+                        <img v-bind:src="require(`@/assets/img/tests/${post.img}`)">
+                        <div class="post__legend">{{post.legend}}</div>
+                    </div>
                     <div class="post__reactions">
                         <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ post.nbLike }}</div></div>
                         <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ post.nbDislike }}</div></div>
                         <div class="fas-count-bind" v-on:click="showComment = !showComment"><i class="fas fa-comment"></i><div>{{ post.comments.length }}</div></div>
-                        <div class="fas-count-bind heart"><input type="checkbox" name="checkbox" v-bind:id="post._id"/><label v-bind:for="post._id"><i class="fas fa-heart"></i></label><div>{{ post.nbFav }}</div></div>
+                        <div class="fas-count-bind heart">
+                            <input type="checkbox" name="checkbox" v-bind:id="post._id"/>
+                                <label v-bind:for="post._id">
+                                    <i class="fas fa-heart"></i>
+                                </label>
+                                <div>{{ post.nbFav }}</div>
+                        </div>
                     </div>
-                    <form action="" method="get" class="post__comment-area" v-show="showComment">
-                        <div class="comment-area">
+                    <form action="" method="get" class="post__write-comment" v-show="showComment">
+                        <div class="comment-zone">
                             <label for="comment"></label>
-                            <input type="text" name="comment" id="comment" required>
+                            <input type="text" name="comment" required>
                         </div>
                         <i class="fas fa-paper-plane"></i>
                     </form>
@@ -47,7 +56,7 @@ export default {
     data: () => {
         return {
             posts: [],
-            showComment: false
+            showComment: false,
         }
     },
     computed: { // 
@@ -65,12 +74,108 @@ export default {
                 .then(reponse => this.posts = reponse.data)
                 .catch((error) => console.log(error));
         }
-    }
+    },
+    // mounted: () => {
+    //     this.showPost()
+    // }
 }
 
 </script>
 
 <style lang="sass" scoped>
+.show-post
+    margin-top: 6rem
+    width: 500px
+    height: 100%
+
+.post
+    border-radius: 10px
+    flex-direction: column
+    background-color: #ffffff
+    box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2)
+    &__header
+        height: 50px
+        display: flex
+        flex-direction: row
+        align-items: center
+    &__content
+        img
+            width: 500px
+    &__reactions
+        height: 50px
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: space-around
+    &__write-comment
+        height: 30px
+        display: flex
+        flex-direction: row
+        align-items: center
+        padding-top: 1rem
+        padding-bottom: 2rem
+        .comment-zone
+            margin-left: 2rem
+            margin-right: 1rem
+            width: 100%
+            input
+                width: 100%
+                border-radius: 10px
+                border-style: solid
+                border-color: #cdcdcd
+                border-width: 0.1px
+        i
+            margin-left: auto
+            margin-right: 4rem
+    &__content
+        position: relative
+        text-align: center
+    &__legend
+        position: absolute
+        background-color: white
+        bottom: 16px
+        left: 16px
+
+.user-picture
+    margin-left: 1rem
+    height: 30px
+    img
+        width: 30px
+        border-radius: 50%
+    
+.user-name
+    margin-left: 1rem
+    color: black
+    font-weight: bold
+
+.date
+    color: #cdcdcd
+    font-size: 10px
+    margin-left: auto
+    margin-right: 1rem
+
+.fas-count-bind
+    display: flex
+    flex-direction: row
+    div
+        margin-left: 1rem
+
+.comment
+    display: flex
+    flex-direction: row
+    padding-top: 1rem
+    &__body
+        width: 100%
+    &__infos
+        display: flex
+        flex-direction: row
+    &__image
+        margin-left: 1rem
+        margin-right: 1rem
+    &__content
+        margin-left: 1rem
+        margin-right: 1rem
+
 // bulle 
 .tooltip
     white-space: pre-wrap
