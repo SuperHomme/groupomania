@@ -4,6 +4,9 @@ auth / login :
 - envoi de mail à la création du compte
 - formulaire qui apparait question après question : https://fr.vuejs.org/v2/guide/conditional.html#Controle-des-elements-reutilisables-avec-key
 
+envoie post
+- taille maximum : height maximale pour les images envoyées / poids maximal
+
 reactions : 
 - limiter le nb d'utilisateurs affiché ayant liké/disliké dans la bulle ()
 

@@ -1,7 +1,7 @@
 <template>
     <div id="showPost">
         <div class="show-post">
-            <button v-if="posts.length <= 1" v-on:click="showPost()">Mettre à jour : pour le moment, aucun post à afficher !</button>
+            <!-- <button v-if="posts.length <= 1" v-on:click="showPost()">Mettre à jour : pour le moment, aucun post à afficher !</button> -->
             <div v-for="post in posts" :key="post._id" class="post-global">
                 <div class="post">
                     <div class="post__header">
@@ -13,6 +13,7 @@
                         <img v-bind:src="require(`@/assets/img/tests/${post.img}`)">
                         <div class="post__legend">{{post.legend}}</div>
                     </div>
+                    <!-- REACTIONS -->
                     <div class="post__reactions">
                         <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-up"></i><div>{{ post.nbLike }}</div></div>
                         <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip"><i class="fas fa-thumbs-down"></i><div>{{ post.nbDislike }}</div></div>
@@ -25,6 +26,7 @@
                                 <div>{{ post.nbFav }}</div>
                         </div>
                     </div>
+                    <!-- COMMENTER -->
                     <form action="" method="get" class="post__write-comment" v-show="showComment">
                         <div class="comment-zone">
                             <label for="comment"></label>
@@ -33,6 +35,7 @@
                         <i class="fas fa-paper-plane"></i>
                     </form>
                 </div>
+                <!-- LES COMMENTAIRES -->
                 <div v-for="comment in post.comments" :key="comment.id" class="comment" v-show="showComment">
                     <div class="user-picture comment__user-picture"><img v-bind:src="require(`@/assets/img/tests/${comment.userpicture}`)"></div>
                     <div class="comment__body">
@@ -59,25 +62,17 @@ export default {
             showComment: false,
         }
     },
-    computed: { // 
-    // showPost(){
-    //             axios
-    //             .get('http://localhost:3000/api/posts')
-    //                 .then(reponse => this.posts = reponse.data)
-    //                 .catch((error) => console.log(error));
-    //         }
+    computed: { // cf vuex
     },
     methods: { // partie utilisé aux clic sur les boutons
-        showPost(){
-            axios
+    },
+    mounted() {
+        console.log("coucou");
+        axios
             .get('http://localhost:3000/api/posts')
                 .then(reponse => this.posts = reponse.data)
                 .catch((error) => console.log(error));
-        }
-    },
-    // mounted: () => {
-    //     this.showPost()
-    // }
+    }
 }
 
 </script>

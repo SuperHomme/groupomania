@@ -68,6 +68,7 @@ nav .nav-container #icons
 
 nav .nav-container #icons li
     margin-left: calc(35% + 8px)
+    list-style: none
 
 nav .nav-container #icons li a
     position: relative
