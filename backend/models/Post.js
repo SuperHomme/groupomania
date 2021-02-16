@@ -8,13 +8,13 @@ const postSchema = mongoose.Schema({
     date: { type: String, required: true },
     img: { type: String, required: true },
     legend : { type: String, required: true },
-    nbLike: { type: Number, required: true, default: 0 },
-    nbDislike: { type: Number, required: true, default: 0 },
-    usersLiked: { type: Array, required: true },
-    usersDisliked: { type: Array, required: true },
-    nbComment: { type: Number, required: true, default: 0 },
-    nbFav: { type: Number, required: true, default: 0 },
-    comments: { type: Array, required: true },
+    nbLike: { type: Number, default: 0 },
+    nbDislike: { type: Number, default: 0 },
+    usersLiked: { type: Array },
+    usersDisliked: { type: Array },
+    nbComment: { type: Number, default: 0 },
+    nbFav: { type: Number, default: 0 },
+    comments: { type: Array },
 });
 
 module.exports = mongoose.model('Post', postSchema);

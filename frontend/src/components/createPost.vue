@@ -12,7 +12,7 @@
                     <label for="file">
                         <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
                     </label>
-                <button v-on:click.prevent="sendPost" v-if="imagePending != null && imagePending !== ''" type="submit">
+                <button v-on:click.prevent="createPost" v-if="imageRender != null && imageRender !== ''" type="submit">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
@@ -20,8 +20,8 @@
                 <li v-if="errorSize !== ''">{{errorSize}}</li>
                 <li v-if="errorType !== ''">{{errorType}}</li>
             </ul>
-            <div v-if="imagePending != null && imagePending !== ''" class="create-post__content">
-                <img :src="imagePending" />
+            <div v-if="imageRender != null && imageRender !== ''" class="create-post__content">
+                <img :src="imageRender" />
                 <div class="create-post__legend">{{legendPending}}</div>
             </div>
         </div>
@@ -38,7 +38,8 @@ export default {
             errorSize: "",
             errorType: "",
             legendPending: "",
-            imagePending: "",
+            imagePending: "", // imagePending sous forme de file
+            imageRender: "", // image decrite en base64
         }
     },
     methods: {
@@ -49,10 +50,11 @@ export default {
             let files = e.target.files || e.dataTransfer.files; // disons que files est égal à ces deux façons de récupérer la donnée, sélection et drag&drop
             if (!files.length) // si cette donnée n'existe pas, 
                 return; // on arrête la fonction là
-            console.log(files);
             this.checkImage(files[0]);  // on prend le premier elt de l'array files
         },
         checkImage(file) {
+            this.imagePending = file;
+            console.log(this.imagePending);
             if (file.size >= 1000000 || file.type != "image/gif") {
                 if (file.size >= 1000000) { // si la taille du fichier dépasse 1 million de bytes = 1 MB
                     const bytes = this.formatBytes(file.size);
@@ -64,24 +66,24 @@ export default {
                 console.log("là, y a un pb sur l'image");
                 return;
             }
-            console.log("tout de bon !  GIF choisi : nickel");
             this.createImage(file); // si l'image est conforme, on crée l'image
         },
         createImage(file) {
             // eslint-disable-next-line no-unused-vars
-            let imagePending = new Image();
-            let reader = new FileReader();
+            let imageRender = new Image(); // constructeur Image. cela devient une balise <img>
+            let reader = new FileReader(); // constucteur FileReader
             let vm = this; // astuce pour éviter une confusion sur les références this
             // eslint-disable-next-line no-unused-vars
             reader.onload = (e) => {
                 // eslint-disable-next-line no-unused-vars
-                vm.imagePending = e.target.result; // le résultat 
+                vm.imageRender = e.target.result; // le résultat est envoyé dans imageRender
             };
             reader.readAsDataURL(file); // la méthode readAsDataURL permet de lire le contenu de l’objet file. à la fin de l'opération de lecture, l’attribut result contient les données dans une URL représentant les données du fichier sous forme de chaîne encodée en base64.
         },
         // eslint-disable-next-line no-unused-vars
         removeImage: function (e) { // pour supprimer l'image, (pas d'arrow function, sinon pas de this)
-            this.imagePending = ''; // on remet à zero la variable imagePending
+            this.imagePending = ''; // on remet à zero les variables
+            this.imageRender = '';
             this.errorSize = "";
             this.errorType = "";
         },
@@ -93,10 +95,20 @@ export default {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         },
-        sendPost() {
+        createPost() {
+            const postData = new FormData(); // img & date sont créés en backend
+            postData.append("legend", this.legendPending);
+            postData.append("userId", "1543322");
+            postData.append("userpicture", "Hector_Castor.jpg");
+            postData.append("username", "Hector Castor");
+            postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme de fichier. multer attend donc un single.('image')
+            console.log(this.imagePending);
+            this.sendPost(postData);
+        },
+        sendPost(postData) {
             axios
-            .post('http://localhost:3000/api/posts')
-                .then(reponse => this.posts = reponse.data)
+            .post('http://localhost:3000/api/posts', postData)
+                .then(reponse => console.log(reponse))
                 .catch((error) => console.log(error));
         },
     }

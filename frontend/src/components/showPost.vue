@@ -10,7 +10,7 @@
                         <div class="date">{{ post.date }}</div>
                     </div>
                     <div class="post__content">
-                        <img v-bind:src="require(`@/assets/img/tests/${post.img}`)">
+                        <img v-bind:src="post.img">
                         <div class="post__legend">{{post.legend}}</div>
                     </div>
                     <!-- REACTIONS -->
