@@ -1,29 +1,27 @@
 <template>
-    <div id="addPost">
-        <div class="create-post">
-            <h2>Poster un message</h2>
-            <form action="" method="get">
-                <div class="legend">
-                    <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" required>
-                        <label for="comment">
-                        </label>
-                </div>
-                <input v-on:change="onFileChange" class="file" type="file" id="file" name="file">
-                    <label for="file">
-                        <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
+    <div class="add-post">
+        <h2>Poster un message</h2>
+        <form action="" method="get">
+            <div class="legend">
+                <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" required>
+                    <label for="comment">
                     </label>
-                <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </form>
-            <ul class="warning">
-                <li v-if="errorSize !== ''">{{errorSize}}</li>
-                <li v-if="errorType !== ''">{{errorType}}</li>
-            </ul>
-            <div v-if="imageRender != null && imageRender !== ''" class="create-post__content">
-                <img :src="imageRender" />
-                <div class="create-post__legend">{{legendPending}}</div>
             </div>
+            <input v-on:change="onFileChange" class="file" type="file" id="file" name="file">
+                <label for="file">
+                    <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
+                </label>
+            <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+        <ul class="warning">
+            <li v-if="errorSize !== ''">{{errorSize}}</li>
+            <li v-if="errorType !== ''">{{errorType}}</li>
+        </ul>
+        <div v-if="imageRender != null && imageRender !== ''" class="create-post__content">
+            <img :src="imageRender" />
+            <div class="create-post__legend">{{legendPending}}</div>
         </div>
     </div>
 </template>
@@ -32,7 +30,7 @@
 const axios = require('axios');
 
 export default {
-    name: 'createPost',
+    name: 'addPost',
     data: () => {
         return {
             errorSize: "",
@@ -116,12 +114,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.create-post
+.add-post
     margin-top: 6rem
     padding-top: 2rem
     padding-bottom: 2rem
     width: 500px
-    max-height: auto
+    height: 100%
     border-radius: 10px
     background-color: #ffffff
     box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2)
