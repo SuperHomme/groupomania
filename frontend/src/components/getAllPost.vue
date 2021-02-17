@@ -1,5 +1,5 @@
 <template>
-    <div id="showPost">
+    <div id="getAllPost">
         <div class="show-post">
             <!-- <button v-if="posts.length <= 1" v-on:click="showPost()">Mettre à jour : pour le moment, aucun post à afficher !</button> -->
             <div v-for="post in posts" :key="post._id" class="post-global">

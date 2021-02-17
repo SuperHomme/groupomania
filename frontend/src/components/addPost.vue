@@ -1,5 +1,5 @@
 <template>
-    <div id="createPost">
+    <div id="addPost">
         <div class="create-post">
             <h2>Poster un message</h2>
             <form action="" method="get">
@@ -12,7 +12,7 @@
                     <label for="file">
                         <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
                     </label>
-                <button v-on:click.prevent="createPost" v-if="imageRender != null && imageRender !== ''" type="submit">
+                <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </form>

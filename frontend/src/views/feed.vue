@@ -2,8 +2,8 @@
   <div id='feed'>
     <headerNav />
     <div class="feed">
-      <showPost />
-      <createPost />
+      <getAllPost />
+      <addPost />
     </div>
   </div>
 </template>
@@ -11,13 +11,13 @@
 <script>
 // @ is an alias to /src
 import headerNav from '@/components/headerNav.vue'
-import showPost from '@/components/showPost.vue'
-import createPost from '@/components/createPost.vue'
+import getAllPost from '@/components/getAllPost.vue'
+import addPost from '@/components/addPost.vue'
 
 export default {
   name: 'feed',
   components: {
-    headerNav, showPost, createPost
+    headerNav, getAllPost, addPost
   }
 }
 </script>
