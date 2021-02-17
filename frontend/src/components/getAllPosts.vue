@@ -8,11 +8,11 @@
 
         <onePost class="post"
             :post="post"/>
+
         <getAllComments 
             v-for="comment in post.comments"
             :key="comment._id"
-            :comment="comment"
-            v-show="showComment"/>
+            :comment="comment"/>
 
     </div>
 </div>
@@ -40,7 +40,7 @@ export default {
     methods: { // partie utilisé aux clic sur les boutons
     },
     mounted() {
-        console.log("coucou");
+        console.log("coucou vla les posts");
         axios
             .get('http://localhost:3000/api/posts')
                 .then(reponse => this.posts = reponse.data)

@@ -35,7 +35,7 @@ export default {
     },
     data: () => {
         return {
-            showComment: false,
+            showComment: true
         }
     },
     props: {
