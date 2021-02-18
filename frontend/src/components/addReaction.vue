@@ -4,8 +4,11 @@
 
     <!-- LIKE -->
     <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
-        <input type="checkbox" v-bind:id="post._id"/>
-        <label v-bind:for="post._id">
+        <input type="checkbox" name="checkbox"
+            id="b"
+            :value="post._id"
+            :v-model="liked"/>
+        <label for="b">
             <i class="fas fa-thumbs-up"></i>
         </label>
         <div>{{ post.nbLike }}</div>
@@ -13,12 +16,16 @@
 
     <!-- DISLIKE -->
     <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
-        <input type="checkbox" v-bind:id="post._id"/>
-        <label v-bind:for="post._id">
+        <input type="checkbox" name="checkbox"
+            id="a"
+            :value="post._id"
+            :v-model="disliked"/>
+        <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
         <div>{{ post.nbDislike }}</div>
     </div>
+
     <!-- v-on:click="$emit("showComment = !showComment")> -->
     <!-- COMMENTER -->
     <div class="fas-count-bind" v-on:click="showComment = !showComment">
@@ -29,8 +36,11 @@
 
     <!-- FAV -->
     <div class="fas-count-bind heart">
-        <input type="checkbox" v-bind:id="post._id"/>
-        <label v-bind:for="post._id">
+        <input type="checkbox" name="checkbox"
+            id="c"
+            :value="post._id"
+            :v-model="faved"/>
+        <label for="c">
             <i class="fas fa-heart"></i>
         </label>
         <div>{{ post.nbFav }}</div>
@@ -49,6 +59,9 @@ export default {
     data: () => {
         return {
             showComment: true,
+            liked: [],
+            disliked: [],
+            faved: [],
         }
     },
     props: {
