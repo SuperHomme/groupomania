@@ -15,7 +15,8 @@ const storage = multer.diskStorage({
     callback(null, 'images'); // indique la destination de l'image : emploi la route use 'images'
   },
   filename: (req, file, callback) => {
-    const name = file.originalname.split(' ').join('_'); // pour s'assurer qu'il n'y ai aucun whitespace, meme si mongosanitize l'effectue déjà
+    const deleteExtension = file.originalname.split('.')[0] // pour supprimer les extensions déjà présentes "en dur" dans les fichiers
+    const name = deleteExtension.split(' ').join('_'); // pour s'assurer qu'il n'y ai aucun whitespace, meme si mongosanitize l'effectue déjà
     const extension = MIME_TYPES[file.mimetype];
     const date = new Date();
     callback(null, name + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + "-" + date.getHours() + "-" + date.getMinutes() + '.' + extension);
