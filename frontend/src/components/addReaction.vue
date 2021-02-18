@@ -169,9 +169,10 @@ i:hover
     position: absolute
     z-index: 99
 
+// si le title est vide, on n'affiche rien
 .tooltip[title=""]:hover::before, .tooltip:not([title]):hover::before
     content: none
 
-.tooltip:not([title]):hover::after, .tooltip:not([title]):hover::after
-    display: none
+.tooltip[title=""]:hover::after, .tooltip:not([title]):hover::after
+    content: none
 </style>
