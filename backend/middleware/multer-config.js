@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
     const name = deleteExtension.split(' ').join('_'); // pour s'assurer qu'il n'y ai aucun whitespace, meme si mongosanitize l'effectue déjà
     const extension = MIME_TYPES[file.mimetype];
     const date = new Date();
-    callback(null, name + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + "-" + date.getHours() + "-" + date.getMinutes() + '.' + extension);
+    callback(null, name + "_" + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + "-" + date.getHours() + "-" + date.getMinutes() + '.' + extension);
   }
 });
 
