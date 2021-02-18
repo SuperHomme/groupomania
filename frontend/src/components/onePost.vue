@@ -16,7 +16,7 @@
         :post="post"/>
 
     <addComment
-        v-show="showComment"/>
+        v-show="showComments.includes(post._id)"/>
 </div>
 
 </template>
@@ -25,6 +25,7 @@
 // eslint-disable-next-line no-unused-vars
 const axios = require('axios');
 
+import { mapState } from 'vuex'
 import addComment from '@/components/addComment.vue'
 import addReaction from '@/components/addReaction.vue'
 
@@ -37,6 +38,9 @@ export default {
         return {
             showComment: true
         }
+    },
+    computed: { // VueX
+        ...mapState(['showComments'])
     },
     props: {
         post: {

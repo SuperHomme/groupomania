@@ -19,9 +19,9 @@
             <li v-if="errorSize !== ''">{{errorSize}}</li>
             <li v-if="errorType !== ''">{{errorType}}</li>
         </ul>
-        <div v-if="imageRender != null && imageRender !== ''" class="create-post__content">
+        <div v-if="imageRender != null && imageRender !== ''" class="add-post__content">
             <img :src="imageRender" />
-            <div class="create-post__legend">{{legendPending}}</div>
+            <div class="add-post__legend">{{legendPending}}</div>
         </div>
     </div>
 </template>
@@ -52,7 +52,6 @@ export default {
         },
         checkImage(file) {
             this.imagePending = file;
-            console.log(this.imagePending);
             if (file.size >= 1000000 || file.type != "image/gif") {
                 if (file.size >= 1000000) { // si la taille du fichier dépasse 1 million de bytes = 1 MB
                     const bytes = this.formatBytes(file.size);
@@ -99,16 +98,20 @@ export default {
             postData.append("userId", "1543322");
             postData.append("userpicture", "Hector_Castor.jpg");
             postData.append("username", "Hector Castor");
-            postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme de fichier. multer attend donc un single.('image')
+            postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme pure de fichier. et multer attend un single.('image')
             console.log(this.imagePending);
             this.sendPost(postData);
         },
         sendPost(postData) {
+            console.log("nouveau post sur le point d'être envoyé");
             axios
             .post('http://localhost:3000/api/posts', postData)
-                .then(reponse => console.log(reponse))
+                .then(res => this.reloadGetAllPosts(res), console.log("nouveau post envoyé")) // lance le refresh de getAllPosts
                 .catch((error) => console.log(error));
         },
+        reloadGetAllPosts(data) {
+            this.$root.$emit('reloadGetAllPosts', data);
+        }
     }
 }
 </script>

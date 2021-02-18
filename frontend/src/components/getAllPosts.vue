@@ -11,6 +11,7 @@
 
         <getAllComments 
             v-for="comment in post.comments"
+            v-show="showComments.includes(post._id)"
             :key="comment._id"
             :comment="comment"/>
 
@@ -20,7 +21,9 @@
 </template>
 
 <script>
-const axios = require('axios');
+const axios = require('axios')
+
+import { mapState } from 'vuex'
 
 import onePost from '@/components/onePost.vue'
 import getAllComments from '@/components/getAllComments.vue'
@@ -35,17 +38,22 @@ export default {
             posts: [],
         }
     },
-    computed: { // cf vuex
+    computed: { // VueX
+        ...mapState(['showComments'])
     },
     methods: { // partie utilisé aux clic sur les boutons
+        getAllPosts() {
+            axios
+                .get('http://localhost:3000/api/posts')
+                    .then(reponse => this.posts = reponse.data.reverse()) // on met reverse pour avoir les derniers posts en premier
+                    .catch((error) => console.log(error));
+        }
     },
-    mounted() {
-        console.log("coucou vla les posts");
-        axios
-            .get('http://localhost:3000/api/posts')
-                .then(reponse => this.posts = reponse.data)
-                .catch((error) => console.log(error));
-    }
+    beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
+        this.getAllPosts();
+
+        this.$root.$on('reloadGetAllPosts', data => { this.getAllPosts(data), console.log("on reload le getAllPosts pour voir les derniers post") });
+    },
 }
 </script>
 

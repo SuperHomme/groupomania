@@ -15,7 +15,7 @@
     </div>
 
     <!-- DISLIKE -->
-    <div v-bind:title="post.usersDisliked.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
+    <div v-bind:title="post.usersDisliked.join('\r\n')" v-show="post.usersDisliked" class="fas-count-bind tooltip thumbs-down">
         <input type="checkbox" name="checkbox"
             id="a"
             :value="post._id"
@@ -28,7 +28,7 @@
 
     <!-- v-on:click="$emit("showComment = !showComment")> -->
     <!-- COMMENTER -->
-    <div class="fas-count-bind" v-on:click="showComment = !showComment">
+    <div class="fas-count-bind" v-on:click="updateShowComment">
         
         <i class="fas fa-comment"></i>
         <div>{{ post.comments.length }}</div>
@@ -58,7 +58,6 @@ export default {
     name: 'addReaction',
     data: () => {
         return {
-            showComment: true,
             liked: [],
             disliked: [],
             faved: [],
@@ -68,6 +67,11 @@ export default {
         post: {
             type: Object,
             required: true,
+        }
+    },
+    methods: {
+        updateShowComment() {
+            this.$store.commit("updateShowComments", this.post._id)
         }
     }
 }
@@ -164,4 +168,10 @@ i:hover
     left: 70%
     position: absolute
     z-index: 99
+
+.tooltip[title=""]:hover::before, .tooltip:not([title]):hover::before
+    content: none
+
+.tooltip:not([title]):hover::after, .tooltip:not([title]):hover::after
+    display: none
 </style>
