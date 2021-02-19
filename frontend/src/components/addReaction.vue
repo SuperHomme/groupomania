@@ -1,7 +1,7 @@
 <template>
 
 <div class="reactions">
-
+    <!-- remplacer le value des inputs, on veut le userId du localstorage, pas celui du post ! -->
     <!-- LIKE -->
     <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
         <input type="checkbox"

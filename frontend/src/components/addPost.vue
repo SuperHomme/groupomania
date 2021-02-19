@@ -5,36 +5,38 @@
     <h2>Poster un message</h2>
 
     <form action="" method="get">
-    
+        
         <div class="legend">
-            <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" required>
-            <label for="comment">
-            </label>
+            <div class="legend__nb-character" :class="characterLimitStyle">
+                {{legendPending.length}} / {{characterLimit}}
+            </div>
+
+            <div class="legend__field">
+                <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" :maxlength="characterLimit" required>
+                <label for="comment">
+                </label>
+            </div>
         </div>
 
         <input v-on:change="onFileChange" class="file" type="file" id="file" name="file">
         <label for="file">
-            <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
+            <i v-show="legendPending.length>10" class="fas fa-file-image"></i>
         </label>
 
-        <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
+        <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imagePreview != null && imagePreview !== ''"  type="submit">
             <i class="fas fa-paper-plane"></i>
         </button>
 
     </form>
-
-    <div class="legend__length" v-if="legendPending.length>10">
-        {{legendPending.length}} / 160
-    </div>
 
     <ul class="warning">
         <li v-if="errorSize !== ''">{{errorSize}}</li>
         <li v-if="errorType !== ''">{{errorType}}</li>
     </ul>
 
-    <div v-if="imageRender != null && imageRender !== ''" class="add-post__content">
-        <img :src="imageRender" />
-        <div class="add-post__legend">{{legendPending}}</div>
+    <div v-if="imagePreview != null && imagePreview !== ''" class="preview__content">
+        <img :src="imagePreview" />
+        <div class="preview__legend">{{legendPending}}</div>
     </div>
 
 </div>
@@ -52,7 +54,8 @@ export default {
             errorType: "",
             legendPending: "",
             imagePending: "", // imagePending sous forme de file
-            imageRender: "", // image decrite en base64
+            imagePreview: "", // image decrite en base64
+            characterLimit: 50, // à tester et à changer à ma guise
         }
     },
     methods: {
@@ -82,20 +85,21 @@ export default {
         },
         createImage(file) {
             // eslint-disable-next-line no-unused-vars
-            let imageRender = new Image(); // constructeur Image. cela devient une balise <img>
+            let imagePreview = new Image(); // constructeur Image. cela devient une balise <img>
             let reader = new FileReader(); // constucteur FileReader
             let vm = this; // astuce pour éviter une confusion sur les références this
             // eslint-disable-next-line no-unused-vars
             reader.onload = (e) => {
                 // eslint-disable-next-line no-unused-vars
-                vm.imageRender = e.target.result; // le résultat est envoyé dans imageRender
+                vm.imagePreview = e.target.result; // le résultat est envoyé dans imagePreview
             };
             reader.readAsDataURL(file); // la méthode readAsDataURL permet de lire le contenu de l’objet file. à la fin de l'opération de lecture, l’attribut result contient les données dans une URL représentant les données du fichier sous forme de chaîne encodée en base64.
         },
         // eslint-disable-next-line no-unused-vars
         removeImage: function (e) { // pour supprimer l'image, (pas d'arrow function, sinon pas de this)
+            console.log("image preview supprimée");
             this.imagePending = ''; // on remet à zero les variables
-            this.imageRender = '';
+            this.imagePreview = '';
             this.errorSize = "";
             this.errorType = "";
         },
@@ -121,11 +125,23 @@ export default {
             console.log("nouveau post sur le point d'être envoyé");
             axios
             .post('http://localhost:3000/api/posts', postData)
-                .then(res => this.reloadGetAllPosts(res), console.log("nouveau post envoyé")) // lance le refresh de getAllPosts
+                .then(  
+                    res => this.reloadGetAllPosts(res), // on lance le refresh de getAllPosts
+                    console.log("nouveau post envoyé"),
+                    this.removeImage(), // on supprime la preview une fois l'image envoyée
+                ) 
                 .catch((error) => console.log(error));
         },
         reloadGetAllPosts(data) {
             this.$root.$emit('reloadGetAllPosts', data);
+        }
+    },
+    computed: {
+        characterLimitStyle: function () {
+            return {
+                orangeLimit: this.legendPending.length>(this.characterLimit-15),
+                redLimit: this.legendPending.length>(this.characterLimit-5)
+            }
         }
     }
 }
@@ -142,20 +158,18 @@ export default {
     border-radius: 10px
     background-color: #ffffff
     box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2)
-    i
-        margin-right: 2rem
-        cursor: pointer
-    .file
-        display: none
-    img
-        width: 500px
     ul
         padding-left: 3rem
         padding-right: 2rem
         list-style: square
+        background-color: pink
+
+.preview
     &__content
         position: relative
         text-align: center
+        img
+            width: 500px
     &__legend
         position: absolute
         background-color: white
@@ -170,23 +184,42 @@ form
     display: flex
     flex-direction: row
     align-items: center
-    padding-bottom: 2rem
-    padding-top: 1rem
+    margin-bottom: 1.5rem
+    .file
+        display: none
     i
+        height: 16px
+        width: 12px
         margin-left: auto
-        margin-right: 4rem
+        margin-right: 2rem
+        cursor: pointer
 
 .legend
     margin-left: 2rem
-    margin-right: 1rem
+    margin-right: 2rem
     width: 100%
-    input
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    &__field
         width: 100%
-        border-radius: 10px
-        border-style: solid
-        border-color: #cdcdcd
-        border-width: 0.1px
-    &__length
+        input
+            width: 100%
+            border-radius: 10px
+            border-style: solid
+            border-color: #cdcdcd
+            border-width: 0.1px
+    &__nb-character
+        height: 0.75rem
+        font-size: 0.75rem
+        font-color: grey
+        padding-right: 0.5rem
+
+.orangeLimit
+    color: orange
+
+.redLimit
+    color: red
 
 button
     border: none
