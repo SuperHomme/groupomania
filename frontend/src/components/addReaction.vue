@@ -81,15 +81,29 @@ export default {
             return inputId
         },
         isChecked(isLikeDislike, postId) {
-            if (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked && this.nbLikeDislike !== 0 ) { // si l'input, like ou dislike, est checked alors que la valeur est 1 ou -1
-                console.log("c'est checked");
-                isLikeDislike === "like_" ?
-                    (this.nbLikeDislike = 1 , (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false) : // si l'input est like, alors on affecte 1 et on dechecked dislike
-                    (this.nbLikeDislike = -1 , (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false) ; // si l'input est dislike, alors on affecte -1 et on dechecked like
-                console.log(this.nbLikeDislike)
-            } 
-            else {
-                console.log("c'est checked et la valeur est zero");
+            switch (isLikeDislike) {
+                case 'like_':
+                    (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked) == true ?
+                        this.nbLikeDislike = 1:
+                        this.nbLikeDislike = 0;
+                    break;
+                case 'dislike_':
+                    (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked) == true ?
+                        this.nbLikeDislike = -1:
+                        this.nbLikeDislike = 0;
+                    break;
+            }
+            switch (this.nbLikeDislike) {
+                case 0:
+                    (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false;
+                    (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false;
+                    break;
+                case -1:
+                    (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false;
+                    break;
+                case 1:
+                    (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false;
+                    break;
             }
         }
     },
