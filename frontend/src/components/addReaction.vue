@@ -7,11 +7,12 @@
         <input type="checkbox"
             :id="concatenate('like_', post._id)"
             :value="post.userId"
-            v-model="liked"/>
+            v-model="liked"
+            v-on:change="isChecked"/>
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
-        <div>{{ post.nbLike }}</div>
+        <div>{{ post.usersLiked.length }}</div>
     </div>
 
     <!-- DISLIKE -->
@@ -23,7 +24,7 @@
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
-        <div>{{ post.nbDislike }}</div>
+        <div>{{ post.usersDisliked.length }}</div>
     </div>
 
     <!-- v-on:click="$emit("showComment = !showComment")> -->
@@ -61,6 +62,7 @@ export default {
             liked: [],
             disliked: [],
             faved: [],
+            nbLikeDislike: 0,
         }
     },
     props: {
@@ -75,7 +77,21 @@ export default {
         },
         concatenate(first, second) {
             return first + second
+        },
+        isChecked() {
+            if (document.getElementById("like_602fbc22d34eb70763eb9614").checked) {
+                console.log("c'est checked");
+            } else {
+                console.log("c'est unchecked");
+            }
         }
+    },
+    computed: {
+        // likeDislikeOrCancelCount(nbLikeDislike) {
+        //     console.log(this.nbLikeDislike);
+        //     // this.liked.length === 1 ? this.nbLikeDislike = 1; document.getElementById("concatenate('like_', post._id)").checked = true;
+        //     // this.disliked.length === 1 ? this.nbLikeDislike = -1 ;
+        //     return nbLikeDislike }
     }
 }
 </script>
