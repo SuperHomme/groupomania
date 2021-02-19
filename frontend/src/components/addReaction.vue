@@ -8,7 +8,7 @@
             :id="concatenate('like_', post._id)"
             :value="post.userId"
             v-model="liked"
-            v-on:change="isChecked"/>
+            v-on:change="isChecked('like_', post._id)"/>
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
@@ -20,7 +20,8 @@
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
             :value="post.userId"
-            v-model="disliked"/>
+            v-model="disliked"
+            v-on:change="isChecked('dislike_', post._id)"/>
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
@@ -75,23 +76,27 @@ export default {
         updateShowComment() {
             this.$store.commit("updateShowComments", this.post._id)
         },
-        concatenate(first, second) {
-            return first + second
+        concatenate(likeDislikeFav, postId) {
+            const inputId = likeDislikeFav + postId;
+            return inputId
         },
-        isChecked() {
-            if (document.getElementById("like_602fbc22d34eb70763eb9614").checked) {
+        isChecked(isLikeDislike, postId) {
+            if (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked && this.nbLikeDislike !== 0 ) { // si l'input, like ou dislike, est checked alors que la valeur est 1 ou -1
                 console.log("c'est checked");
-            } else {
-                console.log("c'est unchecked");
+                isLikeDislike === "like_" ?
+                    (this.nbLikeDislike = 1 , (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false) : // si l'input est like, alors on affecte 1 et on dechecked dislike
+                    (this.nbLikeDislike = -1 , (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false) ; // si l'input est dislike, alors on affecte -1 et on dechecked like
+                console.log(this.nbLikeDislike)
+            } 
+            else {
+                console.log("c'est checked et la valeur est zero");
             }
         }
     },
     computed: {
         // likeDislikeOrCancelCount(nbLikeDislike) {
         //     console.log(this.nbLikeDislike);
-        //     // this.liked.length === 1 ? this.nbLikeDislike = 1; document.getElementById("concatenate('like_', post._id)").checked = true;
         //     // this.disliked.length === 1 ? this.nbLikeDislike = -1 ;
-        //     return nbLikeDislike }
     }
 }
 </script>
