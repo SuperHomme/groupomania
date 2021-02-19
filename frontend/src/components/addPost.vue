@@ -23,6 +23,8 @@
             <i v-show="legendPending.length>10" class="fas fa-file-image"></i>
         </label>
 
+        <i class="fas fa-paper-plane"></i>
+
         <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imagePreview != null && imagePreview !== ''"  type="submit">
             <i class="fas fa-paper-plane"></i>
         </button>
@@ -183,7 +185,7 @@ form
     height: 30px
     display: flex
     flex-direction: row
-    align-items: center
+    align-items: flex-end
     margin-bottom: 1.5rem
     .file
         display: none
