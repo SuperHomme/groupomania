@@ -23,8 +23,6 @@
             <i v-show="legendPending.length>10" class="fas fa-file-image"></i>
         </label>
 
-        <i class="fas fa-paper-plane"></i>
-
         <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imagePreview != null && imagePreview !== ''"  type="submit">
             <i class="fas fa-paper-plane"></i>
         </button>
@@ -72,10 +70,10 @@ export default {
         },
         checkImage(file) {
             this.imagePending = file;
-            if (file.size >= 1000000 || file.type != "image/gif") {
-                if (file.size >= 1000000) { // si la taille du fichier dépasse 1 million de bytes = 1 MB
+            if (file.size >= 2000000 || file.type != "image/gif") {
+                if (file.size >= 2000000) { // si la taille du fichier dépasse 2 million de bytes = 2 MB
                     const bytes = this.formatBytes(file.size);
-                    this.errorSize = "ce fichier est trop lourd (limite 1Mo) car il pèse "  + bytes;
+                    this.errorSize = "ce fichier est trop lourd (limite 2Mo) car il pèse "  + bytes;
                 }
                 if (file.type != "image/gif") { // si le type du fichier n'est pas un GIF
                     this.errorType = "ce fichier n'est pas un GIF, c'est un "  + file.type.substr(file.type.search("/")+1);
@@ -131,6 +129,7 @@ export default {
                     res => this.reloadGetAllPosts(res), // on lance le refresh de getAllPosts
                     console.log("nouveau post envoyé"),
                     this.removeImage(), // on supprime la preview une fois l'image envoyée
+                    this.legendPending = "",
                 ) 
                 .catch((error) => console.log(error));
         },
