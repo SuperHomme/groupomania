@@ -4,11 +4,11 @@
 
     <!-- LIKE -->
     <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
-        <input type="checkbox" name="checkbox"
-            id="b"
-            :value="post._id"
-            :v-model="liked"/>
-        <label for="b">
+        <input type="checkbox"
+            :id="concatenate('like_', post._id)"
+            :value="post.userId"
+            v-model="liked"/>
+        <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
         <div>{{ post.nbLike }}</div>
@@ -16,10 +16,10 @@
 
     <!-- DISLIKE -->
     <div v-bind:title="post.usersDisliked.join('\r\n')" v-show="post.usersDisliked" class="fas-count-bind tooltip thumbs-down">
-        <input type="checkbox" name="checkbox"
-            id="a"
-            :value="post._id"
-            :v-model="disliked"/>
+        <input type="checkbox" 
+            :id="concatenate('dislike_', post._id)"
+            :value="post.userId"
+            v-model="disliked"/>
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
@@ -36,10 +36,10 @@
 
     <!-- FAV -->
     <div class="fas-count-bind heart">
-        <input type="checkbox" name="checkbox"
-            id="c"
-            :value="post._id"
-            :v-model="faved"/>
+        <input type="checkbox" 
+            :id="concatenate('fav_', post._id)"
+            :value="post.userId"
+            v-model="faved"/>
         <label for="c">
             <i class="fas fa-heart"></i>
         </label>
@@ -72,6 +72,9 @@ export default {
     methods: {
         updateShowComment() {
             this.$store.commit("updateShowComments", this.post._id)
+        },
+        concatenate(first, second) {
+            return first + second
         }
     }
 }

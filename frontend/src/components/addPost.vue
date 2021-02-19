@@ -1,29 +1,44 @@
 <template>
-    <div class="add-post">
-        <h2>Poster un message</h2>
-        <form action="" method="get">
-            <div class="legend">
-                <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" required>
-                    <label for="comment">
-                    </label>
-            </div>
-            <input v-on:change="onFileChange" class="file" type="file" id="file" name="file">
-                <label for="file">
-                    <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
-                </label>
-            <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
-        <ul class="warning">
-            <li v-if="errorSize !== ''">{{errorSize}}</li>
-            <li v-if="errorType !== ''">{{errorType}}</li>
-        </ul>
-        <div v-if="imageRender != null && imageRender !== ''" class="add-post__content">
-            <img :src="imageRender" />
-            <div class="add-post__legend">{{legendPending}}</div>
+
+<div class="add-post">
+
+    <h2>Poster un message</h2>
+
+    <form action="" method="get">
+    
+        <div class="legend">
+            <input type="text" name="comment" id="comment" v-model="legendPending" placeholder="   Ajoutez une légende à votre GIF" required>
+            <label for="comment">
+            </label>
         </div>
+
+        <input v-on:change="onFileChange" class="file" type="file" id="file" name="file">
+        <label for="file">
+            <i v-if="legendPending != null && legendPending !== ''" class="fas fa-file-image"></i>
+        </label>
+
+        <button v-on:click.prevent="createPost" @keyup.enter="createPost" v-if="imageRender != null && imageRender !== ''"  type="submit">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+
+    </form>
+
+    <div class="legend__length" v-if="legendPending.length>10">
+        {{legendPending.length}} / 160
     </div>
+
+    <ul class="warning">
+        <li v-if="errorSize !== ''">{{errorSize}}</li>
+        <li v-if="errorType !== ''">{{errorType}}</li>
+    </ul>
+
+    <div v-if="imageRender != null && imageRender !== ''" class="add-post__content">
+        <img :src="imageRender" />
+        <div class="add-post__legend">{{legendPending}}</div>
+    </div>
+
+</div>
+
 </template>
 
 <script>
@@ -117,6 +132,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+
 .add-post
     margin-top: 6rem
     padding-top: 2rem
@@ -154,21 +170,23 @@ form
     display: flex
     flex-direction: row
     align-items: center
-    padding-top: 1rem
     padding-bottom: 2rem
-    .legend
-        margin-left: 2rem
-        margin-right: 1rem
-        width: 100%
-        input
-            width: 100%
-            border-radius: 10px
-            border-style: solid
-            border-color: #cdcdcd
-            border-width: 0.1px
+    padding-top: 1rem
     i
         margin-left: auto
         margin-right: 4rem
+
+.legend
+    margin-left: 2rem
+    margin-right: 1rem
+    width: 100%
+    input
+        width: 100%
+        border-radius: 10px
+        border-style: solid
+        border-color: #cdcdcd
+        border-width: 0.1px
+    &__length
 
 button
     border: none
