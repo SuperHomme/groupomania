@@ -10,6 +10,6 @@ router.get('/', postCtrl.getAllPosts);
 router.post('/', multer, postCtrl.addPost);
 // router.put('/:id', multer, postCtrl.updatePost);
 // router.delete('/:id', postCtrl.deletePost);
-// router.post('/:id/like', postCtrl.likeDislikeCancelPost);
+router.post('/:id/reaction', postCtrl.likeDislikeFavPost);
 
 module.exports = router;

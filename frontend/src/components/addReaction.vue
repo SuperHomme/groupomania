@@ -6,26 +6,22 @@
     <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
         <input type="checkbox"
             :id="concatenate('like_', post._id)"
-            :value="post.userId"
-            v-model="liked"
-            v-on:change="isChecked('like_', post._id)"/>
+            v-on:change="checkCheckbox(1)"/>
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
-        <div>{{ post.usersLiked.length }}</div>
+        <div :id="concatenate('nblike_', post._id)">{{ post.usersLiked.length + liked.length + correctionLike }}</div>
     </div>
 
     <!-- DISLIKE -->
     <div v-bind:title="post.usersDisliked.join('\r\n')" v-show="post.usersDisliked" class="fas-count-bind tooltip thumbs-down">
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
-            :value="post.userId"
-            v-model="disliked"
-            v-on:change="isChecked('dislike_', post._id)"/>
+            v-on:change="checkCheckbox(-1)"/>
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
-        <div>{{ post.usersDisliked.length }}</div>
+        <div :id="concatenate('nblike_', post._id)">{{ post.usersDisliked.length + disliked.length + correctionDislike }}</div>
     </div>
 
     <!-- v-on:click="$emit("showComment = !showComment")> -->
@@ -62,6 +58,8 @@ export default {
         return {
             liked: [],
             disliked: [],
+            correctionLike: 0,
+            correctionDislike: 0,
             faved: [],
             nbLikeDislike: 0,
         }
@@ -80,37 +78,85 @@ export default {
             const inputId = likeDislikeFav + postId;
             return inputId
         },
-        isChecked(isLikeDislike, postId) {
-            switch (isLikeDislike) {
-                case 'like_':
-                    (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked) == true ?
-                        this.nbLikeDislike = 1:
-                        this.nbLikeDislike = 0;
-                    break;
-                case 'dislike_':
-                    (document.getElementById(`${this.concatenate(isLikeDislike, postId)}`).checked) == true ?
-                        this.nbLikeDislike = -1:
-                        this.nbLikeDislike = 0;
-                    break;
-            }
-            switch (this.nbLikeDislike) {
-                case 0:
-                    (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false;
-                    (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false;
+        checkCheckbox(value) {
+            switch (value) {
+                case 1: // le clic a été envoyé avec une valeur de 1
+                    if ( !this.post.usersLiked.includes('1543322') ) { // si la BD n'inclut pas déjà le userId
+                    this.nbLikeDislike !== 1 ? // la valeur n'était pas déjà enregistrée > clic pour la 1ère fois
+                        (document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false , // on retire le checked à l'input dislike par précaution
+                        this.disliked = [], 
+                        this.liked.push(this.post.userId),
+                        this.nbLikeDislike = 1) : // et on affecte la valeur
+                            (this.nbLikeDislike = 0 , // la valeur était enregistrée > clic pour la 2ème fois
+                            this.liked = [],
+                            this.correctionLike = 0) ;
+                    } else { // si le userId est déjà dans la BD
+                            (this.nbLikeDislike = 0 ,
+                            this.liked = [],
+                            this.correctionLike = -1) ;
+                    }
                     break;
                 case -1:
-                    (document.getElementById(`${this.concatenate('like_', postId)}`).checked) = false;
+                    if ( !this.post.usersDisliked.includes('1543322') ) { // si la BD n'inclut pas déjà le userId
+                    this.nbLikeDislike !== -1 ?
+                        (document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false ,
+                        this.liked = [],
+                        this.disliked.push(this.post.userId),
+                        this.nbLikeDislike = -1) :
+                            (this.nbLikeDislike = 0 ,
+                            this.disliked = [],
+                            this.correctionDislike = 0) ;
+                    } else { // si le userId est déjà dans la BD
+                        (this.nbLikeDislike = 0 ,
+                        this.disliked = [],
+                        this.correctionDisLike = -1) ;
+                    }
                     break;
-                case 1:
-                    (document.getElementById(`${this.concatenate('dislike_', postId)}`).checked) = false;
-                    break;
+            }
+            console.log("valeur de liked : " + this.liked);
+            console.log("valeur de disliked : " + this.disliked);
+            console.log("valeur like ou dislike envoyée au serveur : " + this.nbLikeDislike);
+            console.log("array post.usersLiked : " + this.post.usersLiked);
+            console.log("array post.usersDisLiked : " + this.post.usersDisLiked);
+            this.addReaction()
+        },
+        addReaction() {
+            const reactionData = {
+                like: this.nbLikeDislike,
+                fav: this.post.userId,
+                userId: this.post.userId,
+            }
+            this.sendReaction(reactionData);
+        },
+        sendReaction(reactionData) {
+            axios
+            .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData)
+                .then((response) => console.log(response))
+                .catch((error) => console.log(error));
+        },
+        setChecked() { // si la page est chargée
+            console.log("dans la BD en like : " + this.post.usersLiked.includes('1543322') );
+            console.log("dans la BD en dislike : " + this.post.usersDisliked.includes('1543322') );
+            if ( this.post.usersLiked.includes('1543322') ) { // si les données sont déjà dans post.usersLiked
+                document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
+            } else if ( this.post.usersDisliked.includes('1543322') ) {
+                document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
+            }
+        },
+        RAZ() { // si la page est chargée
+            if ( this.post.usersLiked.includes('1543322') ) { // si les données sont déjà dans post.usersLiked
+                document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
+            } else if ( this.post.usersDisliked.includes('1543322') ) {
+                document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
             }
         }
     },
     computed: {
-        // likeDislikeOrCancelCount(nbLikeDislike) {
-        //     console.log(this.nbLikeDislike);
-        //     // this.disliked.length === 1 ? this.nbLikeDislike = -1 ;
+    },
+    beforeMount() {
+    },
+    mounted() { // hook au montage de la page, permet rafraichir
+        this.setChecked()
     }
 }
 </script>
@@ -143,7 +189,7 @@ input
     color: rgb(51, 204, 255)
 
 .thumbs-down input:checked + label i
-    color: rgb(0, 0, 153)
+    color: rgb(51, 204, 255)
 
 input:checked + label i
     animation: icon 0.9s forwards ease

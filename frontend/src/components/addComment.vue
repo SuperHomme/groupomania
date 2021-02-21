@@ -3,7 +3,7 @@
 <form action="" method="get" class="write-comment" >
     <div class="comment-zone">
         <label for="comment"></label>
-        <input type="text" name="comment" placeholder="   Tapez ici votre commentaire" required>
+        <input type="text" name="comment" placeholder="   Tapez ici votre commentaire" maxlength="250" required>
     </div>
     <i class="fas fa-paper-plane"></i>
 </form>
