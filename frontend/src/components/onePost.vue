@@ -1,22 +1,35 @@
 <template>
 
-<div :id="post._id">
-    <div class="post__header">
-        <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
-        <div class="user-name">{{ post.username }}</div>
-        <div class="date">{{ post.date }}</div>
-    </div>
+<div :id="post._id" class="post-and-comments">
 
-    <div class="post__content">
-        <img v-bind:src="post.img">
-        <div class="post__legend">{{post.legend}}</div>
-    </div>
+    <div class="post">
+
+        <div class="post__header">
+            <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
+            <div class="user-name">{{ post.username }}</div>
+            <div class="date">{{ post.date }}</div>
+        </div>
+
+        <div class="post__content">
+            <img v-bind:src="post.img">
+            <div class="post__legend">{{post.legend}}</div>
+        </div>
+        
+        <addReaction
+            :post="post"/>
+
+        <addComment
+            :post="post"
+            v-show="showComments.includes(post._id)"/>
     
-    <addReaction
-        :post="post"/>
+    </div>
 
-    <addComment
-        v-show="showComments.includes(post._id)"/>
+    <getAllComments 
+        v-for="comment in post.comments"
+        v-show="showComments.includes(post._id)"
+        :key="comment._id"
+        :comment="comment"/>
+
 </div>
 
 </template>
@@ -28,11 +41,12 @@ const axios = require('axios');
 import { mapState } from 'vuex'
 import addComment from '@/components/addComment.vue'
 import addReaction from '@/components/addReaction.vue'
+import getAllComments from '@/components/getAllComments.vue'
 
 export default {
     name: 'onePost',
     components: {
-        addComment, addReaction
+        addComment, addReaction, getAllComments
     },
     data: () => {
         return {
@@ -52,6 +66,9 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.post-and-comments
+    margin-bottom: 2rem
+
 .post
     border-radius: 10px
     flex-direction: column
@@ -72,4 +89,24 @@ export default {
         background-color: white
         bottom: 16px
         left: 16px
+</style>
+
+<style lang="sass">
+.user-picture
+    margin-left: 1rem
+    height: 30px
+    img
+        width: 30px
+        border-radius: 50%
+
+.user-name
+    margin-left: 1rem
+    color: black
+    font-weight: bold
+
+.date
+    color: #cdcdcd
+    font-size: 10px
+    margin-left: auto
+    margin-right: 1rem
 </style>

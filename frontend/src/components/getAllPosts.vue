@@ -1,46 +1,32 @@
 <template>
-
 <div class="get-all-posts">
-
-    <div class="post-global"
+    
+    <div 
         v-for="post in posts" 
         :key="post._id">
 
-        <onePost class="post"
-            :post="post"/>
-
-        <getAllComments 
-            v-for="comment in post.comments"
-            v-show="showComments.includes(post._id)"
-            :key="comment._id"
-            :comment="comment"/>
+            <onePost
+                :post="post"/>
 
     </div>
-    
-</div>
 
+</div>
 </template>
 
 <script>
 const axios = require('axios')
 
-import { mapState } from 'vuex'
-
 import onePost from '@/components/onePost.vue'
-import getAllComments from '@/components/getAllComments.vue'
 
 export default {
     name: 'getAllPosts',
     components: {
-        getAllComments, onePost
+        onePost
     },
     data: () => {
         return {
             posts: [],
         }
-    },
-    computed: { // VueX
-        ...mapState(['showComments'])
     },
     methods: { // partie utilisé aux clic sur les boutons
         getAllPosts() {
@@ -62,28 +48,5 @@ export default {
 .get-all-posts
     margin-top: 6rem
     width: 500px
-    height: 100%
-
-.post-global
-    margin-bottom: 2rem
-</style>
-
-<style lang="sass">
-.user-picture
-    margin-left: 1rem
-    height: 30px
-    img
-        width: 30px
-        border-radius: 50%
-
-.user-name
-    margin-left: 1rem
-    color: black
-    font-weight: bold
-
-.date
-    color: #cdcdcd
-    font-size: 10px
-    margin-left: auto
-    margin-right: 1rem
+    height: 100%   
 </style>

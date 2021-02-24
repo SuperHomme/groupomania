@@ -1,9 +1,11 @@
 <template>
 
 <div class="comment" :id="comment._id">
+
     <div class="user-picture comment__user-picture">
         <img v-bind:src="require(`@/assets/img/tests/${comment.userpicture}`)">
     </div>
+    
     <div class="comment__body">
         <div class="comment__infos">
             <div class="user-name comment__user-name">{{ comment.username }}</div>
@@ -11,6 +13,7 @@
         </div>
         <div class="comment__content">{{ comment.content }}</div>
     </div>
+
 </div>
 
 </template>

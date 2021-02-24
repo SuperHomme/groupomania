@@ -3,25 +3,25 @@
 <div class="reactions">
     <!-- remplacer le value des inputs, on veut le userId du localstorage, pas celui du post ! -->
     <!-- LIKE -->
-    <div v-bind:title="post.usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
+    <div v-bind:title="usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
         <input type="checkbox"
             :id="concatenate('like_', post._id)"
             v-on:change="checkCheckbox(1)"/>
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
-        <div :id="concatenate('nblike_', post._id)">{{ post.usersLiked.length + liked.length + correctionLike }}</div>
+        <div :id="concatenate('nblike_', post._id)">{{ usersLiked.length }}</div>
     </div>
 
     <!-- DISLIKE -->
-    <div v-bind:title="post.usersDisliked.join('\r\n')" v-show="post.usersDisliked" class="fas-count-bind tooltip thumbs-down">
+    <div v-bind:title="usersDisliked.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
             v-on:change="checkCheckbox(-1)"/>
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
-        <div :id="concatenate('nblike_', post._id)">{{ post.usersDisliked.length + disliked.length + correctionDislike }}</div>
+        <div :id="concatenate('nblike_', post._id)">{{ usersDisliked.length }}</div>
     </div>
 
     <!-- v-on:click="$emit("showComment = !showComment")> -->
@@ -37,7 +37,7 @@
         <input type="checkbox" 
             :id="concatenate('fav_', post._id)"
             :value="post.userId"
-            v-model="faved"/>
+            v-model="usersFaved"/>
         <label for="c">
             <i class="fas fa-heart"></i>
         </label>
@@ -56,11 +56,9 @@ export default {
     name: 'addReaction',
     data: () => {
         return {
-            liked: [],
-            disliked: [],
-            correctionLike: 0,
-            correctionDislike: 0,
-            faved: [],
+            usersLiked: [],
+            usersDisliked: [],
+            usersFaved: [],
             nbLikeDislike: 0,
         }
     },
@@ -78,47 +76,49 @@ export default {
             const inputId = likeDislikeFav + postId;
             return inputId
         },
-        checkCheckbox(value) {
-            switch (value) {
-                case 1: // le clic a été envoyé avec une valeur de 1
-                    if ( !this.post.usersLiked.includes('1543322') ) { // si la BD n'inclut pas déjà le userId
-                    this.nbLikeDislike !== 1 ? // la valeur n'était pas déjà enregistrée > clic pour la 1ère fois
-                        (document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false , // on retire le checked à l'input dislike par précaution
-                        this.disliked = [], 
-                        this.liked.push(this.post.userId),
-                        this.nbLikeDislike = 1) : // et on affecte la valeur
-                            (this.nbLikeDislike = 0 , // la valeur était enregistrée > clic pour la 2ème fois
-                            this.liked = [],
-                            this.correctionLike = 0) ;
-                    } else { // si le userId est déjà dans la BD
-                            (this.nbLikeDislike = 0 ,
-                            this.liked = [],
-                            this.correctionLike = -1) ;
-                    }
-                    break;
+        checkCheckbox(key) {
+            switch (key) {
+                case 1: // on a appuyé sur like
+                    if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du like
+                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1); // à la relance du like
+                        this.usersLiked.push(this.post.userId);
+                        this.nbLikeDislike = 1;
+                        this.addReaction();
+                    } else if (this.nbLikeDislike == 1) { // on reeapuye sur like = annulation
+                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
+                        this.usersLiked.splice(this.usersLiked.indexOf(this.post.userId), 1);
+                        this.nbLikeDislike = 0;
+                        this.addReaction();
+                    } else if (this.nbLikeDislike == -1) { // on appuye sur like alors que le dislike était envoyé : il faut annuler le dislike (envoi d'un zero) et reappuyer le like
+                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.nbLikeDislike = 0;
+                        this.addReaction();
+                        this.checkCheckbox(1);
+                    }                         
+                break;
                 case -1:
-                    if ( !this.post.usersDisliked.includes('1543322') ) { // si la BD n'inclut pas déjà le userId
-                    this.nbLikeDislike !== -1 ?
-                        (document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false ,
-                        this.liked = [],
-                        this.disliked.push(this.post.userId),
-                        this.nbLikeDislike = -1) :
-                            (this.nbLikeDislike = 0 ,
-                            this.disliked = [],
-                            this.correctionDislike = 0) ;
-                    } else { // si le userId est déjà dans la BD
-                        (this.nbLikeDislike = 0 ,
-                        this.disliked = [],
-                        this.correctionDisLike = -1) ;
-                    }
-                    break;
+                    if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du dislike
+                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
+                        this.usersLiked.splice(this.usersLiked.indexOf(this.post.userId), 1);
+                        this.usersDisliked.push(this.post.userId);
+                        this.nbLikeDislike = -1;
+                        this.addReaction();
+                    } else if (this.nbLikeDislike == -1) { // on reeapuye sur dislike = annulation
+                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.nbLikeDislike = 0;
+                        this.addReaction();
+                    } else if (this.nbLikeDislike == 1) { // on appuye sur dislike alors que le like était envoyé : il faut annuler le like (envoi d'un zero) et reappuyer le dislike
+                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.nbLikeDislike = 0;
+                        this.addReaction();
+                        this.checkCheckbox(-1);
+                    }     
+                break;
             }
-            console.log("valeur de liked : " + this.liked);
-            console.log("valeur de disliked : " + this.disliked);
-            console.log("valeur like ou dislike envoyée au serveur : " + this.nbLikeDislike);
-            console.log("array post.usersLiked : " + this.post.usersLiked);
-            console.log("array post.usersDisLiked : " + this.post.usersDisLiked);
-            this.addReaction()
         },
         addReaction() {
             const reactionData = {
@@ -131,31 +131,32 @@ export default {
         sendReaction(reactionData) {
             axios
             .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData)
-                .then((response) => console.log(response))
+                .then(console.log( this.nbLikeDislike + " envoyé !"))
                 .catch((error) => console.log(error));
         },
-        setChecked() { // si la page est chargée
-            console.log("dans la BD en like : " + this.post.usersLiked.includes('1543322') );
-            console.log("dans la BD en dislike : " + this.post.usersDisliked.includes('1543322') );
-            if ( this.post.usersLiked.includes('1543322') ) { // si les données sont déjà dans post.usersLiked
+        setChecked() {
+            if ( this.post.usersLiked.includes('1543322') ) {
                 document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
             } else if ( this.post.usersDisliked.includes('1543322') ) {
                 document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
             }
         },
-        RAZ() { // si la page est chargée
-            if ( this.post.usersLiked.includes('1543322') ) { // si les données sont déjà dans post.usersLiked
-                document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-            } else if ( this.post.usersDisliked.includes('1543322') ) {
-                document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
-            }
+        setUserId() {
+            this.usersLiked = this.post.usersLiked;
+            this.usersDisliked = this.post.usersDisliked;
+            this.usersLiked.includes(this.post.userId) ?
+                this.nbLikeDislike = 1 : 
+                this.usersDisliked.includes(this.post.userId) ?
+                    this.nbLikeDislike = -1 :
+                        this.nbLikeDislike = 0;
         }
     },
     computed: {
     },
     beforeMount() {
+        this.setUserId()
     },
-    mounted() { // hook au montage de la page, permet rafraichir
+    mounted() {
         this.setChecked()
     }
 }

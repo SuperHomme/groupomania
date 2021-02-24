@@ -3,9 +3,13 @@
 <form action="" method="get" class="write-comment" >
     <div class="comment-zone">
         <label for="comment"></label>
-        <input type="text" name="comment" placeholder="   Tapez ici votre commentaire" maxlength="250" required>
+        <input type="text" name="comment" placeholder="   Tapez ici votre commentaire" minlength="1" maxlength="250" v-model="commentPending" required>
     </div>
-    <i class="fas fa-paper-plane"></i>
+
+    <button v-on:click.prevent="createComment" @keyup.enter="createComment" type="submit">
+        <i class="fas fa-paper-plane"></i>
+    </button>
+
 </form>
 
 </template>
@@ -17,13 +21,38 @@ const axios = require('axios');
 export default {
     name: 'addComment',
     data: () => {
-        return {  
+        return {
+            commentPending: "",
         }
     },
     props: {
         showComment: {
             type: Boolean
-        } 
+        },
+        post: {
+            type: Object,
+            required: true,
+        }
+    },
+    methods: {
+        createComment() {
+            const commentData = {
+                content : this.commentPending,
+                userId: "1543322",
+                userpicture: "Hector_Castor.jpg",
+                username: "Hector Castor"
+            }
+            this.sendComment(commentData);
+        },
+        sendComment(commentData) {
+            console.log("commentaire : " + this.commentPending);
+            axios.post('http://localhost:3000/api/posts/' + this.post._id + '/comment', commentData)
+                .then(  
+                    console.log("nouveau commentaire envoyé"),
+                    this.commentPending = "", // RAZ de l'input
+                ) 
+                .catch((error) => console.log(error));
+        },
     }
 }
 </script>
@@ -51,4 +80,10 @@ export default {
 i
     margin-left: auto
     margin-right: 4rem
+
+button
+    border: none
+    background: none
+    outline: none
+    cursor: pointer
 </style>
