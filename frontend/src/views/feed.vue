@@ -16,6 +16,14 @@ import addPost from '@/components/addPost.vue'
 
 export default {
   name: 'feed',
+  title () {
+    return `Groupomania — feed : ${this.nbPost} posts`
+  },
+  data () {
+    return {
+      nbPost: 50
+    }
+  },
   components: {
     headerNav, getAllPosts, addPost
   }

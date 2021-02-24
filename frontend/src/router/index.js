@@ -4,12 +4,13 @@ import feed from '../views/feed.vue'
 import userSettings from '../views/userSettings.vue'
 import userFavorites from '../views/userFavorites.vue'
 import userInbox from '../views/userInbox.vue'
+import userConnection from '../views/userConnection.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/feed',
     component: feed,
     name: 'feed'
   },
@@ -27,6 +28,11 @@ const routes = [
     path: '/user-inbox',
     component: userInbox,
     name: 'userInbox'
+  },
+  {
+    path: '/',
+    component: userConnection,
+    name: 'userConnection'
   }
 ]
 
