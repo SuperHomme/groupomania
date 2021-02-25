@@ -26,3 +26,4 @@ bonus :
 - mettre un champs de recherche pour trouver des utilisateurs (https://youtu.be/siy9ETx68NU?t=2370)
 - tableau des tendances (9GAG ou twitter like) avec cadre affiché à gauche et proposition filtered List (https://youtu.be/siy9ETx68NU?t=2370)
 - ajouter une légende au gif
+- mettre images des user et image tout court dans deux folder separes

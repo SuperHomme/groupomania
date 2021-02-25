@@ -9,10 +9,11 @@ require('dotenv').config(); // permet de cacher les données d'environnement dan
 const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
 
-const Post = require('./models/Post'); // SUPPR
-
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
-    { useNewUrlParser: true, useUnifiedTopology: true })
+        { useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        })
     .then(() => console.log('>> OUI ! connexion à MongoDB réussie !'))
     .catch(() => console.log('>> NON... connexion à MongoDB échouée...'));
 
@@ -34,6 +35,6 @@ app.use(mongoSanitize({ replaceWith: '_' })) // mongoSanitize remplace les carac
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/posts', postRoutes);
-// app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;

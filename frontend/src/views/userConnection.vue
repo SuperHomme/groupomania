@@ -6,7 +6,8 @@
 
     <loginUser
         @toggle-login-signup="toggleLoginSignUp"
-        v-show="notRegistered"/>
+        v-if="notRegistered"
+        :userDataForLogin="userDataForLogin"/>
 
     <signUpUser
         @toggle-login-signup="toggleLoginSignUp"
@@ -27,19 +28,31 @@ import signUpUser from '@/components/signUpUser.vue'
 
 export default {
     name: 'userConnection',
+    title () {
+        return `Groupomania — ${this.loginOrSignUp}`
+    },
     components: {
         loginUser, signUpUser
     },
     data () {
         return {
             notRegistered: true,
+            loginOrSignUp: "connexion",
+            userDataForLogin: {},
         }
     },
     props: {
     },
     methods: {
-        toggleLoginSignUp() {
+        toggleLoginSignUp(userData) {
             this.notRegistered = !this.notRegistered;
+            this.userDataForLogin = userData;
+            this.toggleTitle()
+        },
+        toggleTitle() {
+            console.log("on est dans le toggle " + this.notRegistered)
+            this.notRegistered == true ?
+                this.loginOrSignUp =  "connexion" : this.loginOrSignUp =  "inscription";
         }
     },
     mounted () {

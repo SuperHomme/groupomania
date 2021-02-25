@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      nbPost: 50
+      nbPost: 52
     }
   },
   components: {

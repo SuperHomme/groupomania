@@ -6,17 +6,23 @@
         
         <h2>Se connecter</h2>
 
-        <input type="text" name="emailAddress" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="26">
-        <label for="comment">
+        <input type="text" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="26">
+        <label for="emailAddress">
         </label>
 
-        <input type="text" name="password" id="password" v-model="password" placeholder="Votre mot de passe" minlength="8" maxlength="26">
-        <label for="comment">
+        <input type="text" id="password" v-model="password" placeholder="Votre mot de passe" minlength="8" maxlength="26">
+        <label for="password">
         </label>
 
-        <button v-on:click.prevent="redirectToFeed" type="submit">
+        <button v-on:click.prevent="createLogin" type="submit">
             Se connecter
         </button>
+
+        
+        <label for="password">
+            <input type="checkbox" v-model="stayConnected">
+            Je veux rester connecté
+        </label>
 
         <button v-on:click.prevent="redirectToSignUp">
             Je n'ai pas encore de compte
@@ -37,38 +43,58 @@ import router from '../router/index'
 
 export default {
     name: 'loginUser',
-    title: 'Groupomania - connexion',
+    // title: 'Groupomania - connexion',
     components: {
     },
     data () {
         return {
-            emailAddress: '',
-            password: '',
+            emailAddress: 'ugo.defeli@gmail.com',
+            password: 'mdptireauhazard',
+            stayConnected: false,
         }
     },
     props: {
-    },
-    mounted () {
+        userDataForLogin: Object
     },
     methods: {
         redirectToSignUp() {
             this.$emit('toggle-login-signup')
         },
-        sendUser(userData) {
-            console.log("utilisateur sur le point d'être conecté");
+        createLogin() {
+            const loginData = {
+                email: this.emailAddress,
+                password: this.password,
+            }
+            this.sendLogin(loginData)
+        },
+        sendLogin(loginData) {
+            console.log("utilisateur sur le point d'être connecté");
             axios
-            .post('http://localhost:3000/api/posts', userData)
-                .then(  
+            .post('http://localhost:3000/api/auth/login', loginData)
+                .then((data) => console.log(data),
                     console.log("utilisateur connecté"),
+                    // this.redirectToFeed(), // si connexion reussie : redirection vers le feed
                 ) 
                 .catch((error) => console.log(error));
-            // this.redirectToFeed()
+            
         },
         redirectToFeed() {
-            // $router
+            this.$router.push("feed");
             console.log("redirection vers feed")
         },
-    }
+        ifRedirectedFromSignUp() {
+            try {
+                if (this.userDataForLogin.email !== '' &&  typeof this.userDataForLogin.email !== 'undefined' ) { // si contient un email
+                    this.emailAddress = this.userDataForLogin.email;
+                    this.password = this.userDataForLogin.password;}
+            } catch {
+                console.log("rien n'a été envoyé par le SignUp")
+            }
+        }
+    },
+    mounted () {
+        this.ifRedirectedFromSignUp()
+    },
 }
 </script>
 

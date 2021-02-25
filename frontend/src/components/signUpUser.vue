@@ -22,15 +22,15 @@
         <label for="password1">
         </label>
 
-        <input type="text" id="password2" v-model="password1" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
+        <input type="text" id="password2" v-model="password2" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
         <label for="password2">
         </label>
 
-        <button>
+        <button v-on:click.prevent="createUser">
             S'inscrire
         </button>
 
-        <button v-on:click="redirectToLogin">
+        <button v-on:click.prevent="redirectToLogin">
             J'ai déjà un compte
         </button>
 
@@ -48,42 +48,62 @@ import router from '../router/index'
 
 export default {
     name: 'signUpUser',
-    title: 'Groupomania - inscription',
+    // title: 'Groupomania - inscription',
     components: {
     },
     data () {
         return {
-            firstName: '',
-            lastName: '',
-            emailAddress: '',
-            password1: '',
-            password2: '',
+            firstName: 'Ugo',
+            lastName: 'deFéligonde',
+            emailAddress: 'ugo.defeli@gmail.com',
+            password1: 'mdptireauhazard',
+            password2: 'mdptireauhazard',
         }
     },
     props: {
     },
     methods: {
-        redirectToLogin() {
-            this.$emit('toggle-login-signup')
+        // eslint-disable-next-line no-unused-vars
+        redirectToLogin(userData) {
+            console.log("redirectToLogin est appelé");
+            console.log(userData.email);
+            userData.email !== '' &&  typeof userData.email !== 'undefined' ? // si userData contient un email, cad si le est passée par CreateUser
+                (console.log("contient un email"),
+                this.$emit('toggle-login-signup', userData)) : // on envoi les données
+                this.$emit('toggle-login-signup'); // sinon on envoi que l'évènement
         },
-    },
-    createUser() {
-        const userData = {
-            username: this.firstName + ' ' + this.lastName,
-            email: this.emailAddress,
-            password: this.password1,
-        }
-        this.sendComment(userData);
-    },
-    sendUser(userData) {
-            console.log("utilisateur sur le point d'être conecté");
+        checkUserData() {
+            if (
+                this.firstName != '' &&
+                this.lastName != '' &&
+                this.email != '' &&
+                this.password1 != '' // TODO validEmail & validPassword & pssword1 = password 2
+            ) {
+                console.log("toutes les données sont ok");
+                this.createUser();
+            }
+                console.log("pb sur les données");
+
+        },
+        createUser() {
+            const userData = {
+                username: this.firstName + ' ' + this.lastName,
+                email: this.emailAddress,
+                password: this.password1,
+            }
+            this.sendUser(userData)
+        },
+        sendUser(userData) {
+            console.log("utilisateur sur le point d'être inscrit");
             axios
-            .post('http://localhost:3000/api/posts', userData)
-                .then(  
-                    console.log("utilisateur connecté"),
+            .post('http://localhost:3000/api/auth/signup', userData)
+                .then(
+                    (data) => console.log(data),
+                    console.log("utilisateur inscrit"),
+                    this.redirectToLogin(userData), // on attend que l'utilisateur soit bien créé pour envoyer le préremplissage au login
                 ) 
                 .catch((error) => console.log(error));
-            // this.redirectToFeed()
+        },
     },
     mounted () {
     },

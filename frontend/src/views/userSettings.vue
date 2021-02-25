@@ -9,6 +9,7 @@ import headerNav from '@/components/headerNav.vue'
 
 export default {
   name: 'userSettings',
+  title: 'Groupomania - paramètres',
   components: {
     headerNav
   }
