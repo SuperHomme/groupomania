@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="css">
-  @import "../src/assets/style/old-style.css";
+  /* @import "../src/assets/style/old-style.css"; */
   /* @import "../src/assets/style/style.css"; */
 </style>
 
@@ -32,6 +32,9 @@ body
   padding-bottom: 4rem
   color: #333
   overflow-x: hidden
+
+a, a:visited
+  color: #333
 
 //mixins
 =mq-mobileS

@@ -1,3 +1,9 @@
+// export function getAllStorage() {
+//     localStorage.getItem("stayConnected") ? // si l'utilisateur voulait rester connecté
+//         return localStorage : // on prend la data dans le local storage
+//         return sessionStorage; // sinon, on la prend dans le session storage
+// }
+
 // like dislike logic
 
 switch (value) {

@@ -18,9 +18,8 @@
             Se connecter
         </button>
 
-        
-        <label for="password">
-            <input type="checkbox" v-model="stayConnected">
+        <label for="stayConnected" class="stay-connected">
+            <input id="stayConnected" type="checkbox" v-model="stayConnected">
             Je veux rester connecté
         </label>
 
@@ -39,7 +38,8 @@
 const axios = require('axios');
 // eslint-disable-next-line no-unused-vars
 import router from '../router/index'
-
+// eslint-disable-next-line no-unused-vars
+import storage from '../assets/storage'
 
 export default {
     name: 'loginUser',
@@ -71,23 +71,30 @@ export default {
             console.log("utilisateur sur le point d'être connecté");
             axios
             .post('http://localhost:3000/api/auth/login', loginData)
-                .then((data) => console.log(data),
-                    console.log("utilisateur connecté"),
-                    // this.redirectToFeed(), // si connexion reussie : redirection vers le feed
+                .then((userData) => this.storeUserData(userData), // si connexion reussie, on store le token
+                    // console.log(userData),
+                    console.log("utilisateur connecté"), 
                 ) 
                 .catch((error) => console.log(error));
             
+        },
+        storeUserData(userData) {
+            if (this.stayConnected) {
+                localStorage.setItem("stayConnected", this.stayConnected);}
+            storage.setStorage("token", userData.token);
+            storage.setStorage("userId", userData.userId);
+            // this.redirectToFeed(), // connexion reussie & storage rempli : redirection vers le feed
         },
         redirectToFeed() {
             this.$router.push("feed");
             console.log("redirection vers feed")
         },
         ifRedirectedFromSignUp() {
-            try {
-                if (this.userDataForLogin.email !== '' &&  typeof this.userDataForLogin.email !== 'undefined' ) { // si contient un email
+            try { // si le signup était bien remplie
+                if (this.userDataForLogin.email !== '' &&  typeof this.userDataForLogin.email !== 'undefined' ) {
                     this.emailAddress = this.userDataForLogin.email;
                     this.password = this.userDataForLogin.password;}
-            } catch {
+            } catch { // si ce n'était qu'un toggle entre sign up et login
                 console.log("rien n'a été envoyé par le SignUp")
             }
         }
@@ -102,6 +109,9 @@ export default {
 #loginUser
     display: flex
     width: 320px
+
+.stay-connected
+    font-size: 0.8125rem
 
 form
     margin-top: 2rem

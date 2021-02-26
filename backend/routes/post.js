@@ -13,4 +13,8 @@ router.post('/', multer, postCtrl.addPost);
 router.post('/:id/reaction', postCtrl.likeDislikeFavPost);
 router.post('/:id/comment', postCtrl.addComment);
 
+// TODO 
+// - like comment / modify comment / delete comment
+// - fav post / modify post / delete post
+
 module.exports = router;

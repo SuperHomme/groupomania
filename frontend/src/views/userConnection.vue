@@ -4,6 +4,8 @@
 
     <img src="../assets/img/logo_groupomania.svg" alt="logo" />
 
+    <h1>{{loginOrSignUp}}</h1>
+
     <loginUser
         @toggle-login-signup="toggleLoginSignUp"
         v-if="notRegistered"
@@ -37,8 +39,12 @@ export default {
     data () {
         return {
             notRegistered: true,
-            loginOrSignUp: "connexion",
             userDataForLogin: {},
+        }
+    },
+    computed: {
+        loginOrSignUp() {
+            return this.notRegistered ? "connexion" : "inscription";
         }
     },
     props: {
@@ -47,13 +53,7 @@ export default {
         toggleLoginSignUp(userData) {
             this.notRegistered = !this.notRegistered;
             this.userDataForLogin = userData;
-            this.toggleTitle()
         },
-        toggleTitle() {
-            console.log("on est dans le toggle " + this.notRegistered)
-            this.notRegistered == true ?
-                this.loginOrSignUp =  "connexion" : this.loginOrSignUp =  "inscription";
-        }
     },
     mounted () {
     },
@@ -66,6 +66,11 @@ export default {
     display: flex
     flex-direction: column
     align-items: center
+
+h1
+    margin-top: 2rem
+    margin-bottom: 0
+    font-size: 1rem
 
 img
     width: 250px
