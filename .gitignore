@@ -3,6 +3,8 @@ node_modules
 /dist
 wishes.txt
 wquestions.txt
+vetur.config.js
+.vscode
 
 # local env files
 .env.local
