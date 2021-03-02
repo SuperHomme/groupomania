@@ -1,12 +1,18 @@
+# Mac OS X
 .DS_Store
+
+# Dependency
 node_modules
+
+# dist config
 /dist
-wishes.txt
-wquestions.txt
+
+# IDE config
 vetur.config.js
 .vscode
 
 # local env files
+backend/.env
 .env.local
 .env.*.local
 
@@ -24,3 +30,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# personnal files
+wishes.txt
+wquestions.txt

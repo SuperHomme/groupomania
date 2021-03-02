@@ -35,4 +35,6 @@ export default {
     display: flex
     flex-direction: row
     justify-content: space-around
+    margin: auto
+    width: 1100px
 </style>

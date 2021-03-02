@@ -19,7 +19,7 @@
         </button>
 
         <label for="stayConnected" class="stay-connected">
-            <input id="stayConnected" type="checkbox" v-model="stayConnected">
+            <input id="stayConnected" type="checkbox" v-model="stayConnected" checked="true">
             Je veux rester connecté
         </label>
 
@@ -37,9 +37,9 @@
 // eslint-disable-next-line no-unused-vars
 const axios = require('axios');
 // eslint-disable-next-line no-unused-vars
-import router from '../router/index'
-// eslint-disable-next-line no-unused-vars
-import storage from '../assets/storage'
+import router from '../router/index';
+
+import { mapState } from 'vuex';
 
 export default {
     name: 'loginUser',
@@ -50,7 +50,7 @@ export default {
         return {
             emailAddress: 'ugo.defeli@gmail.com',
             password: 'mdptireauhazard',
-            stayConnected: false,
+            stayConnected: true,
         }
     },
     props: {
@@ -71,19 +71,22 @@ export default {
             console.log("utilisateur sur le point d'être connecté");
             axios
             .post('http://localhost:3000/api/auth/login', loginData)
-                .then((userData) => this.storeUserData(userData), // si connexion reussie, on store le token
-                    // console.log(userData),
+                .then((loginResponse) => this.login(loginResponse), // si connexion reussie, on store le token
                     console.log("utilisateur connecté"), 
                 ) 
                 .catch((error) => console.log(error));
             
         },
-        storeUserData(userData) {
+        login(loginResponse) {
             if (this.stayConnected) {
-                localStorage.setItem("stayConnected", this.stayConnected);}
-            storage.setStorage("token", userData.token);
-            storage.setStorage("userId", userData.userId);
-            // this.redirectToFeed(), // connexion reussie & storage rempli : redirection vers le feed
+                console.log(loginResponse.data) // contient userId & token
+                this.$store.commit('login', loginResponse.data) // on appelle la mutation VueX "login" à laquelle on donne l'objet loginResponse.data
+                this.redirectToFeed() // connexion reussie & storage rempli : redirection vers le feed
+            }
+            // TODO : sessionStorage si stayConnected est false
+        },
+        logout() {
+            this.$store.commit('logout')
         },
         redirectToFeed() {
             this.$router.push("feed");
@@ -97,11 +100,15 @@ export default {
             } catch { // si ce n'était qu'un toggle entre sign up et login
                 console.log("rien n'a été envoyé par le SignUp")
             }
-        }
+        },
     },
     mounted () {
         this.ifRedirectedFromSignUp()
     },
+    computed: 
+        mapState({
+            userId: state => state.account.userId
+        }),
 }
 </script>
 
