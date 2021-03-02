@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const User = require('../models/User');
 // const fs = require('fs');
 
 exports.getAllPosts = (req, res, next) => {
@@ -9,17 +10,28 @@ exports.getAllPosts = (req, res, next) => {
 
 exports.addPost = (req, res, next) => {
     console.log(req.body);
-    const postObject = req.body; // prend le corps de la requete, et le parse, et le baptise postObject
+    const legend = req.body.legend; // prend le corps de la requete et le baptise postObject
     const date = new Date();
-    const post = new Post({ // constructeur post auquel on applique le schema
-        ...postObject, // on prend tout le reste
-        img: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, // on ne modifie que l'image, son url
-        date: date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + ",    " + date.getHours() + "h" + date.getMinutes(), // format français
-    });
-    post.save() // donne le nom "post" + un "s" à la collection, qui sera donc "posts"
-        .then(() => res.status(201).json({ message: 'post ajouté !'}))
-        .catch(error => res.status(400).json({ error }));
-};
+    const user = User.findOne({_id: req.body.userId})
+        .then((user) => {
+            if (!user) {
+                return res.status(401).json({ error: 'utilisateur non trouvé' });}
+            res.status(200).json({user})})
+        .catch((error) => { res.status(400).json({ error: error, }); });
+    async function asyncCall() {
+        console.log("on est là");
+        const user = await user();
+        const post = new Post({ // constructeur Post
+            username: user.username,
+            userpicture: user.userpicture,
+            legend,
+            img: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            date: date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + ",    " + date.getHours() + "h" + date.getMinutes()})
+        post.save() // donne le nom "post" + un "s" à la collection, qui sera donc "posts"
+            .then(() => res.status(201).json({ message: 'post ajouté !'}))
+            .catch(error => res.status(400).json({ error }));
+    }
+}
 
 exports.likeDislikeFavPost = (req, res, next) => {
     Post.findOne({_id: req.params.id})

@@ -115,10 +115,10 @@ export default {
             const postData = new FormData(); // img & date sont créés en backend
             postData.append("legend", this.legendPending);
             postData.append("userId", JSON.parse(localStorage.getItem("vuex")).account.userId);
-            postData.append("userpicture", "Hector_Castor.jpg");
-            postData.append("username", "Hector Castor");
+            // postData.append("userpicture", "Hector_Castor.jpg"); // on le fait en backend désormais
+            // postData.append("username", "Hector Castor"); // on le fait en backend désormais
             postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme pure de fichier. et multer attend un single.('image')
-            console.log(this.imagePending);
+            // console.log(this.imagePending);
             this.sendPost(postData);
         },
         sendPost(postData) {

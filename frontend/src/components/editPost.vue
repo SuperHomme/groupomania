@@ -19,5 +19,6 @@ export default {
 
 <style lang="sass" scoped>
 .edit-post
-    background-color: blue
+    background-color: rgb(230, 255, 255)
+    color: rgb(0, 204, 255)
 </style>

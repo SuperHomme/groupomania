@@ -1,10 +1,16 @@
-// export function getAllStorage() {
-//     localStorage.getItem("stayConnected") ? // si l'utilisateur voulait rester connecté
-//         return localStorage : // on prend la data dans le local storage
-//         return sessionStorage; // sinon, on la prend dans le session storage
-// }
-
-// like dislike logic
+exports.addPost = (req, res, next) => {
+    console.log(req.body);
+    const postObject = req.body; // prend le corps de la requete, et le parse, et le baptise postObject
+    const date = new Date();
+    const post = new Post({ // constructeur post auquel on applique le schema
+        ...postObject, // on prend tout le reste
+        img: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, // on ne modifie que l'image, son url
+        date: date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + ",    " + date.getHours() + "h" + date.getMinutes(), // format français
+    });
+    post.save() // donne le nom "post" + un "s" à la collection, qui sera donc "posts"
+        .then(() => res.status(201).json({ message: 'post ajouté !'}))
+        .catch(error => res.status(400).json({ error }));
+};
 
 switch (value) {
     case 1: // le clic a été envoyé avec une valeur de 1
