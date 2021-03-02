@@ -114,7 +114,7 @@ export default {
         createPost() {
             const postData = new FormData(); // img & date sont créés en backend
             postData.append("legend", this.legendPending);
-            postData.append("userId", "1543322");
+            postData.append("userId", JSON.parse(localStorage.getItem("vuex")).account.userId);
             postData.append("userpicture", "Hector_Castor.jpg");
             postData.append("username", "Hector Castor");
             postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme pure de fichier. et multer attend un single.('image')
@@ -124,7 +124,7 @@ export default {
         sendPost(postData) {
             console.log("nouveau post sur le point d'être envoyé");
             axios
-            .post('http://localhost:3000/api/posts', postData)
+            .post('http://localhost:3000/api/posts', postData, { headers: { Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuex")).account.token }} )
                 .then(  
                     res => this.reloadGetAllPosts(res), // on lance le refresh de getAllPosts
                     console.log("nouveau post envoyé"),
@@ -141,10 +141,14 @@ export default {
         characterLimitStyle: function () {
             return {
                 orangeLimit: this.legendPending.length>(this.characterLimit-15),
-                redLimit: this.legendPending.length>(this.characterLimit-5)
+                redLimit: this.legendPending.length>(this.characterLimit-5)  || this.legendPending.length<10
             }
         }
-    }
+    },
+    mounted () {
+        const vuex = localStorage.getItem("vuex");
+        console.log(JSON.parse(vuex).account.token);
+    },
 }
 </script>
 

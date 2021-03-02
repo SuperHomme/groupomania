@@ -36,5 +36,5 @@ export default {
     flex-direction: row
     justify-content: space-around
     margin: auto
-    width: 1100px
+    width: 1150px
 </style>

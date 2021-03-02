@@ -2,7 +2,12 @@
 
 <div :id="post._id" class="post-and-comments">
 
-    <div class="post">
+    <editPost
+        v-if="post.userId == userIdLocal && hoverPost"/>
+
+    <div class="post"
+        @mouseover="hoverPost = true"
+        @mouseleave="hoverPost = false">
 
         <div class="post__header">
             <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
@@ -39,6 +44,7 @@
 const axios = require('axios');
 
 import { mapState } from 'vuex'
+import editPost from '@/components/editPost.vue'
 import addComment from '@/components/addComment.vue'
 import addReaction from '@/components/addReaction.vue'
 import getAllComments from '@/components/getAllComments.vue'
@@ -46,11 +52,13 @@ import getAllComments from '@/components/getAllComments.vue'
 export default {
     name: 'onePost',
     components: {
-        addComment, addReaction, getAllComments
+        editPost, addComment, addReaction, getAllComments
     },
     data: () => {
         return {
-            showComment: true
+            userIdLocal: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            showComment: true,
+            hoverPost: false,
         }
     },
     computed: { // VueX
