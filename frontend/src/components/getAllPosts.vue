@@ -34,13 +34,15 @@ export default {
         getAllPosts() {
             axios
                 .get('http://localhost:3000/api/posts', { headers: { Authorization: "Bearer " + this.loginToken }} )
-                    .then(reponse => this.posts = reponse.data.reverse(), console.log("nb de posts : " + this.posts.length), this.$emit('nb-posts', this.posts.length)) // on met reverse pour avoir les derniers posts en premier
+                    .then(reponse => { this.posts = reponse.data.reverse(), this.realoadNbPosts(reponse.data) } ) // on met reverse pour avoir les derniers posts en premier
                     .catch((error) => console.log(error));
+        },
+        realoadNbPosts(nbPost) {
+            this.$emit('reloadNbPosts', nbPost.length);
         }
     },
     beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
         this.getAllPosts();
-
         this.$root.$on('reloadGetAllPosts', data => { this.getAllPosts(data), console.log("on reload le getAllPosts pour voir les derniers post") });
     },
 }

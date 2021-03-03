@@ -3,7 +3,7 @@
     <headerNav />
     <div class="feed">
       <getAllPosts 
-        @nb-posts="setNbPosts"/>
+        v-on:update:nb-posts="setNbPosts"/>
       <addPost />
     </div>
   </div>
@@ -29,13 +29,13 @@ export default {
     headerNav, getAllPosts, addPost
   },
   methods: {
-    setNbPosts(nbPosts) {
-      this.nbPost = nbPosts;
+    setNbPosts(nbPost) {
+      this.nbPost = nbPost;
       console.log("nb posts dans le feed : " + this.nbPosts)
     }
   },
   beforeMount() {
-    this.setNbPosts;
+    this.$root.$on('reloadNbPosts', nbPost => this.setNbPosts(nbPost) );
   }
 }
 </script>
