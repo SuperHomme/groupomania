@@ -23,6 +23,8 @@ export default {
     data: () => {
         return {
             commentPending: "",
+            loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
     },
     props: {
@@ -38,15 +40,15 @@ export default {
         createComment() {
             const commentData = {
                 content : this.commentPending,
-                userId: "1543322",
-                userpicture: "Hector_Castor.jpg",
-                username: "Hector Castor"
+                userId: this.loginUserId,
+                userpicture: "Hector_Castor.jpg", // TODO suppimer une fois jointures opérationnelles
+                username: "Hector Castor" // TODO suppimer une fois jointures opérationnelles
             }
             this.sendComment(commentData);
         },
         sendComment(commentData) {
             console.log("commentaire : " + this.commentPending);
-            axios.post('http://localhost:3000/api/posts/' + this.post._id + '/comment', commentData)
+            axios.post('http://localhost:3000/api/posts/' + this.post._id + '/comment', commentData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(  
                     console.log("nouveau commentaire envoyé"),
                     this.commentPending = "", // RAZ de l'input

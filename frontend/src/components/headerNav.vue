@@ -26,7 +26,7 @@
                 </router-link>
                 </li>
                 <li>
-                    <logoutButton/>
+                    <logoutUser/>
                 </li>
             </ul>
             </div>
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import logoutButton from '@/components/logoutButton.vue'
+import logoutUser from '@/components/logoutUser.vue'
 
 export default {
     name: 'headerNav',
     components: {
-        logoutButton
+        logoutUser
     }
 }
 </script>

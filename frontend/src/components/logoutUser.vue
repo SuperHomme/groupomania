@@ -1,5 +1,5 @@
 <template>
-<div class="log-out button">
+<div class="logout-user">
     
     <router-link to="/">
         <i @click="logout" class="fas fa-sign-out-alt"></i>
@@ -13,7 +13,7 @@
 const axios = require('axios');
 
 export default {
-    name: 'logoutButton',
+    name: 'logoutUser',
     data: () => {
         return {
         }

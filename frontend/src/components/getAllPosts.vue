@@ -26,12 +26,14 @@ export default {
     data: () => {
         return {
             posts: [],
+            loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
     },
     methods: { // partie utilisé aux clic sur les boutons
         getAllPosts() {
             axios
-                .get('http://localhost:3000/api/posts')
+                .get('http://localhost:3000/api/posts', { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(reponse => this.posts = reponse.data.reverse()) // on met reverse pour avoir les derniers posts en premier
                     .catch((error) => console.log(error));
         }

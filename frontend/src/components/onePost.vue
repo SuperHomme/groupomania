@@ -3,7 +3,7 @@
 <div :id="post._id" class="post-and-comments">
 
     <editPost
-        v-if="post.userId == userIdLocal && hoverPost"/>
+        v-if="post.userId == loginUserId && hoverPost"/>
 
     <div class="post"
         @mouseover="hoverPost = true"
@@ -56,7 +56,7 @@ export default {
     },
     data: () => {
         return {
-            userIdLocal: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             showComment: true,
             hoverPost: false,
         }

@@ -5,13 +5,13 @@ const postCtrl = require('../controllers/post');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
-router.get('/', postCtrl.getAllPosts);
+router.get('/', auth, postCtrl.getAllPosts);
 // router.get('/:id', postCtrl.getOnePost);
 router.post('/', auth, multer, postCtrl.addPost);
 // router.put('/:id', multer, postCtrl.updatePost);
 // router.delete('/:id', postCtrl.deletePost);
 router.post('/:id/reaction', auth, postCtrl.likeDislikeFavPost);
-router.post('/:id/comment', postCtrl.addComment);
+router.post('/:id/comment', auth, postCtrl.addComment);
 
 // TODO 
 // - like comment / modify comment / delete comment
