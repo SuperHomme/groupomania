@@ -14,6 +14,7 @@ const postSchema = mongoose.Schema({
     usersDisliked: { type: Array },
     nbComment: { type: Number, default: 0 },
     nbFav: { type: Number, default: 0 },
+    usersFaved: { type: Array },
     comments: { type: Array },
 });
 

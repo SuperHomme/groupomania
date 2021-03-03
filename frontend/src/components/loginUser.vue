@@ -85,9 +85,6 @@ export default {
             }
             // TODO : sessionStorage si stayConnected est false
         },
-        logout() {
-            this.$store.commit('logout')
-        },
         redirectToFeed() {
             this.$router.push("feed");
             console.log("redirection vers feed")

@@ -26,9 +26,7 @@
                 </router-link>
                 </li>
                 <li>
-                <router-link to="/">
-                    <i class="fas fa-sign-out-alt"></i>
-                </router-link>
+                    <logoutButton/>
                 </li>
             </ul>
             </div>
@@ -37,8 +35,13 @@
 </template>
 
 <script>
+import logoutButton from '@/components/logoutButton.vue'
+
 export default {
-    name: 'headerNav'
+    name: 'headerNav',
+    components: {
+        logoutButton
+    }
 }
 </script>
 
