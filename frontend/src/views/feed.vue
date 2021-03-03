@@ -2,7 +2,8 @@
   <div id='feed'>
     <headerNav />
     <div class="feed">
-      <getAllPosts />
+      <getAllPosts 
+        @nb-posts="setNbPosts"/>
       <addPost />
     </div>
   </div>
@@ -21,11 +22,20 @@ export default {
   },
   data () {
     return {
-      nbPost: 52
+      nbPost: 0
     }
   },
   components: {
     headerNav, getAllPosts, addPost
+  },
+  methods: {
+    setNbPosts(nbPosts) {
+      this.nbPost = nbPosts;
+      console.log("nb posts dans le feed : " + this.nbPosts)
+    }
+  },
+  beforeMount() {
+    this.setNbPosts;
   }
 }
 </script>
