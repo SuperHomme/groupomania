@@ -117,8 +117,8 @@ export default {
             const postData = new FormData(); // img & date sont créés en backend
             postData.append("legend", this.legendPending);
             postData.append("userId", this.loginUserId);
-            // postData.append("userpicture", "Hector_Castor.jpg"); // on le fait en backend désormais
-            // postData.append("username", "Hector Castor"); // on le fait en backend désormais
+            postData.append("userpicture", "Hector_Castor.jpg"); // TODO suppimer une fois jointures opérationnelles
+            postData.append("username", "Hector Castor"); // TODO suppimer une fois jointures opérationnelles
             postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme pure de fichier. et multer attend un single.('image')
             // console.log(this.imagePending);
             this.sendPost(postData);
