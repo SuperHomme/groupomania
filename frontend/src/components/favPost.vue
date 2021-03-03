@@ -5,12 +5,11 @@
     <div class="fas-count-bind heart">
         <input type="checkbox" 
             :id="concatenate('fav_', post._id)"
-            :value="loginUserId"
-            v-model="usersFaved"/>
-        <label for="c">
+            v-on:change.prevent="checkFav"/>
+        <label :for="concatenate('fav_', post._id)">
             <i class="fas fa-heart"></i>
         </label>
-        <div>{{ post.nbFav }}</div>
+        <div>{{ usersFaved.length }}</div>
     </div>
 
 </div>
@@ -22,13 +21,11 @@
 const axios = require('axios');
 
 export default {
-    name: 'addReaction',
+    name: 'favPost',
     data: () => {
         return {
-            usersLiked: [],
-            usersDisliked: [],
+            nbFav: 0,
             usersFaved: [],
-            nbLikeDislike: 0,
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
@@ -40,92 +37,45 @@ export default {
         }
     },
     methods: {
-        updateShowComment() {
-            this.$store.commit("updateShowComments", this.post._id)
-        },
-        concatenate(likeDislikeFav, postId) {
-            const inputId = likeDislikeFav + postId;
+        concatenate(fav, postId) {
+            const inputId = fav + postId;
             return inputId
         },
-        checkLikeOrDislike(key) {
-            switch (key) {
-                case 1: // on a appuyé sur like
-                    if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du like
-                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1); // à la relance du like
-                        this.usersLiked.push(this.loginUserId);
-                        this.nbLikeDislike = 1;
-                        this.addReaction();
-                    } else if (this.nbLikeDislike == 1) { // on reeapuye sur like = annulation
-                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
-                        this.nbLikeDislike = 0;
-                        this.addReaction();
-                    } else if (this.nbLikeDislike == -1) { // on appuye sur like alors que le dislike était envoyé : il faut annuler le dislike (envoi d'un zero) et reappuyer le like
-                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
-                        this.nbLikeDislike = 0;
-                        this.addReaction();
-                        this.checkLikeOrDislike(1);
-                    }                         
-                break;
-                case -1:
-                    if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du dislike
-                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
-                        this.usersDisliked.push(this.loginUserId);
-                        this.nbLikeDislike = -1;
-                        this.addReaction();
-                    } else if (this.nbLikeDislike == -1) { // on reeapuye sur dislike = annulation
-                        document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
-                        this.nbLikeDislike = 0;
-                        this.addReaction();
-                    } else if (this.nbLikeDislike == 1) { // on appuye sur dislike alors que le like était envoyé : il faut annuler le like (envoi d'un zero) et reappuyer le dislike
-                        document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
-                        this.nbLikeDislike = 0;
-                        this.addReaction();
-                        this.checkLikeOrDislike(-1);
-                    }     
-                break;
+        checkFav() {
+            if (this.nbFav === 1) {
+                document.getElementById(`${this.concatenate('fav_', this.post._id)}`).checked = false;
+                this.usersFaved.splice(this.usersFaved.indexOf(this.loginUserId), 1);
+                this.nbFav = 0;
+            } else {
+                document.getElementById(`${this.concatenate('fav_', this.post._id)}`).checked = true;
+                this.usersFaved.push(this.loginUserId);
+                this.nbFav = 1;
             }
+            this.addFav();
         },
-        addReaction() {
-            const reactionData = {
-                like: this.nbLikeDislike,
+        addFav() {
+            const favData = {
+                fav: this.nbFav,
                 userId: this.loginUserId,
             }
-            this.sendReaction(reactionData);
+            this.sendFav(favData);
         },
-        sendReaction(reactionData) {
+        sendFav(favData) {
             axios
-            .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                .then(console.log( this.nbLikeDislike + " envoyé !"))
+            .post('http://localhost:3000/api/posts/' + this.post._id + '/fav', favData, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                .then(console.log( this.nbFav + " envoyé !"))
                 .catch((error) => console.log(error));
         },
         setChecked() {
-            if ( this.post.usersLiked.includes(this.loginUserId) ) {
-                document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-            } else if ( this.post.usersDisliked.includes(this.loginUserId) ) {
-                document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
+            if ( this.post.usersFaved.includes(this.loginUserId) ) {
+                document.getElementById(`${this.concatenate('fav_', this.post._id)}`).checked = true;
+                this.nbFav = 1;
             }
         },
-        setUserId() {
-            this.usersLiked = this.post.usersLiked;
-            this.usersDisliked = this.post.usersDisliked;
-            this.usersLiked.includes(this.loginUserId) ?
-                this.nbLikeDislike = 1 : 
-                this.usersDisliked.includes(this.loginUserId) ?
-                    this.nbLikeDislike = -1 :
-                        this.nbLikeDislike = 0;
-        }
-    },
-    beforeMount() {
-        this.setUserId()
     },
     mounted() {
-        this.setChecked()
+        this.setChecked();
+        this.usersFaved = this.post.usersFaved;
     }
 }
 </script>
@@ -138,7 +88,7 @@ export default {
     div
         margin-left: 1rem
 
-// logique reactions icons
+// logique icons
 
 input
     opacity: 0

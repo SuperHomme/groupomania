@@ -18,10 +18,10 @@
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
             v-on:change="checkLikeOrDislike(-1)"/>
-        <label for="a">
-        <i class="fas fa-thumbs-down"></i>
+        <label :for="concatenate('dislike_', post._id)">
+            <i class="fas fa-thumbs-down"></i>
         </label>
-        <div :id="concatenate('nblike_', post._id)">{{ usersDisliked.length }}</div>
+        <div :id="concatenate('nbdislike_', post._id)">{{ usersDisliked.length }}</div>
     </div>
 
 </div>
@@ -33,7 +33,7 @@
 const axios = require('axios');
 
 export default {
-    name: 'addReaction',
+    name: 'likeDislikePost',
     data: () => {
         return {
             usersLiked: [],
@@ -62,17 +62,17 @@ export default {
                         this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1); // à la relance du like
                         this.usersLiked.push(this.loginUserId);
                         this.nbLikeDislike = 1;
-                        this.addReaction();
+                        this.addLikeDislike();
                     } else if (this.nbLikeDislike == 1) { // on reeapuye sur like = annulation
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
                         this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
-                        this.addReaction();
+                        this.addLikeDislike();
                     } else if (this.nbLikeDislike == -1) { // on appuye sur like alors que le dislike était envoyé : il faut annuler le dislike (envoi d'un zero) et reappuyer le like
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
                         this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
-                        this.addReaction();
+                        this.addLikeDislike();
                         this.checkLikeOrDislike(1);
                     }                         
                 break;
@@ -82,32 +82,32 @@ export default {
                         this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
                         this.usersDisliked.push(this.loginUserId);
                         this.nbLikeDislike = -1;
-                        this.addReaction();
+                        this.addLikeDislike();
                     } else if (this.nbLikeDislike == -1) { // on reeapuye sur dislike = annulation
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
                         this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
-                        this.addReaction();
+                        this.addLikeDislike();
                     } else if (this.nbLikeDislike == 1) { // on appuye sur dislike alors que le like était envoyé : il faut annuler le like (envoi d'un zero) et reappuyer le dislike
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
                         this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
-                        this.addReaction();
+                        this.addLikeDislike();
                         this.checkLikeOrDislike(-1);
                     }     
                 break;
             }
         },
-        addReaction() {
-            const reactionData = {
+        addLikeDislike() {
+            const likeDislikeData = {
                 like: this.nbLikeDislike,
                 userId: this.loginUserId,
             }
-            this.sendReaction(reactionData);
+            this.sendLikeDislike(likeDislikeData);
         },
-        sendReaction(reactionData) {
+        sendLikeDislike(likeDislikeData) {
             axios
-            .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData, { headers: { Authorization: "Bearer " + this.loginToken }} )
+            .post('http://localhost:3000/api/posts/' + this.post._id + '/like', likeDislikeData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(console.log( this.nbLikeDislike + " envoyé !"))
                 .catch((error) => console.log(error));
         },
@@ -151,7 +151,7 @@ export default {
     div
         margin-left: 1rem
 
-// logique reactions icons
+// logique likeDislikes icons
 
 input
     opacity: 0
