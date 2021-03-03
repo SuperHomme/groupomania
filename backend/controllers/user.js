@@ -13,7 +13,8 @@ exports.signup = (req, res, next) => {
         .then(hash => {
             const user = new User({
                 email: rot13Cipher(emailBody[0]) + "@" + emailBody[1],
-                password: hash});
+                password: hash,
+                username: req.body.username });
             user.save()
                 .then(() => res.status(201).json({ message: 'utilisateur créé !' }))
                 .catch(error => res.status(400).json({ error }));})

@@ -3,7 +3,7 @@
         <nav>
             <div class="nav-container">
             <div id="logo">
-                <router-link to="/">
+                <router-link to="/feed">
                 <img src="../assets/img/logo_groupomania.svg" alt="logo" />
                 </router-link>
             </div>
@@ -23,6 +23,11 @@
                 <li>
                 <router-link to="/user-inbox">
                     <i class="fas fa-inbox"></i>
+                </router-link>
+                </li>
+                <li>
+                <router-link to="/">
+                    <i class="fas fa-sign-out-alt"></i>
                 </router-link>
                 </li>
             </ul>
