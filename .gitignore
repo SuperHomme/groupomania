@@ -34,4 +34,4 @@ pnpm-debug.log*
 # personnal files
 wishes.txt
 wquestions.txt
-frontend/src/assets/draft
+frontend/src/assets/draft.js

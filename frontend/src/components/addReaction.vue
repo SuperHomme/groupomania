@@ -1,12 +1,11 @@
 <template>
 
 <div class="reactions">
-    <!-- remplacer le value des inputs, on veut le userId du localstorage, pas celui du post ! -->
     <!-- LIKE -->
     <div v-bind:title="usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
         <input type="checkbox"
             :id="concatenate('like_', post._id)"
-            v-on:change="checkCheckbox(1)"/>
+            v-on:change="checkLikeOrDislike(1)"/>
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
@@ -17,17 +16,15 @@
     <div v-bind:title="usersDisliked.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
-            v-on:change="checkCheckbox(-1)"/>
+            v-on:change="checkLikeOrDislike(-1)"/>
         <label for="a">
         <i class="fas fa-thumbs-down"></i>
         </label>
         <div :id="concatenate('nblike_', post._id)">{{ usersDisliked.length }}</div>
     </div>
 
-    <!-- v-on:click="$emit("showComment = !showComment")> -->
     <!-- COMMENTER -->
     <div class="fas-count-bind" v-on:click="updateShowComment">
-        
         <i class="fas fa-comment"></i>
         <div>{{ post.comments.length }}</div>
     </div>
@@ -36,7 +33,7 @@
     <div class="fas-count-bind heart">
         <input type="checkbox" 
             :id="concatenate('fav_', post._id)"
-            :value="post.userId"
+            :value="loginUserId"
             v-model="usersFaved"/>
         <label for="c">
             <i class="fas fa-heart"></i>
@@ -60,6 +57,8 @@ export default {
             usersDisliked: [],
             usersFaved: [],
             nbLikeDislike: 0,
+            loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
     },
     props: {
@@ -76,46 +75,46 @@ export default {
             const inputId = likeDislikeFav + postId;
             return inputId
         },
-        checkCheckbox(key) {
+        checkLikeOrDislike(key) {
             switch (key) {
                 case 1: // on a appuyé sur like
                     if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du like
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1); // à la relance du like
-                        this.usersLiked.push(this.post.userId);
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1); // à la relance du like
+                        this.usersLiked.push(this.loginUserId);
                         this.nbLikeDislike = 1;
                         this.addReaction();
                     } else if (this.nbLikeDislike == 1) { // on reeapuye sur like = annulation
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.post.userId), 1);
+                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
                         this.addReaction();
                     } else if (this.nbLikeDislike == -1) { // on appuye sur like alors que le dislike était envoyé : il faut annuler le dislike (envoi d'un zero) et reappuyer le like
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
                         this.addReaction();
-                        this.checkCheckbox(1);
+                        this.checkLikeOrDislike(1);
                     }                         
                 break;
                 case -1:
                     if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du dislike
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.post.userId), 1);
-                        this.usersDisliked.push(this.post.userId);
+                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1);
+                        this.usersDisliked.push(this.loginUserId);
                         this.nbLikeDislike = -1;
                         this.addReaction();
                     } else if (this.nbLikeDislike == -1) { // on reeapuye sur dislike = annulation
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
                         this.addReaction();
                     } else if (this.nbLikeDislike == 1) { // on appuye sur dislike alors que le like était envoyé : il faut annuler le like (envoi d'un zero) et reappuyer le dislike
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.post.userId), 1);
+                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1);
                         this.nbLikeDislike = 0;
                         this.addReaction();
-                        this.checkCheckbox(-1);
+                        this.checkLikeOrDislike(-1);
                     }     
                 break;
             }
@@ -123,30 +122,30 @@ export default {
         addReaction() {
             const reactionData = {
                 like: this.nbLikeDislike,
-                fav: this.post.userId,
-                userId: this.post.userId,
+                fav: this.loginUserId,
+                userId: this.loginUserId,
             }
             this.sendReaction(reactionData);
         },
         sendReaction(reactionData) {
             axios
-            .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData)
+            .post('http://localhost:3000/api/posts/' + this.post._id + '/reaction', reactionData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(console.log( this.nbLikeDislike + " envoyé !"))
                 .catch((error) => console.log(error));
         },
         setChecked() {
-            if ( this.post.usersLiked.includes('1543322') ) {
+            if ( this.post.usersLiked.includes(this.loginUserId) ) {
                 document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-            } else if ( this.post.usersDisliked.includes('1543322') ) {
+            } else if ( this.post.usersDisliked.includes(this.loginUserId) ) {
                 document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
             }
         },
         setUserId() {
             this.usersLiked = this.post.usersLiked;
             this.usersDisliked = this.post.usersDisliked;
-            this.usersLiked.includes(this.post.userId) ?
+            this.usersLiked.includes(this.loginUserId) ?
                 this.nbLikeDislike = 1 : 
-                this.usersDisliked.includes(this.post.userId) ?
+                this.usersDisliked.includes(this.loginUserId) ?
                     this.nbLikeDislike = -1 :
                         this.nbLikeDislike = 0;
         }

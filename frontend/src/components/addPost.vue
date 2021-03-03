@@ -56,6 +56,8 @@ export default {
             imagePending: "", // imagePending sous forme de file
             imagePreview: "", // image decrite en base64
             characterLimit: 50, // à tester et à changer à ma guise
+            loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
     },
     methods: {
@@ -114,7 +116,7 @@ export default {
         createPost() {
             const postData = new FormData(); // img & date sont créés en backend
             postData.append("legend", this.legendPending);
-            postData.append("userId", JSON.parse(localStorage.getItem("vuex")).account.userId);
+            postData.append("userId", this.loginUserId);
             // postData.append("userpicture", "Hector_Castor.jpg"); // on le fait en backend désormais
             // postData.append("username", "Hector Castor"); // on le fait en backend désormais
             postData.append("image", this.imagePending); // imagePending, c'est file, soit files[0], cad l'image sous forme pure de fichier. et multer attend un single.('image')
@@ -124,7 +126,7 @@ export default {
         sendPost(postData) {
             console.log("nouveau post sur le point d'être envoyé");
             axios
-            .post('http://localhost:3000/api/posts', postData, { headers: { Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuex")).account.token }} )
+            .post('http://localhost:3000/api/posts', postData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(  
                     res => this.reloadGetAllPosts(res), // on lance le refresh de getAllPosts
                     console.log("nouveau post envoyé"),
@@ -146,8 +148,6 @@ export default {
         }
     },
     mounted () {
-        const vuex = localStorage.getItem("vuex");
-        console.log(JSON.parse(vuex).account.token);
     },
 }
 </script>
