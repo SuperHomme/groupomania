@@ -1,32 +1,42 @@
 <template>
-<div class="edit-profile">
+<div class="user">
 
     <form action="" method="get">
 
-        <div class="user-picture"><img v-bind:src="user.userpicture"></div>
+        <div class="user__picture"><img v-bind:src="user.userpicture"></div>
 
         <h2>{{user.username}}</h2>
 
-        <input type="text" :id="user._id" v-model="user.username" placeholder="Votre prénom" maxlength="26">
-        <label for="username">
-        </label>
+        <div class="user__infos">
 
-        <input type="text" :id="user._id" v-model="user.email" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
-        <label for="email">
-        </label>
+            <input type="text" :id="user._id" v-model="user.username" placeholder="Votre prénom" maxlength="26">
+            <label for="username">
+            </label>
+
+            <input type="text" :id="user._id" v-model="user.email" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
+            <label for="email">
+            </label>
+
+        </div>
 
         <button @click.prevent="wantChangePassword = true">
             Changer de mot de passe
         </button>
 
-        <div v-if="wantChangePassword">
+        <div
+            class="user__password"
+            v-if="wantChangePassword">
 
-            <input type="text" id="password1" v-model="password1" placeholder="Votre mot de passe" minlength="8" maxlength="26">
+            <input type="text" id="password1" v-model="password1" placeholder="mot de passe actuel" minlength="8" maxlength="26">
             <label for="password1">
             </label>
 
-            <input type="text" id="password2" v-model="password2" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
+            <input type="text" id="password2" v-model="password2" placeholder="votre nouveau mot de passe" minlength="8" maxlength="26">
             <label for="password2">
+            </label>
+
+            <input type="text" id="password3" v-model="password3" placeholder="confirmez votre nouveau mot de passe" minlength="8" maxlength="26">
+            <label for="password3">
             </label>
 
         </div>
@@ -70,11 +80,28 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.edit-profile
+.user
     margin: auto
     margin-top: 6rem
     width: 500px
     height: 100%
+    &__infos
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-top: 1rem
+        margin-bottom: 1rem
+    &__picture
+        margin: 1rem
+        height: 250px
+        img
+            width: 250px
+            border-radius: 50%
+    &__password
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-bottom: 1rem
 
 form
     margin-top: 2rem
@@ -86,11 +113,10 @@ form
     align-items: center
     background-color: #ffffff
     box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2)
-
-.user-picture
-    margin: 1rem
-    height: 250px
-    img
+    input
         width: 250px
-        border-radius: 50%
+
+button
+    margin-bottom: 1rem
+
 </style>
