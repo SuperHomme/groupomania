@@ -16,7 +16,9 @@
             @click.prevent="$emit('hide-edit-menu'), $root.$emit('legend-is-edited', concatenate('legend_', post._id))">
             OK
         </button>
-        <button v-show="!toggleEdit">
+        <button
+            v-show="!toggleEdit"
+            v-on:click.prevent="deletePost">
             SUPPR.
         </button>
         <button
@@ -64,6 +66,15 @@ export default {
                 .then(console.log( this.editedLegend+ " (new legend envoyée !"))
                 .catch((error) => console.log(error));
         },
+        deletePost() {
+            axios
+            .delete('http://localhost:3000/api/posts/' + this.post._id, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                .then((response) => {
+                    if (response) {
+                        document.getElementById(this.post._id).style.display = "none";
+                        console.log( this.post._id + " post supprimé !")}})
+                .catch((error) => console.log(error));
+        }
     },
     mounted() {
         this.$root.$on('edited-legend', editedLegend => {

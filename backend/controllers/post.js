@@ -1,6 +1,6 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
-// const fs = require('fs');
+const fs = require('fs');
 
 exports.getAllPosts = (req, res, next) => {
     Post.find()
@@ -95,9 +95,21 @@ exports.favPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-    console.log(req.body);
     console.log(req.body.legend);
     Post.updateOne({ _id: req.params.id }, { $set: { legend: req.body.legend}, _id: req.params.id })
         .then(sauce => res.status(200).json({ message: 'sauce mise à jour'}))
         .catch(error => res.status(400).json({ error }));
+};
+
+exports.deletePost = (req, res, next) => {
+    console.log("on est arrivé là au moins")
+    Post.findOne({ _id: req.params.id })
+        .then(post => {
+            const filename = post.img.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+                Post.deleteOne({ _id: req.params.id })
+                    .then(post => res.status(200).json({ message: 'post supprimé'}))
+                    .catch(error => res.status(400).json({ error }));});
+        })
+        .catch(error => res.status(500).json({ error }));
 };
