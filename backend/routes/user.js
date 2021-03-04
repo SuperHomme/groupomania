@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const userCtrl = require('../controllers/user');
+const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
 
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-// TODO 
-// - ajouter une photo de profil
-// - modifier profil
-// - supprimer compte
+// router.put('/:id', auth, userCtrl.updateUser);
+// router.delete('/:id', auth, userCtrl.deleteUser);
+// router.get('/:id', auth, userCtrl.getOneUser);
+
+// TODO update profil pic & profil / delete account / get one user
 
 module.exports = router;

@@ -15,7 +15,7 @@
             @mouseover="showEditMenu"
             @mouseout="hideEditMenu">
 
-            <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
+            <div class="user-picture"><img v-bind:src="post.userpicture"></div>
             <div class="user-name">{{ post.username }}</div>
             <div class="date">{{ post.date }}</div>
         </div>

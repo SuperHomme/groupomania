@@ -14,7 +14,7 @@
         <label for="lastName">
         </label>
 
-        <input type="text" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="26">
+        <input type="text" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
         <label for="emailAddress">
         </label>
 
