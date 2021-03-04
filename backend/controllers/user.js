@@ -49,6 +49,13 @@ exports.login = (req, res, next) => {
 exports.getOneUser = (req, res, next) => {
     console.log(req.params.id);
     User.findOne({ _id: req.params.id })
-        .then(user => res.status(200).json(user))
-        .catch(error => res.status(404).json({ error }));
+        .then(user => {
+            if (!user) { // si on ne trouve pas l'utilisateur
+                return res.status(401).json({ error: 'utilisateur non trouvé' });}
+            res.status(200).json({  // si on trouve l'utilisateur
+                userpicture: user.userpicture,
+                username: user.username,
+                email: rot13Cipher(user.email.split("@")[0]) + "@" + user.email.split("@")[1]
+            })})
+        .catch(error => res.status(500).json({ error }));
 };
