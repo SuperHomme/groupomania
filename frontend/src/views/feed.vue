@@ -48,9 +48,9 @@ export default {
 
 <style lang="sass" scoped>
 .feed
-    display: flex
-    flex-direction: row
-    justify-content: space-around
-    margin: auto
-    width: 1150px
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+  margin: auto
+  width: 1150px
 </style>

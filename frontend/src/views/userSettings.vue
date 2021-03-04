@@ -1,7 +1,11 @@
 <template>
-  <div id='userSettings'>
+  <div id='user-settings'>
+
     <headerNav />
-    <editProfile />
+
+    <editProfile 
+      class="edit-profile"/>
+
   </div>
 </template>
 
@@ -19,5 +23,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
+#user-settings
+  display: flex
+  flex-direction: column
 </style>

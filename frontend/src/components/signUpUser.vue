@@ -53,7 +53,7 @@ export default {
     },
     data () {
         return {
-            firstName: 'Ugo',
+            firstName: 'Ugo', // TODO tout mettre à zéro
             lastName: 'deFéligonde',
             emailAddress: 'ugo.defeli@gmail.com',
             password1: 'mdptireauhazard',
