@@ -97,7 +97,7 @@ exports.favPost = (req, res, next) => {
 exports.updatePost = (req, res, next) => {
     console.log(req.body.legend);
     Post.updateOne({ _id: req.params.id }, { $set: { legend: req.body.legend}, _id: req.params.id })
-        .then(sauce => res.status(200).json({ message: 'sauce mise à jour'}))
+        .then(post => res.status(200).json({ message: 'post mis à jour'}))
         .catch(error => res.status(400).json({ error }));
 };
 

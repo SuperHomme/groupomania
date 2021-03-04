@@ -3,24 +3,39 @@
 
     <form action="" method="get">
 
-        <div class="user__picture"><img v-bind:src="user.userpicture"></div>
+        <div class="user__picture">
+            <img v-bind:src="user.userpicture">
+            <i class="fas fa-plus-square"></i>
+        </div>
 
-        <h2>{{user.username}}</h2>
+        <h2>{{actualUsername}}</h2>
 
         <div class="user__infos">
 
-            <input type="text" :id="user._id" v-model="user.username" placeholder="Votre prénom" maxlength="26">
+            <input type="text" :id="user._id" v-model="actualUsername" placeholder="Votre prénom et nom" maxlength="26">
             <label for="username">
             </label>
 
-            <input type="text" :id="user._id" v-model="user.email" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
+            <input type="text" :id="user._id" v-model="actualEmail" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
             <label for="email">
             </label>
 
         </div>
 
-        <button @click.prevent="wantChangePassword = true">
-            Changer de mot de passe
+        <button v-on:click.prevent="createUpdatedUserInfos">
+            Enregistrer les changements
+        </button>
+
+        <button
+            @click.prevent="wantChangePassword = true"
+            v-if="!wantChangePassword">
+            Changer le mot de passe
+        </button>
+
+        <button
+            v-if="wantChangePassword"
+            v-on:click.prevent="createUpdatedPassword">
+            Confirmez le nouveau mot de passe
         </button>
 
         <div
@@ -41,8 +56,10 @@
 
         </div>
 
-        <button v-on:click.prevent="createUser">
-            Enregistrer les changements
+        <button
+            class="button--red"
+            v-on:click.prevent="deleteUser">
+            Supprimez votre compte
         </button>
 
     </form>
@@ -58,7 +75,9 @@ export default {
     name: 'editProfile',
     data: () => {
         return {
-            user: [],
+            user: {},
+            actualUsername: '',
+            actualEmail: '',
             wantChangePassword: false,
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
@@ -68,13 +87,50 @@ export default {
         getOneUser() {
             axios
                 .get('http://localhost:3000/api/users/' + this.loginUserId, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                    .then(user => { this.user = user.data, console.log(user.data) })
+                    .then(user => {
+                        this.user = user.data,
+                        this.actualUsername = this.user.username,
+                        this.actualEmail = this.user.email })
                     .catch((error) => console.log(error));
-            console.log(this.user)
         },
+        // TODO : check user input + notification
+        createUpdatedUserInfos() {
+            const updatedUserInfos = {
+                username: this.actualUsername,
+                email: this.actualEmail,
+            }
+            this.sendUpdatedUserInfos(updatedUserInfos)
+        },
+        sendUpdatedUserInfos(updatedUserInfos) {
+            axios
+                .put('http://localhost:3000/api/users/' + this.loginUserId + '/infos', updatedUserInfos, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                    .then(console.log("user infos modifiées !"), console.log( updatedUserInfos ))
+                    .catch((error) => console.log(error));
+        },
+        // TODO : check user input + notification
+        createUpdatedPassword() {
+
+        },
+        confirmDeletePost() {
+            if (confirm('êtes vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+                this.deleteUser();
+                console.log('suppression user confirmée');
+            } else {
+                console.log('suppression user annulée');
+            }
+        },
+        deleteUser() {
+            
+        },
+    },
+    computed: {
     },
     beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
         this.getOneUser();
+    },
+    mounted () {
+        // this.actualUsername = this.user.username;
+        // this.actualEmail = this.user.email;
     },
 }
 </script>
@@ -94,9 +150,15 @@ export default {
     &__picture
         margin: 1rem
         height: 250px
+        position: relative
+        font-size: 24px
         img
             width: 250px
             border-radius: 50%
+        i
+            position: absolute
+            right: 0
+            bottom: 0
     &__password
         display: flex
         flex-direction: column
@@ -115,8 +177,19 @@ form
     box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2)
     input
         width: 250px
+        margin-bottom: 0.5rem
 
 button
     margin-bottom: 1rem
+    padding: 0.25rem
+    border: thin solid grey
+    background: rgb(242, 242, 242)
+    outline: none
+    cursor: pointer
+
+.button--red
+    background-color: rgb(255, 204, 204)
+    color: rgb(255, 77, 77)
+    border: thin solid rgb(255, 77, 77)
 
 </style>

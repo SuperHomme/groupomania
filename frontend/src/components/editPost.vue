@@ -62,9 +62,9 @@ export default {
         },
         sendUpdatedLegend(updatedLegend) {
             axios
-            .put('http://localhost:3000/api/posts/' + this.post._id, updatedLegend, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                .then(console.log( this.editedLegend+ " (new legend envoyée !"))
-                .catch((error) => console.log(error));
+                .put('http://localhost:3000/api/posts/' + this.post._id, updatedLegend, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                    .then(console.log( this.editedLegend+ " (new legend envoyée !"))
+                    .catch((error) => console.log(error));
         },
         confirmDeletePost() {
             if (confirm('êtes vous sûr de vouloir supprimer ce post ? Cette action est irréversible.')) {
