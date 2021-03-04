@@ -50,8 +50,8 @@ export default {
         }
     },
     methods: {
-        concatenate(likeDislikeFav, postId) {
-            const inputId = likeDislikeFav + postId;
+        concatenate(likeDislike, postId) {
+            const inputId = likeDislike + postId;
             return inputId
         },
         checkLikeOrDislike(key) {

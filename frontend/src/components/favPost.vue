@@ -73,9 +73,11 @@ export default {
             }
         },
     },
+    beforeMount() {
+        this.usersFaved = this.post.usersFaved;
+    },
     mounted() {
         this.setChecked();
-        this.usersFaved = this.post.usersFaved;
     }
 }
 </script>

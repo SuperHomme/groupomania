@@ -12,11 +12,6 @@ export default {
 }
 </script>
 
-<style lang="css">
-  /* @import "../src/assets/style/old-style.css"; */
-  /* @import "../src/assets/style/style.css"; */
-</style>
-
 <style lang="sass">
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
 
@@ -38,22 +33,22 @@ a, a:visited
 
 //mixins
 =mq-mobileS
-    @media screen and (max-width: map-get($breakpoints, mobileS))
-        @content
+  @media screen and (max-width: map-get($breakpoints, mobileS))
+    @content
 
 =mq-mobileM
-    @media screen and (max-width: map-get($breakpoints, mobileM))
-        @content
+  @media screen and (max-width: map-get($breakpoints, mobileM))
+    @content
 
 =mq-mobileL
-    @media screen and (max-width: map-get($breakpoints, mobileL))
-        @content
+  @media screen and (max-width: map-get($breakpoints, mobileL))
+    @content
 
 =mq-tablet
-    @media screen and (max-width: map-get($breakpoints, mobiletablet))
-        @content
+  @media screen and (max-width: map-get($breakpoints, mobiletablet))
+    @content
 
 =mq-special($mq-special: $initial-model)
-    @media screen and (max-width: $mq-special)
-        @content
+  @media screen and (max-width: $mq-special)
+    @content
 </style>

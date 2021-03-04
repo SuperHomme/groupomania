@@ -3,13 +3,17 @@
 <div :id="post._id" class="post-and-comments">
 
     <editPost
-        v-if="post.userId == loginUserId && hoverPost"/>
+        v-if="post.userId == loginUserId && hoverPost"
+        @hide-edit-menu="hoverPost = false"
+        :post="post"/>
 
-    <div class="post"
-        @mouseover="hoverPost = true"
-        @mouseleave="hoverPost = false">
+    <div class="post">
 
-        <div class="post__header">
+        <div
+            class="post__header"
+            @mouseover="showEditMenu"
+            @mouseout="hideEditMenu">
+
             <div class="user-picture"><img v-bind:src="require(`@/assets/img/tests/${post.userpicture}`)"></div>
             <div class="user-name">{{ post.username }}</div>
             <div class="date">{{ post.date }}</div>
@@ -17,7 +21,11 @@
 
         <div class="post__content">
             <img v-bind:src="post.img">
-            <div class="post__legend">{{post.legend}}</div>
+            <div
+                class="post__legend"
+                :id="concatenate('legend_', post._id)">
+                {{post.legend}}
+            </div>
         </div>
         
         <addReaction
@@ -59,7 +67,20 @@ export default {
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             showComment: true,
             hoverPost: false,
+            timeOutEditMenu: '',
         }
+    },
+    methods: {
+        showEditMenu() { // on mouse over
+            this.timeOutEditMenu = setTimeout(() => {this.hoverPost = true}, 1000);
+        },
+        hideEditMenu() { // on mouse out
+            clearTimeout(this.timeOutEditMenu);
+        },
+        concatenate(legend, postId) {
+            const inputId = legend + postId;
+            return inputId
+        },
     },
     computed: { // VueX
         ...mapState(['showComments'])
@@ -69,6 +90,20 @@ export default {
             type: Object,
             required: true,
         }
+    },
+    mounted() {
+        this.$root.$on('edit-one-post', legendId => { // active le mode édition
+            if (legendId == this.concatenate('legend_', this.post._id)) {
+                document.getElementById(legendId).setAttribute("contenteditable", "true");
+                document.getElementById(legendId).focus();
+            }
+        });
+        this.$root.$on('legend-is-edited', legendId => { // au clic OK, le contenu de la nouvelle légende est envoyé à editPost
+            if (legendId == this.concatenate('legend_', this.post._id)) {
+                document.getElementById(legendId).setAttribute("contenteditable", "false");
+                this.$root.$emit('edited-legend', document.getElementById(legendId).textContent);
+            }
+        });
     }
 }
 </script>

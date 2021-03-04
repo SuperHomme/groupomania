@@ -1,11 +1,17 @@
 <template>
   <div id='feed'>
+
     <headerNav />
+
     <div class="feed">
-      <getAllPosts 
+
+      <getAllPosts
         v-on:update:nb-posts="setNbPosts"/>
+
       <addPost />
+
     </div>
+
   </div>
 </template>
 

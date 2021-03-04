@@ -6,7 +6,7 @@
         :post="post"/>
 
     <!-- COMMENTER -->
-    <div class="fas-count-bind" v-on:click="updateShowComment">
+    <div class="fas-count-bind" v-on:click.prevent="updateShowComment">
         <i class="fas fa-comment"></i>
         <div>{{ post.comments.length }}</div>
     </div>
