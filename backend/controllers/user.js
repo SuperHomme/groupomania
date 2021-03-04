@@ -67,8 +67,8 @@ exports.updateUserInfos = (req, res, next) => {
             if (!user) { // si on ne trouve pas l'utilisateur
                 return res.status(401).json({ error: 'utilisateur non trouvé' });}
             User.updateOne( { _id: req.params.id }, {
-                    $set: { email: rot13Cipher(req.body.email.split("@")[0]) + "@" + req.body.email.split("@")[1] },
-                    $set: { username: req.body.username }, _id: req.params.id })
+                    $set: { email: rot13Cipher(req.body.email.split("@")[0]) + "@" + req.body.email.split("@")[1], username: req.body.username },
+                    _id: req.params.id })
                 .then(user => res.status(200).json({ message: 'infos user mises à jour'}))
                 .catch(error => res.status(400).json({ error }));
         })
