@@ -11,6 +11,7 @@
 
         <div
             class="post__header"
+            @click.prevent="hoverPost = true"
             @mouseover="showEditMenu"
             @mouseout="hideEditMenu">
 
