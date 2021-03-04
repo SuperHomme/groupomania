@@ -15,6 +15,5 @@ router.post('/:id/fav', auth, postCtrl.favPost);
 router.post('/:id/comment', auth, postCtrl.addComment);
 
 // TODO like comment / modify comment / delete comment
-// delete post
 
 module.exports = router;

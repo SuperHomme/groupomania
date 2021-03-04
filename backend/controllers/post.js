@@ -102,7 +102,7 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-    console.log("on est arrivé là au moins")
+    console.log("post n° : " + req.params.id + "supprimé");
     Post.findOne({ _id: req.params.id })
         .then(post => {
             const filename = post.img.split('/images/')[1];

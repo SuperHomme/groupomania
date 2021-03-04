@@ -18,7 +18,7 @@
         </button>
         <button
             v-show="!toggleEdit"
-            v-on:click.prevent="deletePost">
+            v-on:click.prevent="confirmDeletePost">
             SUPPR.
         </button>
         <button
@@ -66,13 +66,21 @@ export default {
                 .then(console.log( this.editedLegend+ " (new legend envoyée !"))
                 .catch((error) => console.log(error));
         },
+        confirmDeletePost() {
+            if (confirm('êtes vous sûr de vouloir supprimer ce post ? Cette action est irréversible.')) {
+                this.deletePost();
+                console.log('suppression confirmée');
+            } else {
+                console.log('suppression annulée');
+            }
+        },
         deletePost() {
             axios
             .delete('http://localhost:3000/api/posts/' + this.post._id, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then((response) => {
                     if (response) {
                         document.getElementById(this.post._id).style.display = "none";
-                        console.log( this.post._id + " post supprimé !")}})
+                        console.log("post n° : " + this.post._id + " supprimé !")}})
                 .catch((error) => console.log(error));
         }
     },
