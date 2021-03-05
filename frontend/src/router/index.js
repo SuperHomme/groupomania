@@ -8,11 +8,20 @@ import userConnection from '../views/userConnection.vue'
 
 Vue.use(VueRouter)
 
+const isAllowed = (to, from, next) => {
+  // eslint-disable-next-line no-constant-condition
+  if (true) { // verfication connexion
+    next(); return;
+  }
+  next('/')
+}
+
 const routes = [
   {
     path: '/feed',
     component: feed,
-    name: 'feed'
+    name: 'feed',
+    beforeEnter: isAllowed
   },
   {
     path: '/user-settings',

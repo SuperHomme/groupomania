@@ -3,7 +3,7 @@
 <div class="comment" :id="comment._id">
 
     <div class="user-picture comment__user-picture">
-        <img v-bind:src="require(`@/assets/img/tests/${comment.userpicture}`)">
+        <img v-bind:src="comment.userpicture">
     </div>
     
     <div class="comment__body">

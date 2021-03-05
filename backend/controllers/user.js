@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
+const Post = require('../models/Post');
 const User = require('../models/User');
 const rot13Cipher = require('../middleware/rot13-cipher');
 require('dotenv').config(); // utilisation des variables cachées
@@ -47,7 +49,6 @@ exports.login = (req, res, next) => {
 };
 
 exports.getOneUser = (req, res, next) => {
-    console.log(req.params.id);
     User.findOne({ _id: req.params.id })
         .then(user => {
             if (!user) { // si on ne trouve pas l'utilisateur
@@ -76,16 +77,30 @@ exports.updateUserInfos = (req, res, next) => {
 };
 
 exports.updateUserPicture = (req, res, next) => {
-    console.log(req.body);
+    console.log(req.file);
     User.findOne({ _id: req.params.id })
         .then(user => {
             if (!user) { // si on ne trouve pas l'utilisateur
+                console.log('utilisateur non trouvé');
                 return res.status(401).json({ error: 'utilisateur non trouvé' });}
-            User.updateOne( { _id: req.params.id }, {
-                    $set: { email: rot13Cipher(req.body.email.split("@")[0]) + "@" + req.body.email.split("@")[1] },
-                    $set: { username: req.body.username }, _id: req.params.id })
-                .then(user => res.status(200).json({ message: 'infos user mises à jour'}))
-                .catch(error => res.status(400).json({ error }));
+            const filename = user.userpicture.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+                User.updateOne( { _id: req.params.id }, { $set: { userpicture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` }, _id: req.params.id })
+                    .then(user => res.status(200).json({ message: 'avatar mis à jour'}))
+                    .catch(error => res.status(400).json({ error }));});
+        })
+        .catch(error => res.status(500).json({ error }));
+};
+
+exports.deleteUser = (req, res, next) => { // TODO delete related posts
+    console.log("user n° : " + req.params.id + "supprimé");
+    User.findOne({ _id: req.params.id })
+        .then(user => {
+            const filename = user.userpicture.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+                User.deleteOne({ _id: req.params.id })
+                    .then(user => res.status(200).json({ message: 'user supprimé'}))
+                    .catch(error => res.status(400).json({ error }));});
         })
         .catch(error => res.status(500).json({ error }));
 };
