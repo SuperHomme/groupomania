@@ -3,21 +3,20 @@
 
     <headerNav />
 
-    <editUser 
-      class="edit-profile"/>
+    <oneUser />
 
   </div>
 </template>
 
 <script>
 import headerNav from '@/components/headerNav.vue'
-import editUser from '@/components/editUser.vue'
+import oneUser from '@/components/oneUser.vue'
 
 export default {
   name: 'userSettings',
   title: 'Groupomania - paramètres',
   components: {
-    headerNav, editUser
+    headerNav, oneUser
   }
 }
 </script>

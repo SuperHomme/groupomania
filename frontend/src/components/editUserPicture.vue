@@ -122,13 +122,9 @@ export default {
             this.imagePreview = this.user.userpicture
         }
     },
-    computed: {
-    },
     beforeMount() {
         this.setUserPicture()
     },
-    updated() {
-    }
 }
 </script>
 

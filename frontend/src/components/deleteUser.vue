@@ -20,12 +20,6 @@ export default {
             loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
     },
-    props: {
-        user: {
-            type: Object,
-            required: true,
-        }
-    },
     methods: {
         confirmDeletePost() {
             if (confirm('êtes vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {

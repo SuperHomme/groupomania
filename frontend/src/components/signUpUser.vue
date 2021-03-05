@@ -56,7 +56,7 @@ export default {
             firstName: 'Ugo', // TODO tout mettre à zéro
             lastName: 'deFéligonde',
             emailAddress: 'ugo.defeli@gmail.com',
-            password1: 'mdptireauhazard',
+            password1: 'mdptireauhazard', // TODO affichage en point noir
             password2: 'mdptireauhazard',
         }
     },

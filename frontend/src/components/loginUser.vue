@@ -62,8 +62,8 @@ export default {
         },
         createLogin() {
             const loginData = {
-                email: this.emailAddress,
-                password: this.password,
+                email: this.emailAddress, 
+                password: this.password, // TODO affichage en point noir
             }
             this.sendLogin(loginData)
         },
