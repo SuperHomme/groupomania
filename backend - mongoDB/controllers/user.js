@@ -92,6 +92,25 @@ exports.updateUserPicture = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+exports.updateUserPassword = (req, res, next) => {
+    console.log(req.body.password);
+    User.findOne({ _id: req.params.id })
+        .then(user => {
+            if (!user) { // si on ne trouve pas l'utilisateur
+                console.log('utilisateur non trouvé');
+                return res.status(401).json({ error: 'utilisateur non trouvé' });}
+            bcrypt
+                .compare(req.body.password, user.password) // bcrypt compare les hash des 2 mdp
+                .then(valid => {
+                    if (!valid) { // si valid est false
+                        return res.status(401).json({ error: 'mot de passe incorrect' });}
+                    res.status(200).json({  // si valid est true
+                        userId: user._id, // dans la réponse on envoie un userId, et un token qui contient le JWT
+                    });})
+                .catch(error => res.status(500).json({ error }));})
+        .catch(error => res.status(500).json({ error }));
+};
+
 exports.deleteUser = (req, res, next) => { // TODO delete related posts
     console.log("user n° : " + req.params.id + "supprimé");
     User.findOne({ _id: req.params.id })

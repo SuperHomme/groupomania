@@ -64,22 +64,18 @@ export default {
                 this.errorPassword = "Les mots de passe de ne correspondent pas";
             }
         },
-        createUpdatedUserInfos() {
-            const updatedUserInfos = {
-                username: this.actualUsername,
+        createUpdatedPassword() {
+            const updatedPassword = {
+                password: this.newPassword,
                 email: this.actualEmail,
             }
-            this.sendUpdatedUserInfos(updatedUserInfos)
+            this.sendUpdatedPassword(updatedPassword)
         },
-        sendUpdatedUserInfos(updatedUserInfos) {
+        sendUpdatedPassword(updatedPassword) {
             axios
-                .put('http://localhost:3000/api/users/' + this.loginUserId + '/infos', updatedUserInfos, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                    .then(console.log("user infos modifiées !"), console.log( updatedUserInfos ))
+                .put('http://localhost:3000/api/users/' + this.loginUserId + '/password', updatedPassword, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                    .then(console.log("user infos modifiées !"), console.log( updatedPassword ))
                     .catch((error) => console.log(error));
-        },
-        // TODO : check user input + notification
-        createUpdatedPassword() {
-
         },
     },
 }
@@ -105,5 +101,9 @@ button
     background: rgb(242, 242, 242)
     outline: none
     cursor: pointer
+
+input
+    width: 250px
+    margin-bottom: 0.5rem
 
 </style>
