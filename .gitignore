@@ -12,7 +12,8 @@ vetur.config.js
 .vscode
 
 # local env files
-backend/.env
+backend-MySQL/.env
+backend-mongoDB/.env
 .env.local
 .env.*.local
 
