@@ -47,14 +47,14 @@ exports.deletePost = (req, res, next) => {
         if (err || result.length == 0) {
             return res.status(500).json(err.message);}
         
-        // suppression du fichier image // A VERIFIER
-        const filename = result2.split('/images/')[1];
-        fs.unlink(`images/${filename}`, () => {
-            let sql2 = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
-            db.query(sql2, (err, result) => {
-                if (err || result.length == 0) {
-                    return res.status(500).json(err.message);}
-            res.status(200).json(result2)})}); 
+        // // suppression du fichier image // A VERIFIER
+        // const filename = result2.split('/images/')[1];
+        // fs.unlink(`images/${filename}`, () => {
+        //     let sql2 = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
+        //     db.query(sql2, (err, result) => {
+        //         if (err || result.length == 0) {
+        //             return res.status(500).json(err.message);}
+        //     res.status(200).json(result2)})}); 
 
         res.status(201).json({ message: 'post n° : ' + req.params.id + 'supprimé' })})
 };

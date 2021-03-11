@@ -30,24 +30,29 @@ exports.updateUserInfos = (req, res, next) => {
         if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
             return res.status(401).json({ error: 'utilisateur non trouvé' });}
             
-        res.status(201).json({ message: 'infos de utilisateur mises à jour !' })})
+        res.status(201).json({ message: 'infos utilisateur mises à jour !' })})
 };
 
-// NO
-exports.updateUserPicture = (req, res, next) => { // TODO ne pas supprimer l'avater par défaut de la DB
+// OK
+exports.updateUserPicture = (req, res, next) => {
     console.log(req.file);
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            if (!user) { // si on ne trouve pas l'utilisateur
-                console.log('utilisateur non trouvé');
+
+    let sqlUP = `SELECT userpicture FROM users WHERE (_id = '${req.params.id}')`;
+    db.query(sqlUP, (err, resultUP) => {
+        if (err || resultUP.length == 0) { // si on ne trouve pas l'utilisateur
+            return res.status(500).json(err.message);}
+
+        let sql = `UPDATE users SET userpicture = '${req.protocol}://${req.get('host')}/images/${req.file.filename}' WHERE (_id = '${req.params.id}')`;
+        db.query(sql, (err, result) => {
+
+            if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
                 return res.status(401).json({ error: 'utilisateur non trouvé' });}
-            const filename = user.userpicture.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
-                User.updateOne( { _id: req.params.id }, { $set: { userpicture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` }, _id: req.params.id })
-                    .then(user => res.status(200).json({ message: 'avatar mis à jour'}))
-                    .catch(error => res.status(400).json({ error }));});
-        })
-        .catch(error => res.status(500).json({ error }));
+
+            const filename = resultUP[0].userpicture.split('/images/')[1];
+            if (filename != 'neutral-avatar.png') { // si l'avatar précédent n'était pas l'avatar par défaut
+                fs.unlink(`images/${filename}`, () => {})} // on supprime le précédent fichier image
+                
+            res.status(201).json({ message: 'avatar utilisateur mis à jour !' })})});
 };
 
 // NO
@@ -70,8 +75,8 @@ exports.updateUserPassword = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// NO
-exports.deleteUser = (req, res, next) => { // TODO delete related posts
+// NO // TODO delete related posts with CASCADE FK ?
+exports.deleteUser = (req, res, next) => { 
     console.log("user n° : " + req.params.id + "supprimé");
     User.findOne({ _id: req.params.id })
         .then(user => {
