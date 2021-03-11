@@ -12,7 +12,6 @@ exports.getOneUser = (req, res, next) => {
         if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
             return res.status(401).json({ error: 'utilisateur non trouvé' });}
             
-            console.log(result)
             res.status(200).json({ // si on trouve l'utilisateur
                 userpicture: result[0].userpicture,
                 username: result[0].username,
@@ -20,20 +19,18 @@ exports.getOneUser = (req, res, next) => {
             })})
 };
 
-// NO
+// OK
 exports.updateUserInfos = (req, res, next) => {
-    console.log(req.body);
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            if (!user) { // si on ne trouve pas l'utilisateur
-                return res.status(401).json({ error: 'utilisateur non trouvé' });}
-            User.updateOne( { _id: req.params.id }, {
-                    $set: { email: rot13Cipher(req.body.email.split("@")[0]) + "@" + req.body.email.split("@")[1], username: req.body.username },
-                    _id: req.params.id })
-                .then(user => res.status(200).json({ message: 'infos user mises à jour'}))
-                .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
+    // console.log(req.body);
+    let emailBody = req.body.email.split("@");
+    let emailCipher = rot13Cipher(emailBody[0]) + "@" + emailBody[1];
+    let sql = `UPDATE users SET email = '${emailCipher}', username = '${req.body.username}' WHERE (_id = '${req.params.id}')`;
+    db.query(sql, (err, result) => {
+
+        if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
+            return res.status(401).json({ error: 'utilisateur non trouvé' });}
+            
+        res.status(201).json({ message: 'infos de utilisateur mises à jour !' })})
 };
 
 // NO
