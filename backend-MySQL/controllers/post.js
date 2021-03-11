@@ -3,7 +3,7 @@ const db = require('../dbconfig.js');
 
 // OK
 exports.getAllPosts = (req, res, next) => {
-    let sql = `SELECT p.*, u.username, u.userpicture, COALESCE(SUM(r.like), 0) AS nbLike, COALESCE(GROUP_CONCAT(r.user_id), ' ') AS usersLiked, COALESCE(SUM(r.dislike), 0) AS nbDislike, COALESCE(GROUP_CONCAT(r.user_id), ' ') AS usersDisliked, COALESCE(SUM(r.fav), 0) AS nbFav, COALESCE(GROUP_CONCAT(r.user_id), ' ') AS usersFaved FROM posts p LEFT JOIN users u ON p.user_id = u._id LEFT JOIN reactions r ON r.post_id = p._id GROUP BY p._id ORDER BY p.date DESC`;
+    let sql = `SELECT p.*, u.username, u.userpicture, COUNT(c._id) AS nbComment, COALESCE(SUM(r.like), 0) AS nbLike, GROUP_CONCAT(IF(r.like = 1, r.user_id, ' ')) AS usersLiked, COALESCE(SUM(r.dislike), 0) AS nbDislike, GROUP_CONCAT(IF(r.dislike = 1, r.user_id, ' ')) AS usersDisliked, COALESCE(SUM(r.fav), 0) AS nbFav, GROUP_CONCAT(IF(r.fav = 1, r.user_id, ' ')) AS usersFaved FROM posts p LEFT JOIN users u ON p.user_id = u._id LEFT JOIN reactions r ON r.post_id = p._id LEFT JOIN comments c ON c.post_id = p._id GROUP BY p._id ORDER BY p.date DESC`;
     db.query(sql, (err, result) => {
         if (err || result.length == 0) {
             return res.status(500).json(err.message);}

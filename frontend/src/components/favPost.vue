@@ -74,7 +74,10 @@ export default {
         },
     },
     beforeMount() {
-        this.usersFaved = this.post.usersFaved.split(",");
+        const uFaved = this.post.usersFaved.replace(/ ,/g,'').replace(/, /g,'').split(",");
+        uFaved[0] == " " ?
+            this.usersFaved = [] :
+            this.usersFaved = uFaved;
     },
     mounted() {
         this.setChecked();

@@ -119,8 +119,14 @@ export default {
             }
         },
         setUserId() {
-            this.usersLiked = this.post.usersLiked.split(",");
-            this.usersDisliked = this.post.usersDisliked.split(",");
+            const uLiked = this.post.usersLiked.replace(/ ,/g,'').replace(/, /g,'').split(",");
+            uLiked[0] == " " ?
+                this.usersLiked = [] :
+                this.usersLiked = uLiked;
+            const uDisliked = this.post.usersDisliked.replace(/ ,/g,'').replace(/, /g,'').split(",");
+            uDisliked[0] == " " ?
+                this.usersDisliked = [] :
+                this.usersDisliked = uDisliked;
             this.usersLiked.includes(this.loginUserId) ?
                 this.nbLikeDislike = 1 : 
                 this.usersDisliked.includes(this.loginUserId) ?

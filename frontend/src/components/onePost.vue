@@ -3,7 +3,7 @@
 <div :id="post._id" class="post-and-comments">
 
     <editPost
-        v-if="post.userId == loginUserId && hoverPost"
+        v-if="post.user_id == loginUserId && hoverPost"
         @hide-edit-menu="hoverPost = false"
         :post="post"/>
 

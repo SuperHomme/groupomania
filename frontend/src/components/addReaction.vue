@@ -8,8 +8,7 @@
     <!-- COMMENTER -->
     <div class="fas-count-bind" v-on:click.prevent="updateShowComment">
         <i class="fas fa-comment"></i>
-        <div>pb</div>
-        <!-- <div>{{ post.comments.length }}</div> -->
+        <div>{{ post.nbComment }}</div>
     </div>
 
     <favPost
