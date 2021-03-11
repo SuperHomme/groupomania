@@ -75,7 +75,7 @@ exports.updateUserPassword = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// NO // TODO delete related posts with CASCADE FK ?
+// NO // TODO delete related posts with CASCADE FK ? A CASCADER en fs sur tous les fichiers images des posts !
 exports.deleteUser = (req, res, next) => { 
     console.log("user n° : " + req.params.id + "supprimé");
     User.findOne({ _id: req.params.id })

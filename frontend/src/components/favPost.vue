@@ -9,7 +9,7 @@
         <label :for="concatenate('fav_', post._id)">
             <i class="fas fa-heart"></i>
         </label>
-        <div>{{ usersFaved.length }}</div>
+        <div>{{ nbFav }}</div>
     </div>
 
 </div>
@@ -74,7 +74,7 @@ export default {
         },
     },
     beforeMount() {
-        this.usersFaved = this.post.usersFaved;
+        this.usersFaved = this.post.usersFaved.split(",");
     },
     mounted() {
         this.setChecked();

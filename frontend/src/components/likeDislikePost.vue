@@ -10,7 +10,7 @@
         <label :for="concatenate('like_', post._id)">
             <i class="fas fa-thumbs-up"></i>
         </label>
-        <div :id="concatenate('nblike_', post._id)">{{ usersLiked.length }}</div>
+        <div :id="concatenate('nblike_', post._id)">{{ post.nbLike }}</div>
     </div>
 
     <!-- DISLIKE -->
@@ -21,7 +21,7 @@
         <label :for="concatenate('dislike_', post._id)">
             <i class="fas fa-thumbs-down"></i>
         </label>
-        <div :id="concatenate('nbdislike_', post._id)">{{ usersDisliked.length }}</div>
+        <div :id="concatenate('nbdislike_', post._id)">{{ post.nbDislike }}</div>
     </div>
 
 </div>
@@ -119,8 +119,8 @@ export default {
             }
         },
         setUserId() {
-            this.usersLiked = this.post.usersLiked;
-            this.usersDisliked = this.post.usersDisliked;
+            this.usersLiked = this.post.usersLiked.split(",");
+            this.usersDisliked = this.post.usersDisliked.split(",");
             this.usersLiked.includes(this.loginUserId) ?
                 this.nbLikeDislike = 1 : 
                 this.usersDisliked.includes(this.loginUserId) ?
