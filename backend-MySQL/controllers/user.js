@@ -1,21 +1,26 @@
+const db = require('../dbconfig.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const rot13Cipher = require('../middleware/rot13-cipher');
 
+// OK
 exports.getOneUser = (req, res, next) => {
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            if (!user) { // si on ne trouve pas l'utilisateur
-                return res.status(401).json({ error: 'utilisateur non trouvé' });}
-            res.status(200).json({  // si on trouve l'utilisateur
-                userpicture: user.userpicture,
-                username: user.username,
-                email: rot13Cipher(user.email.split("@")[0]) + "@" + user.email.split("@")[1]
+    let sql = `SELECT users.userpicture, users.username, users.email FROM users WHERE (_id = '${req.params.id}')`;
+    db.query(sql, (err, result) => {
+
+        if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
+            return res.status(401).json({ error: 'utilisateur non trouvé' });}
+            
+            console.log(result)
+            res.status(200).json({ // si on trouve l'utilisateur
+                userpicture: result[0].userpicture,
+                username: result[0].username,
+                email: rot13Cipher(result[0].email.split("@")[0]) + "@" + result[0].email.split("@")[1],
             })})
-        .catch(error => res.status(500).json({ error }));
 };
 
+// NO
 exports.updateUserInfos = (req, res, next) => {
     console.log(req.body);
     User.findOne({ _id: req.params.id })
@@ -31,6 +36,7 @@ exports.updateUserInfos = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// NO
 exports.updateUserPicture = (req, res, next) => { // TODO ne pas supprimer l'avater par défaut de la DB
     console.log(req.file);
     User.findOne({ _id: req.params.id })
@@ -47,6 +53,7 @@ exports.updateUserPicture = (req, res, next) => { // TODO ne pas supprimer l'ava
         .catch(error => res.status(500).json({ error }));
 };
 
+// NO
 exports.updateUserPassword = (req, res, next) => {
     console.log(req.body.password);
     User.findOne({ _id: req.params.id })
@@ -66,6 +73,7 @@ exports.updateUserPassword = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// NO
 exports.deleteUser = (req, res, next) => { // TODO delete related posts
     console.log("user n° : " + req.params.id + "supprimé");
     User.findOne({ _id: req.params.id })

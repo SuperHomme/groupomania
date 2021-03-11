@@ -39,6 +39,7 @@ export default {
     data: () => {
         return {
             user: {},
+            actualUsername: '',
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
         }
@@ -48,7 +49,8 @@ export default {
             axios
                 .get('http://localhost:3000/api/users/' + this.loginUserId, { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(user => {
-                        this.user = user.data })
+                        this.user = user.data
+                        this.actualUsername = user.data.username })
                     .catch((error) => console.log(error));
         },
     },

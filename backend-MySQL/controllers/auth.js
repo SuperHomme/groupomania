@@ -4,6 +4,7 @@ const rot13Cipher = require('../middleware/rot13-cipher');
 require('dotenv').config(); // utilisation des variables cachées
 const db = require('../dbconfig.js');
 
+// OK
 exports.signup = (req, res, next) => {
     console.log(req.body);
     emailBody = req.body.email.split("@");
@@ -23,10 +24,11 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 }
 
+// OK
 exports.login = (req, res, next) => {
-    let sql = 'SELECT _id, password FROM users WHERE email = ?';
     let emailBody = req.body.email.split("@");
     let emailCipher = rot13Cipher(emailBody[0]) + "@" + emailBody[1];
+    let sql = 'SELECT _id, password FROM users WHERE email = ?';
     db.query(sql, [emailCipher], (err, result) => {
         if (err || result.length == 0) {
             return res.status(401).json({ error: 'utilisateur non trouvé' });}

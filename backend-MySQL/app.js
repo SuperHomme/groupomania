@@ -11,7 +11,7 @@ const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
 // const commentRoutes = require('./routes/comment');
 // const reactionRoutes = require('./routes/reaction');
-// const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/user');
 
 db.connect((err) =>  {
     if(err) {
@@ -40,6 +40,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 // app.use('/api/comments', commentRoutes);
 // app.use('/api/reactions', reactionRoutes);
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 module.exports = app;

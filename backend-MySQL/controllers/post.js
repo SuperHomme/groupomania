@@ -38,7 +38,7 @@ exports.updatePost = (req, res, next) => {
         res.status(201).json({ message: 'légende du post mis à jour !' })})
 };
 
-// A CASCADER SUR LE FICHIER IMAGE, LES COMMENTAIRES ET LES REACTIONS
+// A VERFIER + A CASCADER SUR LE FICHIER IMAGE, LES COMMENTAIRES ET LES REACTIONS
 exports.deletePost = (req, res, next) => {
     // console.log(req);
     let sql = `DELETE FROM posts WHERE (_id = '${req.params.id}')`;
@@ -50,7 +50,7 @@ exports.deletePost = (req, res, next) => {
         // suppression du fichier image // A VERIFIER
         const filename = result2.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
-            let sql2 = `SELECT posts.img WHERE (_id = '${req.params.id}')`;
+            let sql2 = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
             db.query(sql2, (err, result) => {
                 if (err || result.length == 0) {
                     return res.status(500).json(err.message);}
