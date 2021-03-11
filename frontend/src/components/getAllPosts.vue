@@ -34,7 +34,7 @@ export default {
         getAllPosts() {
             axios
                 .get('http://localhost:3000/api/posts', { headers: { Authorization: "Bearer " + this.loginToken }} )
-                    .then(reponse => { this.posts = reponse.data.reverse(), this.realoadNbPosts(reponse.data) } ) // on met reverse pour avoir les derniers posts en premier
+                    .then(reponse => { this.posts = reponse.data, this.realoadNbPosts(reponse.data) } ) // on met reverse pour avoir les derniers posts en premier
                     .catch((error) => console.log(error));
         },
         realoadNbPosts(nbPost) {

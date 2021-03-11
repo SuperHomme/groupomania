@@ -62,7 +62,7 @@ export default {
         },
         sendFav(favData) {
             axios
-            .post('http://localhost:3000/api/posts/' + this.post._id + '/fav', favData, { headers: { Authorization: "Bearer " + this.loginToken }} )
+            .post('http://localhost:3000/api/reactions/' + this.post._id + '/fav', favData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(console.log( this.nbFav + " envoyé !"))
                 .catch((error) => console.log(error));
         },

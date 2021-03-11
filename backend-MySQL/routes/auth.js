@@ -1,3 +1,4 @@
+// app.use('/api/auth', authRoutes);
 const express = require('express');
 const router = express.Router();
 

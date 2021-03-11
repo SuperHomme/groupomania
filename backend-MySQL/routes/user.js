@@ -1,3 +1,4 @@
+// app.use('/api/users', userRoutes);
 const express = require('express');
 const router = express.Router();
 

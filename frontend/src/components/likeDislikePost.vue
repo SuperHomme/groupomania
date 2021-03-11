@@ -107,7 +107,7 @@ export default {
         },
         sendLikeDislike(likeDislikeData) {
             axios
-            .post('http://localhost:3000/api/posts/' + this.post._id + '/like', likeDislikeData, { headers: { Authorization: "Bearer " + this.loginToken }} )
+            .post('http://localhost:3000/api/reactions/' + this.post._id + '/like', likeDislikeData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(console.log( this.nbLikeDislike + " envoyé !"))
                 .catch((error) => console.log(error));
         },

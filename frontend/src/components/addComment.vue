@@ -48,7 +48,7 @@ export default {
         },
         sendComment(commentData) {
             console.log("commentaire : " + this.commentPending);
-            axios.post('http://localhost:3000/api/posts/' + this.post._id + '/comment', commentData, { headers: { Authorization: "Bearer " + this.loginToken }} )
+            axios.post('http://localhost:3000/api/comments/' + this.post._id + '/comment', commentData, { headers: { Authorization: "Bearer " + this.loginToken }} )
                 .then(  
                     console.log("nouveau commentaire envoyé"),
                     this.commentPending = "", // RAZ de l'input

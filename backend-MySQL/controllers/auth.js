@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
                 let values = [email, password, userpicture, username];
             db.query(sql, values, (err, result) => {
                 if (err) {
-                    return res.status(502).json(err.message);}
+                    return res.status(500).json(err.message);}
                 res.status(201).json({ message: 'utilisateur créé !' })})})
         .catch(error => res.status(500).json({ error }));
 }
