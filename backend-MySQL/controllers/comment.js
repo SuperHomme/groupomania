@@ -1,5 +1,6 @@
 const db = require('../dbconfig.js');
 
+// NO
 exports.addComment = (req, res, next) => {
     Post.findOne({_id: req.params.id})
         .then((post) => {

@@ -1,5 +1,6 @@
 const db = require('../dbconfig.js');
 
+// NO
 exports.likeDislikePost = (req, res, next) => {
     Post.findOne({_id: req.params.id})
         .then((post) => {
@@ -35,6 +36,7 @@ exports.likeDislikePost = (req, res, next) => {
         .catch((error) => { res.status(400).json({ error: error, });});
 };
 
+// NO
 exports.favPost = (req, res, next) => {
     console.log(req.body);
     Post.findOne({_id: req.params.id})
