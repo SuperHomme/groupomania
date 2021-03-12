@@ -38,11 +38,9 @@
     
     </div>
 
-    <getAllComments 
-        v-for="comment in post.comments"
-        v-show="showComments.includes(post._id)"
-        :key="comment._id"
-        :comment="comment"/>
+    <getAllComments
+        :post="post"
+        v-show="showComments.includes(post._id)"/>
 
 </div>
 

@@ -9,7 +9,7 @@ const db = require('./dbconfig.js');
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
-// const commentRoutes = require('./routes/comment');
+const commentRoutes = require('./routes/comment');
 // const reactionRoutes = require('./routes/reaction');
 const userRoutes = require('./routes/user');
 
@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
-// app.use('/api/comments', commentRoutes);
+app.use('/api/comments', commentRoutes);
 // app.use('/api/reactions', reactionRoutes);
 app.use('/api/users', userRoutes);
 

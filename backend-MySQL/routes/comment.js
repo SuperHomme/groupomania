@@ -6,11 +6,9 @@ const commentCtrl = require('../controllers/comment');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
-router.get('/comment', auth, commentCtrl.getAllComments);
-router.post('/:id/comment', auth, commentCtrl.addComment);
-router.put('/:id/comment/:id', auth, commentCtrl.updateComment);
-router.delete('/:id/comment/:id', auth, commentCtrl.deleteComment);
-
-// TODO like comment / modify comment / delete comment
+router.get('/:id', auth, commentCtrl.getAllComments);
+router.post('/:id', auth, commentCtrl.addComment);
+// router.put('/:id/comment/:id', auth, commentCtrl.updateComment);  TODO
+// router.delete('/:id/comment/:id', auth, commentCtrl.deleteComment); TODO
 
 module.exports = router;

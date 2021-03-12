@@ -6,7 +6,7 @@
         :post="post"/>
 
     <!-- COMMENTER -->
-    <div class="fas-count-bind" v-on:click.prevent="updateShowComment">
+    <div class="fas-count-bind" v-on:click.prevent="updateShowComment(), showCommentState()">
         <i class="fas fa-comment"></i>
         <div>{{ post.nbComment }}</div>
     </div>
@@ -22,6 +22,7 @@
 // eslint-disable-next-line no-unused-vars
 const axios = require('axios');
 
+import { mapState } from 'vuex'
 import likeDislikePost from '@/components/likeDislikePost.vue'
 import favPost from '@/components/favPost.vue'
 
@@ -41,10 +42,22 @@ export default {
         }
     },
     methods: {
+        concatenate(comment, postId) {
+            const inputId = comment + postId;
+            return inputId
+        },
         updateShowComment() {
             this.$store.commit("updateShowComments", this.post._id)
+        },
+        showCommentState() {
+            console.log("showCommentsState : " + this.showComments)
+            if (this.showComments.length >= 1) {
+                this.$root.$emit(this.concatenate('comment_', this.post._id), this.concatenate('comment_', this.post._id))}
         }
-    }
+    },
+    computed: { // VueX
+        ...mapState(['showComments'])
+    },
 }
 </script>
 
