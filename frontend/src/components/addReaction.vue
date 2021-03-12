@@ -51,7 +51,7 @@ export default {
         },
         showCommentState() {
             console.log("showCommentsState : " + this.showComments)
-            if (this.showComments.length >= 1) {
+            if (this.showComments.includes(this.post._id)) {
                 this.$root.$emit(this.concatenate('comment_', this.post._id), this.concatenate('comment_', this.post._id))}
         }
     },

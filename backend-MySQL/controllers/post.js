@@ -38,7 +38,7 @@ exports.updatePost = (req, res, next) => {
         res.status(201).json({ message: 'légende du post mis à jour !' })})
 };
 
-// NO A CASCADER SUR LE FICHIER IMAGE, LES COMMENTAIRES ET LES REACTIONS
+// OK > cascade bien sur les commentaires, le fichier image A VERIFIER > les reactions
 exports.deletePost = (req, res, next) => {
     let sqlPoPi = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
     db.query(sqlPoPi, (err, resultPoPi) => {
