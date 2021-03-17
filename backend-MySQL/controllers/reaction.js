@@ -61,7 +61,20 @@ exports.likeDislikePost = (req, res, next) => {
     }
 };
 
-// // TEST
+// OK
+exports.favPost = (req, res, next) => {
+    console.log(req.body)
+    let sql = `INSERT INTO reactions (post_id, user_id, favs, dateFav) VALUES ('${req.params.id}', '${req.body.user_id}', '${req.body.fav}', NOW()) ON DUPLICATE KEY UPDATE favs='${req.body.fav}', dateFav=IF('${req.body.fav}' = 1, NOW(), NULL)`;
+    db.query(sql, (err, result) => {
+
+        if (err || result.length == 0) {
+            return res.status(500).json(err.message);}
+        
+        console.log("on édite le fav");    
+        res.status(201).json({ message: 'fav mis à jour !' })})
+};
+
+// // TEST LIKE DISLIKE > NOT WORKING
 // exports.likeDislikePost = (req, res, next) => {
 //     console.log(req.body)
 //     switch (req.body.like) {
@@ -97,27 +110,3 @@ exports.likeDislikePost = (req, res, next) => {
 //         break;
 //     }
 // };
-
-// NO
-exports.favPost = (req, res, next) => {
-    console.log(req.body);
-    Post.findOne({_id: req.params.id})
-        .then((post) => {
-            switch (req.body.fav) {
-                case 1:
-                    if (!post.usersFaved.includes(req.body.userId)) { // s'il n'y a pas déjà de favori de l'utilisateur, alors...
-                        Post.updateOne({ _id: req.params.id }, { $inc: { nbFav: 1 }, $push: { usersFaved: req.body.userId }, _id: req.params.id })
-                        .then(() => res.status(201).json({ message: "post favori" }))
-                        .catch((error) => { res.status(400).json({ error }); });
-                    }
-                break;
-                case 0:
-                    if (post.usersFaved.includes(req.body.userId)) { // s'il y a déjà un favori, alors on annule ce favori
-                        Post.updateOne({ _id: req.params.id }, { $inc: { nbFav: -1 }, $pull: { usersFaved: req.body.userId }, _id: req.params.id })
-                            .then(() => res.status(201).json({ message: "favori annulé" }))
-                            .catch((error) => { res.status(400).json({ error }); });
-                    }
-                break;
-            }})
-        .catch((error) => { res.status(400).json({ error })});
-};

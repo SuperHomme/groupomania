@@ -56,7 +56,7 @@ export default {
         addFav() {
             const favData = {
                 fav: this.nbFav,
-                userId: this.loginUserId,
+                user_id: this.loginUserId,
             }
             this.sendFav(favData);
         },
