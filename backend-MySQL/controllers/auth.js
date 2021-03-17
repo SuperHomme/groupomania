@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
     let emailBody = req.body.email.split("@");
     let emailCipher = rot13Cipher(emailBody[0]) + "@" + emailBody[1];
-    let sql = 'SELECT _id, password FROM users WHERE email = ?';
+    let sql = 'SELECT _id, password, role FROM users WHERE email = ?';
     db.query(sql, [emailCipher], (err, result) => {
         if (err || result.length == 0) {
             return res.status(401).json({ error: 'utilisateur non trouvé' });}
