@@ -32,6 +32,7 @@ exports.login = (req, res, next) => {
     db.query(sql, [emailCipher], (err, result) => {
         if (err || result.length == 0) {
             return res.status(401).json({ error: 'utilisateur non trouvé' });}
+        
         bcrypt
             .compare(req.body.password, result[0].password) // bcrypt compare les hash des 2 mdp
             .then(valid => {
@@ -39,6 +40,7 @@ exports.login = (req, res, next) => {
                     return res.status(401).json({ error: 'mot de passe incorrect' });}
                 res.status(200).json({  // si valid est true
                     userId: result[0]._id, // dans la réponse on envoie un userId, et un token qui contient le JWT
+                    role: result[0].role,
                     token:
                         jwt.sign(
                             { userId: result[0]._id },

@@ -48,14 +48,13 @@ import router from '../router/index'
 
 export default {
     name: 'signUpUser',
-    // title: 'Groupomania - inscription',
     components: {
     },
     data () {
         return {
-            firstName: 'Ugo', // TODO tout mettre à zéro
-            lastName: 'deFéligonde',
-            emailAddress: 'ugo.defeli@gmail.com',
+            firstName: '',
+            lastName: '',
+            emailAddress: '',
             password1: 'mdptireauhazard', // TODO affichage en point noir
             password2: 'mdptireauhazard',
         }

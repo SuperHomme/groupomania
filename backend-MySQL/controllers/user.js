@@ -75,34 +75,24 @@ exports.updateUserPassword = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// NO // TODO delete related posts with CASCADE FK ? A CASCADER en fs sur tous les fichiers images des posts !
-exports.deleteUser = (req, res, next) => { 
-    console.log("user n° : " + req.params.id + "supprimé");
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            const filename = user.userpicture.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                User.deleteOne({ _id: req.params.id })
-                    .then(user => res.status(200).json({ message: 'user supprimé'}))
-                    .catch(error => res.status(400).json({ error }));});
-        })
-        .catch(error => res.status(500).json({ error }));
-};
-
-exports.deletePost = (req, res, next) => {
-    let sqlAllPostsImagesRelated = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
-    db.query(sqlAllPostsImagesRelated, (err, resultAllPostsImagesRelated) => {
-        if (err || resultAllPostsImagesRelated.length == 0) { // si on ne trouve pas le post
-            return res.status(401).json({ error: 'post non trouvé' });}
+// MAYBE
+exports.deleteUser = (req, res, next) => {
+    let sqlAllImagesRelated = `SELECT img FROM posts WHERE (user_id = '${req.params.id}') UNION ALL SELECT userpicture FROM users WHERE (_id = '${req.params.id}')`;
+    db.query(sqlAllImagesRelated, (err, resultAllImagesRelated) => {
+        if (err || resultAllImagesRelated.length == 0) { // si erreur
+            return res.status(402).json({ error: 'aucun post trouvé' });}
         
-        foreach(img in AllPostsImagesRelated)
-        const filename = resultUP[0].img.split('/images/')[1];
-        fs.unlink(`images/${filename}`, () => {
-            let sql = `DELETE FROM posts WHERE (_id = '${req.params.id}')`;
-            db.query(sql, (err, result) => {
-                if (err || resultUP.length == 0) { // si on ne trouve pas le post
-                    return res.status(401).json({ error: 'post non trouvé' });}
-                
-                res.status(201).json(result)})})
-    res.status(201).json({ message: 'post n° : ' + req.params.id + 'supprimé' })})
+        let sql = `DELETE FROM users WHERE (_id = '${req.params.id}')`;
+        db.query(sql, (err, result) => {
+            if (err || result.length == 0) { // si on ne trouve pas l'utilisateur
+                return res.status(401).json({ error: 'post non trouvé' });}
+            
+            console.log(resultAllImagesRelated);
+            
+            for (const imgRelated of resultAllImagesRelated) { // suppression des images
+                const filename = imgRelated.img.split('/images/')[1];
+                if (filename != 'neutral-avatar.png') { // si l'avatar du user n'était pas l'avatar par défaut
+                fs.unlink(`images/${filename}`, () => { console.log("image " + filename + " supprimée !") })}}
+
+            res.status(201).json({ message: 'user n° : ' + req.params.id + 'supprimé' })})})
 }

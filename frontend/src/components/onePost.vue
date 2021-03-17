@@ -3,7 +3,7 @@
 <div :id="post._id" class="post-and-comments">
 
     <editPost
-        v-if="post.user_id == loginUserId && hoverPost"
+        v-if="post.user_id == loginUserId && hoverPost || loginRole == isAdmin && hoverPost"
         @hide-edit-menu="hoverPost = false"
         :post="post"/>
 
@@ -64,6 +64,8 @@ export default {
     data: () => {
         return {
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
+            loginRole: JSON.parse(localStorage.getItem("vuex")).account.role,
+            isAdmin: 'admin',
             showComment: true,
             hoverPost: false,
             timeOutEditMenu: '',

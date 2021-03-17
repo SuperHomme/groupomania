@@ -3,11 +3,11 @@ const db = require('../dbconfig.js');
 // OK
 exports.getAllComments = (req, res, next) => {
     console.log(req.body);
-    let sql = `SELECT c.*, u.username, u.userpicture FROM comments c LEFT JOIN users u ON U._id = c.user_id WHERE (c.post_id = '${req.params.id}')`;
+    let sql = `SELECT c.*, u.username, u.userpicture FROM comments c LEFT JOIN users u ON u._id = c.user_id WHERE (c.post_id = '${req.params.id}')`;
     db.query(sql, (err, result) => {
         if (err || result.length == 0) {
             return res.status(500).json({ error: 'aucun commentaire trouvé' });}
-        console.log(result)
+
         res.status(200).json(result)})
 };
 

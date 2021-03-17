@@ -47,7 +47,7 @@ export default {
         getAllComments(postId) {
             postId = postId.split("_").[1];
             axios
-                .get('http://localhost:3000/api/comments/'  + postId, { headers: { Authorization: "Bearer " + this.loginToken }} )
+                .get('http://localhost:3000/api/comments/' + postId, { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(reponse => {
                         this.comments = reponse.data,
                         console.log(reponse.data) })

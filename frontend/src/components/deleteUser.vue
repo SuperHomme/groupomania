@@ -39,7 +39,8 @@ export default {
                     .catch((error) => console.log(error));
         },
         logout() {
-                this.$store.commit('logout')
+            this.$store.commit('logout');
+            this.$router.push('.');
         },
     },
 }
