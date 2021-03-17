@@ -3,7 +3,7 @@ const db = require('../dbconfig.js');
 
 // OK
 exports.getAllPosts = (req, res, next) => {
-    let sql = `SELECT p.*, u.username, u.userpicture, COUNT(c._id) AS nbComment, COALESCE(SUM(r.like), 0) AS nbLike, GROUP_CONCAT(IF(r.like = 1, r.user_id, ' ')) AS usersLiked, GROUP_CONCAT(IF(r.like = 1, m.username, ' ')) AS uLikedUsername, COALESCE(SUM(r.dislike), 0) AS nbDislike, GROUP_CONCAT(IF(r.dislike = 1, r.user_id, ' ')) AS usersDisliked, GROUP_CONCAT(IF(r.dislike = 1, m.username, ' ')) AS uDislikedUsername, COALESCE(SUM(r.fav), 0) AS nbFav, GROUP_CONCAT(IF(r.fav = 1, r.user_id, ' ')) AS usersFaved, GROUP_CONCAT(IF(r.fav = 1, m.username, ' ')) AS uFavedUsername FROM posts p LEFT JOIN users u ON p.user_id = u._id LEFT JOIN reactions r ON r.post_id = p._id LEFT JOIN comments c ON c.post_id = p._id LEFT JOIN users m ON m._id = r.user_id GROUP BY p._id ORDER BY p.date DESC`;
+    let sql = `SELECT p.*, u.username, u.userpicture, COUNT(c._id) AS nbComment, COALESCE(SUM(r.likes), 0) AS nbLike, GROUP_CONCAT(IF(r.likes = 1, r.user_id, ' ')) AS usersLiked, GROUP_CONCAT(IF(r.likes = 1, m.username, ' ')) AS uLikedUsername, COALESCE(SUM(r.dislikes), 0) AS nbDislike, GROUP_CONCAT(IF(r.dislikes = 1, r.user_id, ' ')) AS usersDisliked, GROUP_CONCAT(IF(r.dislikes = 1, m.username, ' ')) AS uDislikedUsername, COALESCE(SUM(r.favs), 0) AS nbFav, GROUP_CONCAT(IF(r.favs = 1, r.user_id, ' ')) AS usersFaved, GROUP_CONCAT(IF(r.favs = 1, m.username, ' ')) AS uFavedUsername FROM posts p LEFT JOIN users u ON p.user_id = u._id LEFT JOIN reactions r ON r.post_id = p._id LEFT JOIN comments c ON c.post_id = p._id LEFT JOIN users m ON m._id = r.user_id GROUP BY p._id ORDER BY p.date DESC`;
     db.query(sql, (err, result) => {
         if (err || result.length == 0) {
             return res.status(500).json(err.message);}
@@ -38,7 +38,7 @@ exports.updatePost = (req, res, next) => {
         res.status(201).json({ message: 'légende du post mis à jour !' })})
 };
 
-// OK > cascade bien sur les commentaires, le fichier image A VERIFIER > les reactions
+// OK > cascade sur les commentaires, le fichier image OK / reste à vérifier si la cascade se fait sur les reactions
 exports.deletePost = (req, res, next) => {
     let sqlPoPi = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
     db.query(sqlPoPi, (err, resultPoPi) => {

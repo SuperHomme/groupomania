@@ -88,3 +88,21 @@ exports.deleteUser = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+exports.deletePost = (req, res, next) => {
+    let sqlAllPostsImagesRelated = `SELECT img FROM posts WHERE (_id = '${req.params.id}')`;
+    db.query(sqlAllPostsImagesRelated, (err, resultAllPostsImagesRelated) => {
+        if (err || resultAllPostsImagesRelated.length == 0) { // si on ne trouve pas le post
+            return res.status(401).json({ error: 'post non trouvé' });}
+        
+        foreach(img in AllPostsImagesRelated)
+        const filename = resultUP[0].img.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+            let sql = `DELETE FROM posts WHERE (_id = '${req.params.id}')`;
+            db.query(sql, (err, result) => {
+                if (err || resultUP.length == 0) { // si on ne trouve pas le post
+                    return res.status(401).json({ error: 'post non trouvé' });}
+                
+                res.status(201).json(result)})})
+    res.status(201).json({ message: 'post n° : ' + req.params.id + 'supprimé' })})
+}
