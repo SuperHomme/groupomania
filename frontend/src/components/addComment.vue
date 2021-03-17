@@ -44,15 +44,24 @@ export default {
             }
             this.sendComment(commentData);
         },
+        concatenate(comment, postId) {
+            const inputId = comment + postId;
+            return inputId
+        },
         sendComment(commentData) {
             console.log("commentaire : " + this.commentPending);
             axios.post('http://localhost:3000/api/comments/' + this.post._id, commentData, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                .then(  
+                .then(
+                    this.reloadGetAllComments(),
                     console.log("nouveau commentaire envoyé"),
                     this.commentPending = "", // RAZ de l'input
-                ) 
+                )
                 .catch((error) => console.log(error));
         },
+        reloadGetAllComments() {
+            console.log("on est là " + this.concatenate('comment_', this.post._id));
+            this.$root.$emit(this.concatenate('comment_', this.post._id), this.concatenate('comment_', this.post._id))
+        }
     }
 }
 </script>

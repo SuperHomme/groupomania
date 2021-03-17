@@ -24,20 +24,30 @@ import addPost from '@/components/addPost.vue'
 export default {
   name: 'feed',
   title () {
-    return `Groupomania — feed : ${this.nbPost} posts`
+    return `Groupomania — feed`
+  },
+  render (h) {
+    return h('h3', null, this.page)
   },
   data () {
     return {
-      nbPost: 0
+      nbPost: "defaut",
     }
   },
+  // metaInfo() {
+  //   // eslint-disable-next-line no-unused-vars
+  //   const nbPost = this.nbPost;
+  //   return {
+  //     title: `Groupomania — feed : ${this.nbPost} posts`,
+  //   };
+  // },
   components: {
     headerNav, getAllPosts, addPost
   },
   methods: {
     setNbPosts(nbPost) {
       this.nbPost = nbPost;
-      console.log("nb posts dans le feed : " + this.nbPosts)
+      console.log("nb posts dans le feed : " + this.nbPost)
     }
   },
   beforeMount() {

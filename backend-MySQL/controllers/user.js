@@ -75,7 +75,7 @@ exports.updateUserPassword = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// MAYBE
+// OK
 exports.deleteUser = (req, res, next) => {
     let sqlAllImagesRelated = `SELECT img FROM posts WHERE (user_id = '${req.params.id}') UNION ALL SELECT userpicture FROM users WHERE (_id = '${req.params.id}')`;
     db.query(sqlAllImagesRelated, (err, resultAllImagesRelated) => {

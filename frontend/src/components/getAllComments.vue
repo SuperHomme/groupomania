@@ -45,6 +45,7 @@ export default {
             return inputId
         },
         getAllComments(postId) {
+            console.log(postId)
             postId = postId.split("_").[1];
             axios
                 .get('http://localhost:3000/api/comments/' + postId, { headers: { Authorization: "Bearer " + this.loginToken }} )
@@ -55,10 +56,11 @@ export default {
         },
     },
     mounted() {
-        this.$root.$on(this.concatenate('comment_', this.post._id), postId => {
-            this.getAllComments(postId);
-        });
-    }
+        this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId), console.log("ici") });
+    },
+    beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
+        this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId), console.log("ici") });
+    },
 }
 </script>
 

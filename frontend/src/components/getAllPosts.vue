@@ -36,11 +36,13 @@ export default {
                 .get('http://localhost:3000/api/posts', { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(reponse => {
                         this.posts = reponse.data,
-                        this.realoadNbPosts(reponse.data) } )
+                        this.realoadNbPosts(reponse.data) 
+                        } )
                     .catch((error) => console.log(error));
         },
         realoadNbPosts(nbPost) {
-            this.$emit('reloadNbPosts', nbPost.length);
+            this.$emit('reloadNbPosts', nbPost.length)
+            console.log(nbPost.length + " posts");
         }
     },
     beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps

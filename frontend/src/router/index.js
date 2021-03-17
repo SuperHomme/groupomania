@@ -5,12 +5,14 @@ import userSettings from '../views/userSettings.vue'
 import userFavorites from '../views/userFavorites.vue'
 import userInbox from '../views/userInbox.vue'
 import userConnection from '../views/userConnection.vue'
+import VueMeta from 'vue-meta'
 
 Vue.use(VueRouter)
+Vue.use(VueMeta)
 
 const isAllowed = (to, from, next) => {
   // eslint-disable-next-line no-constant-condition
-  if (true) { // verfication connexion
+  if (JSON.parse(localStorage.getItem("vuex")).account.userId) { // verfication connexion
     next(); return;
   }
   next('/')
@@ -26,17 +28,20 @@ const routes = [
   {
     path: '/user-settings',
     component: userSettings, 
-    name: 'userSettings'
+    name: 'userSettings',
+    beforeEnter: isAllowed
   },
   {
     path: '/user-favorites',
     component: userFavorites,
-    name: 'userFavorites'
+    name: 'userFavorites',
+    beforeEnter: isAllowed
   },
   {
     path: '/user-inbox',
     component: userInbox,
-    name: 'userInbox'
+    name: 'userInbox',
+    beforeEnter: isAllowed
   },
   {
     path: '/',
