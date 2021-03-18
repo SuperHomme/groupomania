@@ -8,7 +8,7 @@
     <!-- COMMENTER -->
     <div class="fas-count-bind" v-on:click.prevent="updateShowComment(), showCommentState()">
         <i class="fas fa-comment"></i>
-        <div>{{ post.nbComment }}</div>
+        <div>{{ nbComments }}</div>
     </div>
 
     <favPost
@@ -33,6 +33,7 @@ export default {
     },
     data: () => {
         return {
+            nbComments: '',
         }
     },
     props: {
@@ -55,9 +56,15 @@ export default {
                 this.$root.$emit(this.concatenate('comment_', this.post._id), this.concatenate('comment_', this.post._id))}
         }
     },
+    mounted() {
+        this.$root.$on(this.concatenate('nb-comment_', this.post._id), nbComments => { this.nbComments = nbComments});
+    },
     computed: { // VueX
         ...mapState(['showComments'])
     },
+    beforeMount() {
+        this.nbComments = this.post.nbComment
+    }
 }
 </script>
 

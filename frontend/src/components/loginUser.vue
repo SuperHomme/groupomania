@@ -10,7 +10,7 @@
         <label for="emailAddress">
         </label>
 
-        <input type="text" id="password" v-model="password" placeholder="Votre mot de passe" minlength="8" maxlength="100">
+        <input type="password" id="password" v-model="password" placeholder="Votre mot de passe" minlength="8" maxlength="100">
         <label for="password">
         </label>
 

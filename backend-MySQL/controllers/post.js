@@ -52,6 +52,5 @@ exports.deletePost = (req, res, next) => {
                 if (err || resultPoPi.length == 0) { // si on ne trouve pas le post
                     return res.status(401).json({ error: 'post non trouvé' });}
                 
-                res.status(201).json(result)})})
-    res.status(201).json({ message: 'post n° : ' + req.params.id + 'supprimé' })})
+                res.status(201).json({ message: 'post n° : ' + req.params.id + 'supprimé' })})})})
 }

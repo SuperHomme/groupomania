@@ -51,15 +51,19 @@ export default {
                 .get('http://localhost:3000/api/comments/' + postId, { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(reponse => {
                         this.comments = reponse.data,
+                        this.reloadNbComments(reponse.data)
                         console.log(reponse.data) })
                     .catch((error) => console.log(error));
         },
+        reloadNbComments(nbComments) {
+            console.log(nbComments.length);
+            this.$root.$emit(this.concatenate('nb-comment_', this.post._id), nbComments.length)
+        }
     },
     mounted() {
         this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId), console.log("ici") });
     },
     beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
-        this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId), console.log("ici") });
     },
 }
 </script>

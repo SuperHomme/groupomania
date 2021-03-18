@@ -18,11 +18,11 @@
         <label for="emailAddress">
         </label>
 
-        <input type="text" id="password1" v-model="password1" placeholder="Votre mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="password1" v-model="password1" placeholder="Votre mot de passe" minlength="8" maxlength="26">
         <label for="password1">
         </label>
 
-        <input type="text" id="password2" v-model="password2" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="password2" v-model="password2" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
         <label for="password2">
         </label>
 

@@ -11,15 +11,15 @@
         class="user__password"
         v-if="wantChangePassword">
 
-        <input type="text" id="oldPassword" v-model="oldPassword" placeholder="mot de passe actuel" minlength="8" maxlength="26">
+        <input type="password" id="oldPassword" v-model="oldPassword" placeholder="mot de passe actuel" minlength="8" maxlength="26">
         <label for="oldPassword">
         </label>
 
-        <input type="text" id="newPassword" v-model="newPassword" placeholder="votre nouveau mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="newPassword" v-model="newPassword" placeholder="votre nouveau mot de passe" minlength="8" maxlength="26">
         <label for="newPassword">
         </label>
 
-        <input type="text" id="newConfirmedPassword" v-model="newConfirmedPassword" placeholder="confirmez votre nouveau mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="newConfirmedPassword" v-model="newConfirmedPassword" placeholder="confirmez votre nouveau mot de passe" minlength="8" maxlength="26">
         <label for="newConfirmedPassword">
         </label>
 
