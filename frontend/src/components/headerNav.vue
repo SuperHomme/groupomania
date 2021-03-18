@@ -16,7 +16,7 @@
                 </li>
                 <li>
                 <router-link to="/user-favorites">
-                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-bell"></i>
                 </router-link>
                 <span id="nav-notif"></span>
                 </li>

@@ -11,15 +11,15 @@
         class="user__password"
         v-if="wantChangePassword">
 
-        <input type="password" id="oldPassword" v-model="oldPassword" placeholder="mot de passe actuel" minlength="8" maxlength="26">
+        <input type="password" id="oldPassword" autocomplete="current-password" v-model="oldPassword" placeholder="mot de passe actuel" minlength="8" maxlength="26">
         <label for="oldPassword">
         </label>
 
-        <input type="password" id="newPassword" v-model="newPassword" placeholder="votre nouveau mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="newPassword" autocomplete="new-password" v-model="newPassword" placeholder="votre nouveau mot de passe" minlength="8" maxlength="26">
         <label for="newPassword">
         </label>
 
-        <input type="password" id="newConfirmedPassword" v-model="newConfirmedPassword" placeholder="confirmez votre nouveau mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="newConfirmedPassword" autocomplete="new-password" v-model="newConfirmedPassword" placeholder="confirmez votre nouveau mot de passe" minlength="8" maxlength="26">
         <label for="newConfirmedPassword">
         </label>
 
@@ -31,7 +31,7 @@
 
     <button
         v-if="wantChangePassword && errorPassword == ''"
-        v-on:click.prevent="createUpdatedPassword, wantChangePassword = false">
+        v-on:click.prevent="checkUpdatedPassword">
         Confirmez le nouveau mot de passe
     </button>
 
@@ -58,16 +58,16 @@ export default {
     methods: {
         // TODO : check user input + notification
         checkUpdatedPassword() {
-            if (this.newPassword === this.oldPassword && this.newPassword === this.newConfirmedPassword) {
-                this.createUpdatedUserInfos()
+            if (this.newPassword === this.newConfirmedPassword) {
+                this.createUpdatedPassword()
             } else {
-                this.errorPassword = "Les mots de passe de ne correspondent pas";
+                this.errorPassword = "les mots de passe de ne correspondent pas";
             }
         },
         createUpdatedPassword() {
             const updatedPassword = {
-                password: this.newPassword,
-                email: this.actualEmail,
+                oldPassword: this.oldPassword,
+                newPassword: this.newPassword,
             }
             this.sendUpdatedPassword(updatedPassword)
         },

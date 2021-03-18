@@ -11,12 +11,12 @@ exports.signup = (req, res, next) => {
     bcrypt
         .hash(req.body.password, 10)
         .then(hash => {
-                const email = rot13Cipher(emailBody[0]) + "@" + emailBody[1];
-                const password = hash;
-                const userpicture = "http://localhost:3000/images/neutral-avatar.png";
-                const username = req.body.username;
-                let sql = 'INSERT INTO users (email, password, userpicture, username) VALUES (?, ?, ?, ?)';
-                let values = [email, password, userpicture, username];
+            const email = rot13Cipher(emailBody[0]) + "@" + emailBody[1];
+            const password = hash;
+            const userpicture = "http://localhost:3000/images/neutral-avatar.png";
+            const username = req.body.username;
+            let sql = 'INSERT INTO users (email, password, userpicture, username) VALUES (?, ?, ?, ?)';
+            let values = [email, password, userpicture, username];
             db.query(sql, values, (err, result) => {
                 if (err) {
                     return res.status(500).json(err.message);}

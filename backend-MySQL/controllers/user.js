@@ -55,24 +55,34 @@ exports.updateUserPicture = (req, res, next) => {
             res.status(201).json({ message: 'avatar utilisateur mis à jour !' })})});
 };
 
-// NO
+// OK
 exports.updateUserPassword = (req, res, next) => {
-    console.log(req.body.password);
-    User.findOne({ _id: req.params.id })
-        .then(user => {
-            if (!user) { // si on ne trouve pas l'utilisateur
-                console.log('utilisateur non trouvé');
+    console.log(req.body.newPassword);
+    let sql = `SELECT password FROM users WHERE (_id = '${req.params.id}')`;
+    db.query(sql, (err, oldPassword) => {
+
+        if (err || oldPassword.length == 0) { // pb
                 return res.status(401).json({ error: 'utilisateur non trouvé' });}
-            bcrypt
-                .compare(req.body.password, user.password) // bcrypt compare les hash des 2 mdp
-                .then(valid => {
-                    if (!valid) { // si valid est false
-                        return res.status(401).json({ error: 'mot de passe incorrect' });}
-                    res.status(200).json({  // si valid est true
-                        userId: user._id, // dans la réponse on envoie un userId, et un token qui contient le JWT
-                    });})
-                .catch(error => res.status(500).json({ error }));})
-        .catch(error => res.status(500).json({ error }));
+
+        bcrypt
+            .compare(req.body.oldPassword, oldPassword[0].password) // bcrypt compare les hash des 2 mdp
+            .then(valid => {
+                if (!valid) { // si valid est false
+                    return res.status(401).json({ error: 'mot de passe incorrect' });}
+                
+                bcrypt
+                    .hash(req.body.newPassword, 10)
+                    .then(hash => {
+                        let sqlUpdatePassword = `UPDATE users SET password = '${hash}' WHERE (_id = '${req.params.id}')`;
+                        db.query(sqlUpdatePassword, (err, result) => {
+
+                        if (err || result.length == 0) { // pb
+                                return res.status(401).json({ error: 'pb' });}
+                        
+                        res.status(201).json({ message: 'mot de passe mis à jour !' })})})
+                    .catch(error => res.status(501).json({ error }))
+            })
+            .catch(error => res.status(502).json({ error }))})
 };
 
 // OK

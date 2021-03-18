@@ -2,11 +2,11 @@
 
 <div class="user__infos">
 
-    <input type="text" :id="user._id" v-model="actualUsername" placeholder="Votre prénom et nom" maxlength="26">
+    <input type="text" :id="user._id" autocomplete="username" v-model="actualUsername" placeholder="Votre prénom et nom" maxlength="26">
     <label for="username">
     </label>
 
-    <input type="text" :id="user._id" v-model="actualEmail" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
+    <input type="text" :id="user._id" autocomplete="email" v-model="actualEmail" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
     <label for="email">
     </label>
 
