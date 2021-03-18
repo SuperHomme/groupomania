@@ -47,6 +47,11 @@ const routes = [
     path: '/',
     component: userConnection,
     name: 'userConnection'
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    redirect: '/'
   }
 ]
 

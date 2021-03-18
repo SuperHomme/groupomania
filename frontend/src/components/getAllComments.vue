@@ -56,12 +56,11 @@ export default {
                     .catch((error) => console.log(error));
         },
         reloadNbComments(nbComments) {
-            console.log(nbComments.length);
             this.$root.$emit(this.concatenate('nb-comment_', this.post._id), nbComments.length)
         }
     },
     mounted() {
-        this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId), console.log("ici") });
+        this.$root.$on(this.concatenate('comment_', this.post._id), postId => { this.getAllComments(postId) });
     },
     beforeMount() { // hook juste avant le montage de la page, permet de gagner du temps
     },

@@ -40,7 +40,7 @@ export default {
         createComment() {
             const commentData = {
                 content : this.commentPending,
-                userId: this.loginUserId,
+                user_id: this.loginUserId,
             }
             this.sendComment(commentData);
         },
