@@ -16,6 +16,7 @@ il existe 2 dossiers backend :
 → ```backend-MongoDB``` non-fonctionnel
 il utilise une base de données non-relationnelle (noSQL) ;
 il n'est plus maintenu à ce jour
+
 → ```backend-MySQL``` fonctionnel
 il utilise une base de données relationnelle (SQL) ;
 c'est ce dernier qu'il faut utiliser pour ce projet

@@ -31,7 +31,7 @@ body
 a, a:visited
   color: #333
 
-//mixins
+//mixins // TODO not working
 $breakpoints: (laptop: 1024px, tablet: 768px, mobileL: 425px, mobileM: 375px, mobileS: 320px)
 
 =mq-mobileS
