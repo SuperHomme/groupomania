@@ -13,6 +13,7 @@
 #### 2 - configurer la base de données
 
 il existe 2 dossiers backend :
+
 → ```backend-MongoDB``` non-fonctionnel
 il utilise une base de données non-relationnelle (noSQL) ;
 il n'est plus maintenu à ce jour
@@ -22,7 +23,9 @@ il utilise une base de données relationnelle (SQL) ;
 c'est ce dernier qu'il faut utiliser pour ce projet
 
 pour ce dernier, vous avez la possibilité d'utiliser l'un des 2 fichiers suivants
+
 → avec des exemples : ```database/groupomaniaDB-examples.sql```
+
 → seulement la structure : ```database/groupomaniaDB-structure.sql```
 
 #### 3 - configurer l'accès à la base de données
