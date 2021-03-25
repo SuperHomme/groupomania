@@ -74,7 +74,7 @@ export default {
         },
     },
     beforeMount() {
-        const uFaved = this.post.usersFaved.replace(/ ,/g,'').replace(/, /g,'').split(",");
+        const uFaved = this.post.usersFaved.split(",").map(x=>+x).filter(y => y != 0);
         uFaved[0] == " " ?
             this.usersFaved = [] :
             this.usersFaved = uFaved;
