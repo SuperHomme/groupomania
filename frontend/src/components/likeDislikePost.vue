@@ -59,18 +59,18 @@ export default {
                 case 1: // on a appuyé sur like
                     if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du like
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId.toString()), 1); // à la relance du like
-                        this.usersLiked.push(this.loginUserId.toString());
+                        if (this.usersDisliked.includes(this.loginUserId)) { this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1) } // à la relance du like
+                        this.usersLiked.push(this.loginUserId);
                         this.nbLikeDislike = 1;
                         this.addLikeDislike();
                     } else if (this.nbLikeDislike == 1) { // on reeapuye sur like = annulation
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId.toString()), 1);
+                        if (this.usersLiked.includes(this.loginUserId)) { this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1) }
                         this.nbLikeDislike = 0;
                         this.addLikeDislike();
                     } else if (this.nbLikeDislike == -1) { // on appuye sur like alors que le dislike était envoyé : il faut annuler le dislike (envoi d'un zero) et reappuyer le like
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId.toString()), 1);
+                        if (this.usersDisliked.includes(this.loginUserId)) { this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1) }
                         this.nbLikeDislike = 0;
                         this.addLikeDislike();
                         this.checkLikeOrDislike(1);
@@ -79,18 +79,18 @@ export default {
                 case -1:
                     if (this.nbLikeDislike == 0) { // c'est la première fois, ou relance du dislike
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
-                        this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId.toString()), 1);
-                        this.usersDisliked.push(this.loginUserId.toString());
+                        if (this.usersLiked.includes(this.loginUserId)) { this.usersLiked.splice(this.usersLiked.indexOf(this.loginUserId), 1) }
+                        this.usersDisliked.push(this.loginUserId);
                         this.nbLikeDislike = -1;
                         this.addLikeDislike();
                     } else if (this.nbLikeDislike == -1) { // on reeapuye sur dislike = annulation
                         document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId.toString()), 1);
+                        if (this.usersDisliked.includes(this.loginUserId)) { this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1) }
                         this.nbLikeDislike = 0;
                         this.addLikeDislike();
                     } else if (this.nbLikeDislike == 1) { // on appuye sur dislike alors que le like était envoyé : il faut annuler le like (envoi d'un zero) et reappuyer le dislike
                         document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = false;
-                        this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId.toString()), 1);
+                        if (this.usersDisliked.includes(this.loginUserId)) { this.usersDisliked.splice(this.usersDisliked.indexOf(this.loginUserId), 1) }
                         this.nbLikeDislike = 0;
                         this.addLikeDislike();
                         this.checkLikeOrDislike(-1);
@@ -112,26 +112,26 @@ export default {
                 .catch((error) => console.log(error));
         },
         setChecked() {
-            if ( this.post.usersLiked.includes(this.loginUserId.toString()) ) {
+            if ( this.post.usersLiked.includes(this.loginUserId) ) {
                 document.getElementById(`${this.concatenate('like_', this.post._id)}`).checked = true;
-            } else if ( this.post.usersDisliked.includes(this.loginUserId.toString()) ) {
+            } else if ( this.post.usersDisliked.includes(this.loginUserId) ) {
                 document.getElementById(`${this.concatenate('dislike_', this.post._id)}`).checked = true;
             }
         },
         setUserId() {
-            const uLiked = this.post.usersLiked.replace(/ ,/g,'').replace(/, /g,'').split(",");
+            const uLiked = this.post.usersLiked.split(",").map(x=>+x).filter(y => y != 0);
             uLiked[0] == " " ?
                 this.usersLiked = [] :
                 this.usersLiked = uLiked;
             
-            const uDisliked = this.post.usersDisliked.replace(/ ,/g,'').replace(/, /g,'').split(",");
+            const uDisliked = this.post.usersDisliked.split(",").map(x=>+x).filter(y => y != 0);
             uDisliked[0] == " " ?
                 this.usersDisliked = [] :
                 this.usersDisliked = uDisliked;
             
-            this.usersLiked.includes(this.loginUserId.toString()) ?
+            this.usersLiked.includes(this.loginUserId) ?
                 this.nbLikeDislike = 1 : 
-                this.usersDisliked.includes(this.loginUserId.toString()) ?
+                this.usersDisliked.includes(this.loginUserId) ?
                     this.nbLikeDislike = -1 :
                         this.nbLikeDislike = 0;
         }
