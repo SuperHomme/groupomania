@@ -17,6 +17,9 @@
 
             <div class="user-picture"><img v-bind:src="post.userpicture"></div>
             <div class="user-name">{{ post.username }}</div>
+            <div class="edit-post-menu"
+                v-if="post.user_id == loginUserId && hoverPostEditButton && !hoverPost || loginRole == isAdmin && hoverPostEditButton && !hoverPost">
+                EDIT.</div>
             <div class="date">{{ post.date }}</div>
         </div>
 
@@ -68,14 +71,17 @@ export default {
             isAdmin: 'admin',
             showComment: true,
             hoverPost: false,
+            hoverPostEditButton: false,
             timeOutEditMenu: '',
         }
     },
     methods: {
         showEditMenu() { // on mouse over
+            this.hoverPostEditButton = true;
             this.timeOutEditMenu = setTimeout(() => {this.hoverPost = true}, 1000);
         },
         hideEditMenu() { // on mouse out
+            this.hoverPostEditButton = false;
             clearTimeout(this.timeOutEditMenu);
         },
         concatenate(legend, postId) {
@@ -147,6 +153,12 @@ export default {
     margin-left: 1rem
     color: black
     font-weight: bold
+
+.edit-post-menu
+    margin-left: 1rem
+    background-color: rgba(0, 204, 255, .1)
+    border-radius: 3px
+    color: rgba(0, 204, 255, 1)
 
 .date
     color: #cdcdcd

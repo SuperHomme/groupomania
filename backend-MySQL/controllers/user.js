@@ -57,7 +57,6 @@ exports.updateUserPicture = (req, res, next) => {
 
 // OK
 exports.updateUserPassword = (req, res, next) => {
-    console.log(req.body.newPassword);
     let sql = `SELECT password FROM users WHERE (_id = '${req.params.id}')`;
     db.query(sql, (err, oldPassword) => {
 

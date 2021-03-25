@@ -49,7 +49,7 @@ export default {
     data () {
         return {
             emailAddress: '',
-            password: 'mdptireauhazard',
+            password: '',
             stayConnected: true,
         }
     },

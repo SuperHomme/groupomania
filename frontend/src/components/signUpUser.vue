@@ -55,8 +55,8 @@ export default {
             firstName: '',
             lastName: '',
             emailAddress: '',
-            password1: 'mdptireauhazard', // TODO affichage en point noir
-            password2: 'mdptireauhazard',
+            password1: '',
+            password2: '',
         }
     },
     props: {
@@ -76,7 +76,7 @@ export default {
                 this.firstName != '' &&
                 this.lastName != '' &&
                 this.email != '' &&
-                this.password1 != '' // TODO validEmail & validPassword & pssword1 = password 2
+                this.password1 != '' // TODO validEmail & validPassword & password1 = password 2
             ) {
                 console.log("toutes les données sont ok");
                 this.createUser();

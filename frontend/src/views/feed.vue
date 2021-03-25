@@ -20,6 +20,7 @@
 import headerNav from '@/components/headerNav.vue'
 import getAllPosts from '@/components/getAllPosts.vue'
 import addPost from '@/components/addPost.vue'
+// import '@/assets/_mixins.sass'
 
 export default {
   name: 'feed',
@@ -57,10 +58,18 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+// @import 'frontend/src/assets/mixins' // TODO load mixin 
+
 .feed
   display: flex
   flex-direction: row
   justify-content: space-around
   margin: auto
   width: 1150px
+  // +mq-laptop
+  //   flex-direction: column
+  @media screen and (max-width: 1024px)
+    flex-direction: column-reverse
+    align-items: center
+    width: 100%
 </style>

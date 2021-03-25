@@ -60,10 +60,16 @@ nav .nav-container
     align-items: center
     max-width: 1050px
     margin: 0 auto
+    @media screen and (max-width: 768px) // TODO mixins
+        flex-direction: column
+        margin: auto
 
 nav .nav-container #logo
     height: 32px
     width: 66%
+    @media screen and (max-width: 768px) // TODO mixins
+        margin: auto
+        margin-bottom: 1rem
 
 nav .nav-container #logo img
     height: 100%
@@ -73,6 +79,8 @@ nav .nav-container #icons
     font-size: 24px
     width: 34%
     justify-content: flex-end
+    @media screen and (max-width: 768px) // TODO mixins
+        justify-content: space-around
 
 nav .nav-container #icons li
     margin-left: calc(35% + 8px)

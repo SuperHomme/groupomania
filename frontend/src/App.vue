@@ -32,6 +32,8 @@ a, a:visited
   color: #333
 
 //mixins
+$breakpoints: (laptop: 1024px, tablet: 768px, mobileL: 425px, mobileM: 375px, mobileS: 320px)
+
 =mq-mobileS
   @media screen and (max-width: map-get($breakpoints, mobileS))
     @content
@@ -45,10 +47,10 @@ a, a:visited
     @content
 
 =mq-tablet
-  @media screen and (max-width: map-get($breakpoints, mobiletablet))
+  @media screen and (max-width: map-get($breakpoints, tablet))
     @content
 
-=mq-special($mq-special: $initial-model)
-  @media screen and (max-width: $mq-special)
+=mq-laptop
+  @media screen and (max-width: map-get($breakpoints, laptop))
     @content
 </style>

@@ -46,7 +46,7 @@ export default {
     name: 'editUserPassword',
     data: () => {
         return {
-            oldPassword: '', // TODO affichage en point noir
+            oldPassword: '',
             newPassword: '',
             newConfirmedPassword: '',
             errorPassword: '',
@@ -74,7 +74,12 @@ export default {
         sendUpdatedPassword(updatedPassword) {
             axios
                 .put('http://localhost:3000/api/users/' + this.loginUserId + '/password', updatedPassword, { headers: { Authorization: "Bearer " + this.loginToken }} )
-                    .then(console.log("user infos modifiées !"), console.log( updatedPassword ))
+                    .then(
+                        console.log("user infos modifiées !"),
+                        this.oldPassword = '',
+                        this.newPassword = '',
+                        this.newConfirmedPassword = '',
+                        this.wantChangePassword = false)
                     .catch((error) => console.log(error));
         },
     },
