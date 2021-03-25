@@ -20,7 +20,7 @@
             <div class="edit-post-menu"
                 v-if="post.user_id == loginUserId && hoverPostEditButton && !hoverPost || loginRole == isAdmin && hoverPostEditButton && !hoverPost">
                 EDIT.</div>
-            <div class="date">{{ post.date }}</div>
+            <div class="date">{{ formattedDate(post.date_sql) }}</div>
         </div>
 
         <div class="post__content">
@@ -83,6 +83,13 @@ export default {
         hideEditMenu() { // on mouse out
             this.hoverPostEditButton = false;
             clearTimeout(this.timeOutEditMenu);
+        },
+        formattedDate(date_sql) {
+            const formatted = new Date(date_sql);
+            const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+            const optionsTime = {hour: '2-digit', minute: '2-digit'};
+            const format_date_sql = 'le ' + formatted.toLocaleDateString('fr-FR', optionsDate) + ' à ' + formatted.toLocaleTimeString('fr-FR', optionsTime).replace(':', 'h');
+            return format_date_sql;
         },
         concatenate(legend, postId) {
             const inputId = legend + postId;

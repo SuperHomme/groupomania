@@ -9,7 +9,7 @@
     <div class="comment__body">
         <div class="comment__infos">
             <div class="user-name comment__user-name">{{ comment.username }}</div>
-            <div class="date comment__date">{{ comment.date }}</div>
+            <div class="date comment__date">{{ formattedDate(comment.date_sql)}}</div>
         </div>
         <div class="comment__content">{{ comment.content }}</div>
     </div>
@@ -26,6 +26,15 @@ export default {
             type: Object,
             required: true,
         }
+    },
+    methods: {
+        formattedDate(date_sql) {
+            const formatted = new Date(date_sql);
+            const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+            const optionsTime = {hour: '2-digit', minute: '2-digit'};
+            const format_date_sql = 'le ' + formatted.toLocaleDateString('fr-FR', optionsDate) + ' à ' + formatted.toLocaleTimeString('fr-FR', optionsTime).replace(':', 'h');
+            return format_date_sql;
+        },
     },
 }
 </script>
