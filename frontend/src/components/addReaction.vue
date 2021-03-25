@@ -51,7 +51,6 @@ export default {
             this.$store.commit("updateShowComments", this.post._id)
         },
         showCommentState() {
-            console.log("showCommentsState : " + this.showComments)
             if (this.showComments.includes(this.post._id)) {
                 this.$root.$emit(this.concatenate('comment_', this.post._id), this.concatenate('comment_', this.post._id))}
         }

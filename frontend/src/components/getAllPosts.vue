@@ -36,7 +36,8 @@ export default {
                 .get('http://localhost:3000/api/posts', { headers: { Authorization: "Bearer " + this.loginToken }} )
                     .then(reponse => {
                         this.posts = reponse.data,
-                        this.realoadNbPosts(reponse.data) 
+                        this.realoadNbPosts(reponse.data),
+                        this.$store.commit("updateShowComments", "refresh")
                         } )
                     .catch((error) => console.log(error));
         },

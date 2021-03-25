@@ -14,19 +14,19 @@
         <label for="lastName">
         </label>
 
-        <input type="text" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
+        <input type="text" id="emailAddress" v-model="emailAddress" autocomplete="email" placeholder="Votre adresse électronique" minlength="5" maxlength="50">
         <label for="emailAddress">
         </label>
 
-        <input type="password" id="password1" v-model="password1" placeholder="Votre mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="password1" v-model="password1" autocomplete="current-password" placeholder="Votre mot de passe" minlength="8" maxlength="26">
         <label for="password1">
         </label>
 
-        <input type="password" id="password2" v-model="password2" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
+        <input type="password" id="password2" v-model="password2" autocomplete="current-password" placeholder="Confirmez votre mot de passe" minlength="8" maxlength="26">
         <label for="password2">
         </label>
 
-        <button v-on:click.prevent="createUser">
+        <button v-on:click.prevent="checkUserData">
             S'inscrire
         </button>
 
@@ -62,27 +62,15 @@ export default {
     props: {
     },
     methods: {
-        // eslint-disable-next-line no-unused-vars
-        redirectToLogin(userData) {
-            console.log("redirectToLogin est appelé");
-            console.log(userData.email);
-            userData.email !== '' &&  typeof userData.email !== 'undefined' ? // si userData contient un email, cad si le est passée par CreateUser
-                (console.log("contient un email"),
-                this.$emit('toggle-login-signup', userData)) : // on envoi les données
-                this.$emit('toggle-login-signup'); // sinon on envoi que l'évènement
-        },
         checkUserData() {
-            if (
-                this.firstName != '' &&
-                this.lastName != '' &&
-                this.email != '' &&
-                this.password1 != '' // TODO validEmail & validPassword & password1 = password 2
-            ) {
-                console.log("toutes les données sont ok");
-                this.createUser();
-            }
-                console.log("pb sur les données");
-
+            this.firstName == '' || this.lastName == '' ?
+                alert("nom ou prénom incorrect") :
+                this.password1 == '' || !(this.password1 == this.password2) || !this.password1.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/) ?
+                    alert("votre mot de passe doit comporter au moins 8 caractères, dont un chiffre, une majuscule et une minuscule") :
+                    this.emailAddress == '' || !this.emailAddress.match("@") ?
+                    alert("email incorrect") :
+                        (console.log("toutes les données sont ok"),
+                        this.createUser())
         },
         createUser() {
             const userData = {
@@ -93,7 +81,6 @@ export default {
             this.sendUser(userData)
         },
         sendUser(userData) {
-            console.log("utilisateur sur le point d'être inscrit");
             axios
             .post('http://localhost:3000/api/auth/signup', userData)
                 .then(
@@ -102,6 +89,15 @@ export default {
                     this.redirectToLogin(userData), // on attend que l'utilisateur soit bien créé pour envoyer le préremplissage au login
                 ) 
                 .catch((error) => console.log(error));
+        },
+        // eslint-disable-next-line no-unused-vars
+        redirectToLogin(userData) {
+            console.log("redirectToLogin est appelé");
+            console.log(userData.email);
+            userData.email !== '' &&  typeof userData.email !== 'undefined' ? // si userData contient un email, cad si le est passée par CreateUser
+                (console.log("contient un email"),
+                this.$emit('toggle-login-signup', userData)) : // on envoi les données
+                this.$emit('toggle-login-signup'); // sinon on envoi que l'évènement
         },
     },
     mounted () {

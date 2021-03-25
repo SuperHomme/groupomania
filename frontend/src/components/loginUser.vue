@@ -6,11 +6,11 @@
         
         <h2>Se connecter</h2>
 
-        <input type="text" id="emailAddress" v-model="emailAddress" placeholder="Votre adresse électronique" minlength="5" maxlength="100">
+        <input type="text" id="emailAddress" v-model="emailAddress" autocomplete="email" placeholder="Votre adresse électronique" minlength="5" maxlength="100">
         <label for="emailAddress">
         </label>
 
-        <input type="password" id="password" v-model="password" placeholder="Votre mot de passe" minlength="8" maxlength="100">
+        <input type="password" id="password" v-model="password" autocomplete="current-password" placeholder="Votre mot de passe" minlength="8" maxlength="100">
         <label for="password">
         </label>
 
