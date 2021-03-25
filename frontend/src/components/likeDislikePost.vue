@@ -3,7 +3,7 @@
 <div class="like-dislike">
 
     <!-- LIKE -->
-    <div v-bind:title="usersLiked.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
+    <div v-bind:title="uLikedUsername.join('\r\n')" class="fas-count-bind tooltip thumbs-up">
         <input type="checkbox"
             :id="concatenate('like_', post._id)"
             v-on:change="checkLikeOrDislike(1)"/>
@@ -14,7 +14,7 @@
     </div>
 
     <!-- DISLIKE -->
-    <div v-bind:title="usersDisliked.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
+    <div v-bind:title="uDislikedUsername.join('\r\n')" class="fas-count-bind tooltip thumbs-down">
         <input type="checkbox" 
             :id="concatenate('dislike_', post._id)"
             v-on:change="checkLikeOrDislike(-1)"/>
@@ -38,6 +38,8 @@ export default {
         return {
             usersLiked: [],
             usersDisliked: [],
+            uLikedUsername: [],
+            uDislikedUsername: [],
             nbLikeDislike: 0,
             loginUserId: JSON.parse(localStorage.getItem("vuex")).account.userId,
             loginToken: JSON.parse(localStorage.getItem("vuex")).account.token,
@@ -134,10 +136,22 @@ export default {
                 this.usersDisliked.includes(this.loginUserId) ?
                     this.nbLikeDislike = -1 :
                         this.nbLikeDislike = 0;
+        },
+        setUserUsername() {
+            const uLikedUsername = this.post.uLikedUsername.split(",").filter(y => y != 0);
+            uLikedUsername[0] == " " ?
+                this.uLikedUsername = [] :
+                this.uLikedUsername = uLikedUsername;
+
+            const uDislikedUsername = this.post.uDislikedUsername.split(",").filter(y => y != 0);
+            uDislikedUsername[0] == " " ?
+                this.uDislikedUsername = [] :
+                this.uDislikedUsername = uDislikedUsername;
         }
     },
     beforeMount() {
         this.setUserId()
+        this.setUserUsername()
     },
     mounted() {
         this.setChecked()
